@@ -558,6 +558,9 @@ library ID
 		public constant integer SPELL_INHERITED_DEMENTIA_MASTER_OLD        = 'A078'
 		public constant integer SPELL_DEMENTIA_MASTER_OLD_SPELLBOOK        = 'A03M'
 
+		// Conjurer Spells
+		public constant integer SPELL_PHASE_SHIFT = 'PHSH'
+
 		// Priest Spells
 		public constant integer SPELL_THE_GLOW                    = 'A02F'
 		public constant integer SPELL_OMNICURE                    = 'OCUR'

@@ -20,7 +20,7 @@ function getTrollUnits() returns LinkedList<TrollUnit>
             // Hunter
         new UnSubTrollUnit(
             UNIT_HUNTER, 13, 4, 300, 1.77, 1,
-            "Hunter", TOOLTIP_HUNTER, Units.forestTrollTrapper1, "ForestTroll", "W",
+            "Hunter", TOOLTIP_HUNTER, Units.forestTrollTrapper1, "ForestTroll", "Q",
             NAME_HUNTER, HERO_SPELLS_HUNTER, NORMAL_SPELLS_HUNTER,
             Soundsets.forestTrollShadowPriest, pair(0,0), pair(1000, 500)),
 
@@ -45,7 +45,7 @@ function getTrollUnits() returns LinkedList<TrollUnit>
             // Mage
         new UnSubTrollUnit(
             UNIT_MAGE, 11, 4, 270, 1.77, 1,
-            "Mage", TOOLTIP_MAGE, Units.witchDoctor1, "WitchDoctor", "E",
+            "Mage", TOOLTIP_MAGE, Units.witchDoctor1, "WitchDoctor", "W",
             NAME_MAGE, HERO_SPELLS_MAGE, NORMAL_SPELLS_MAGE,
             Soundsets.witchDoctor, pair(1,0), pair(950, 500)),
 
@@ -71,7 +71,7 @@ function getTrollUnits() returns LinkedList<TrollUnit>
         new UnSubTrollUnit(
             UNIT_CONJURER, 11, 4, 270, 1.77, 1,
             "Conjurer", TOOLTIP_MAGE, M_CONJURER, "Conjurer", "E",
-            NAME_CONJURER, HERO_SPELLS_CONJURER, NORMAL_SPELLS_MAGE,
+            NAME_CONJURER, HERO_SPELLS_CONJURER, NORMAL_SPELLS_CONJURER,
             Soundsets.witchDoctor, pair(2,0), pair(950, 500)),
 
             // Priest
