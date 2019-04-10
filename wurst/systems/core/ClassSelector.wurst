@@ -120,6 +120,7 @@ public class ClassSelector
         totem = createUnit(owner, UNIT_TROLL_TOTEM, pos, angle(0))
         ..addUnitToStock(UNIT_HUNTER, 0, 1)
         ..addUnitToStock(UNIT_BEAST_MASTER, 0, 1)
+        ..addUnitToStock(UNIT_CONJURER, 0, 1)
         ..addUnitToStock(UNIT_MAGE, 0, 1)
         ..addUnitToStock(UNIT_PRIEST, 0, 1)
         ..addUnitToStock(UNIT_THIEF, 0, 1)

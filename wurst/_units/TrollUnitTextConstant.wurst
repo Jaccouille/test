@@ -17,6 +17,7 @@ public constant  M_SAGE                    = CUSTOM_MODEL_PATH+"Sage.mdx"
 public constant  M_TIGER                   = CUSTOM_MODEL_PATH+"Tiger.mdx"
 public constant  M_TRAPPER                 = CUSTOM_MODEL_PATH+"Trapper.mdx"
 public constant  M_PANTHER                 = CUSTOM_MODEL_PATH+"Panther.mdx"
+public constant  M_CONJURER                = CUSTOM_MODEL_PATH+"Conjurer.mdx"
 public constant  M_OBSERVER                = CUSTOM_MODEL_PATH+"Observer.mdx"
 public constant  M_GATHERER                = CUSTOM_MODEL_PATH+"Gatherer.mdx"
 public constant  M_SCOUT_UNSUB             = CUSTOM_MODEL_PATH+"ScoutUnsub.mdx"
@@ -66,6 +67,7 @@ public constant  NAME_GATHERER        = "Themoles,Unpa,Zepac,Shishmortis'fork"
 public constant  NAME_RADAR_GATHERER  = "Themoles,Unpa,Zepac,Shishmortis'fork"
 public constant  NAME_HERB_MASTER     = "Themoles,Unpa,Zepac,Shishmortis'fork"
 public constant  NAME_OMNIGATHERER    = "Mortis"
+public constant  NAME_CONJURER         = "Mambo"
 
 
 // Pretty Map to assign inventory abilities to trolls in constructor
@@ -80,6 +82,7 @@ public constant BASIC_TROLL_SPELLS = commaList(SPELL_PANIC, SPELL_REST, SPELL_BU
 
 // Unsub Hero Spells
 public constant HERO_SPELLS_HUNTER       = commaList(         SPELL_TRACK            , SPELL_WARRIOR        , SPELL_TRACKER)
+public constant HERO_SPELLS_CONJURER     = commaList(         SPELL_MAGE_SPELLBOOK   , SPELL_ELEMENTALIST   , SPELL_HYPNOTIST,     ABILITY_MEU_DUMMY)
 public constant HERO_SPELLS_MAGE         = commaList(         SPELL_MAGE_SPELLBOOK   , SPELL_ELEMENTALIST   , SPELL_HYPNOTIST,     ABILITY_MEU_DUMMY)
 public constant HERO_SPELLS_PRIEST       = commaList(         SPELL_PRIEST_SPELLBOOK , SPELL_BOOSTER        , SPELL_MASTER_HEALER, ABILITY_MEU_DUMMY)
 public constant HERO_SPELLS_BEAST_MASTER = commaList(         SPELL_SHAPESHIFTER     , SPELL_CHICKEN)
@@ -89,6 +92,7 @@ public constant HERO_SPELLS_GATHERER     = commaList(         SPELL_ITEM_RADAR  
 
 // Unsub Normal Spells
 public constant  NORMAL_SPELLS_HUNTER       = commaList(SPELL_HUNTER_WEB)
+public constant  NORMAL_SPELLS_CONJURER     = commaList(SPELL_NULL_DAMAGE)
 public constant  NORMAL_SPELLS_MAGE         = commaList(SPELL_NULL_DAMAGE)
 public constant  NORMAL_SPELLS_PRIEST       = commaList(SPELL_THE_GLOW)
 public constant  NORMAL_SPELLS_BEAST_MASTER = commaList(SPELL_PET_SPELLS, SPELL_SPIRIT_BEAST )

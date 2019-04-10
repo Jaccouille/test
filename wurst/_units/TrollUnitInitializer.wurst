@@ -22,7 +22,7 @@ function getTrollUnits() returns LinkedList<TrollUnit>
             UNIT_HUNTER, 13, 4, 300, 1.77, 1,
             "Hunter", TOOLTIP_HUNTER, Units.forestTrollTrapper1, "ForestTroll", "W",
             NAME_HUNTER, HERO_SPELLS_HUNTER, NORMAL_SPELLS_HUNTER,
-            Soundsets.forestTrollShadowPriest, pair(1,1), pair(1000, 500)),
+            Soundsets.forestTrollShadowPriest, pair(0,0), pair(1000, 500)),
 
         new SubTrollUnit(
             UNIT_WARRIOR, 16, 4, 300, 1.66, 1,
@@ -47,7 +47,7 @@ function getTrollUnits() returns LinkedList<TrollUnit>
             UNIT_MAGE, 11, 4, 270, 1.77, 1,
             "Mage", TOOLTIP_MAGE, Units.witchDoctor1, "WitchDoctor", "E",
             NAME_MAGE, HERO_SPELLS_MAGE, NORMAL_SPELLS_MAGE,
-            Soundsets.witchDoctor, pair(2,1), pair(950, 500)),
+            Soundsets.witchDoctor, pair(1,0), pair(950, 500)),
 
         new SubTrollUnit(
             UNIT_ELEMENTALIST_NEW, 11, 4, 280, 1.75, 1,
@@ -67,12 +67,19 @@ function getTrollUnits() returns LinkedList<TrollUnit>
             NAME_DEMENTIA_MASTER, HERO_SPELLS_DEMENTIA_MASTER, NORMAL_SPELLS_DEMENTIA_MASTER,
             Soundsets.heroLich, pair(3,0), pair(1600, 1200)),
 
+        // Conjurer
+        new UnSubTrollUnit(
+            UNIT_CONJURER, 11, 4, 270, 1.77, 1,
+            "Conjurer", TOOLTIP_MAGE, M_CONJURER, "Conjurer", "E",
+            NAME_CONJURER, HERO_SPELLS_CONJURER, NORMAL_SPELLS_MAGE,
+            Soundsets.witchDoctor, pair(2,0), pair(950, 500)),
+
             // Priest
         new UnSubTrollUnit(
             UNIT_PRIEST, 10, 4, 270, 1.77, 1,
             "Priest", TOOLTIP_PRIEST, Units.heroShadowHunter1, "ShadowHunter", "R",
             NAME_PRIEST, HERO_SPELLS_PRIEST, NORMAL_SPELLS_PRIEST,
-            Soundsets.witchDoctor, pair(3,1), pair(1100, 650)),
+            Soundsets.witchDoctor, pair(3,0), pair(1100, 650)),
 
         new SubTrollUnit(
             UNIT_BOOSTER, 10, 4, 280, 1.75, 1,
@@ -97,7 +104,7 @@ function getTrollUnits() returns LinkedList<TrollUnit>
             UNIT_BEAST_MASTER, 13, 5, 300, 1.77, 1,
             "Beast Master", TOOLTIP_BEAST_MASTER, Units.shaman1, "Shaman", "Z",
             NAME_BEAST_MASTER, HERO_SPELLS_BEAST_MASTER, NORMAL_SPELLS_BEAST_MASTER,
-            Soundsets.shaman, pair(0,2), pair(1400, 675)),
+            Soundsets.shaman, pair(0,1), pair(1400, 675)),
 
         new SubTrollUnit(
             UNIT_SHAPESHIFTER_WOLF, 10, 3, 310, 1.40, 1,
@@ -140,7 +147,7 @@ function getTrollUnits() returns LinkedList<TrollUnit>
             UNIT_THIEF, 10, 3, 300, 2.00, 1,
             "Thief", TOOLTIP_THIEF, Units.darkTrollTrapper1, "DarkTrollTrapper", "X",
             NAME_THIEF, HERO_SPELLS_THIEF, NORMAL_SPELLS_THIEF,
-            Soundsets.iceTroll, pair(1,2), pair(800, 1800)),
+            Soundsets.iceTroll, pair(1,1), pair(800, 1800)),
 
         new SubTrollUnit(
             UNIT_ESCAPE_ARTIST, 12, 3, 300, 1.85, 1,
@@ -165,7 +172,7 @@ function getTrollUnits() returns LinkedList<TrollUnit>
             UNIT_SCOUT, 10, 3, 300, 2.00, 1,
             "Scout", TOOLTIP_SCOUT, M_SCOUT_UNSUB, "Scout", "C",
             NAME_SCOUT, HERO_SPELLS_SCOUT, NORMAL_SPELLS_SCOUT,
-            Soundsets.shade, pair(2,2), pair(1300, 1300)),
+            Soundsets.shade, pair(2,1), pair(1300, 1300)),
 
         new SubTrollUnit(
             UNIT_OBSERVER, 12, 3, 300, 1.70, 1.10,
@@ -196,7 +203,7 @@ function getTrollUnits() returns LinkedList<TrollUnit>
             UNIT_GATHERER, 10, 4, 300, 2.00, 1,
             "Gatherer", TOOLTIP_GATHERER, M_GATHERER, "Gatherer", "F",
             NAME_GATHERER, HERO_SPELLS_GATHERER, NORMAL_SPELLS_GATHERER,
-            "TrollBatrider", pair(3,2), pair(1800, 900)),
+            "TrollBatrider", pair(3,1), pair(1800, 900)),
 
         new SubTrollUnit(
             UNIT_HERB_MASTER, 10, 3, 300, 1.67, 1,
