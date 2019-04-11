@@ -559,7 +559,10 @@ library ID
 		public constant integer SPELL_DEMENTIA_MASTER_OLD_SPELLBOOK        = 'A03M'
 
 		// Conjurer Spells
-		public constant integer SPELL_PHASE_SHIFT = 'PHSH'
+		public constant integer SPELL_PHASE_SHIFT        = 'PHSH'
+		public constant integer SPELL_INNER_FIRE_CONJ    = 'INFI'
+		public constant integer SPELL_HOWL_TERROR        = 'HOTE'
+		public constant integer SPELL_CONJURER_SPELLBOOK = 'CJSB'
 
 		// Priest Spells
 		public constant integer SPELL_THE_GLOW                    = 'A02F'

@@ -6,25 +6,24 @@ import Lodash
 import Assets
 import ToolTipsUtils
 import BuffObjEditing
-import ObjectIds
 import ClosureEvents
 import ClosureTimers
 import DummyCaster
 import OrderIds
 
-let BUFF_ID = compiletime(BUFF_ID_GEN.next())
-let BUFF_ORIGINAL_ID = 'Bpsh' // PhaseShift
+constant BUFF_ID = compiletime(BUFF_ID_GEN.next())
+constant BUFF_ORIGINAL_ID = 'Bpsh' // PhaseShift
 
-let DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
+constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 
-let CAST_RANGE = 0
-let COOLDOWN = 20.
-let MANACOST = 5
-let DURATION = 2.
-let TOOLTIP_NORM = "Phase Shift"
-let TOOLTIP_EXTENDED = "This unit has shifted out of existence and cannot be harmed temporarily."
+constant CAST_RANGE = 0
+constant COOLDOWN = 20.
+constant MANACOST = 5
+constant DURATION = 2.
+constant TOOLTIP_NORM = "Phase Shift"
+constant TOOLTIP_EXTENDED = "This unit has shifted out of existence and cannot be harmed temporarily."
                         .format(DURATION.toToolTipLightBlue(), COOLDOWN.toToolTipLightBlue())
-let TARGET_ALLOWED = "targetAllowed"
+constant TARGET_ALLOWED = "targetAllowed"
 
 function createBuff()
     new BuffDefinition(BUFF_ID, BUFF_ORIGINAL_ID)

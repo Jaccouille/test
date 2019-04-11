@@ -1,0 +1,38 @@
+package HowlOfTerror
+
+import ChannelAbilityPreset
+import ID
+import Lodash
+import ToolTipsUtils
+
+constant COOLDOWN = 45.
+constant MANACOST = 25
+constant DURATION = 10.
+constant AOE = 250.
+constant DAMAGE_DECREASED = 0.25
+constant TOOLTIP_NORM = "Howl of Terror"
+constant TOOLTIP_EXTENDED = "Decrease nearby enemy attack damage by {0}.".format(DAMAGE_DECREASED.toToolTipRed()) + makeToolTipDuration(DURATION, COOLDOWN)
+constant TARGET_ALLOWED = "air,ground,enemy,neutral"
+
+class HowlOfTerror extends AbilityDefinitionPitLordHowlofTerror
+    construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
+        super(newAbilityId)
+        this.setHotkeyNormal(hotkey)
+        this.setName(TOOLTIP_NORM)
+        this.setLevels(1)
+        this.setHeroAbility(false)
+        this.presetTooltipNormal(lvl -> makeToolTipNorm(hotkey, TOOLTIP_NORM))
+        this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED)
+        this.setButtonPositionNormalX(buttonPos.a)
+        this.setButtonPositionNormalY(buttonPos.b)
+        this.setManaCost(1, MANACOST)
+        this.setCooldown(1, COOLDOWN)
+        this.setDurationHero(1, DURATION)
+        this.setDurationNormal(1, DURATION + 10)
+        this.setTargetsAllowed(1, TARGET_ALLOWED)
+        this.setDamageIncrease(1, DAMAGE_DECREASED)
+        this.setAnimationNames("stand,victory")
+        this.setAreaofEffect(1, AOE)
+
+@compiletime function createHowlOfTerror()
+    new HowlOfTerror(SPELL_HOWL_TERROR, "W", new Pair(1, 0))
