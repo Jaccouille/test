@@ -562,6 +562,7 @@ library ID
 		public constant integer SPELL_PHASE_SHIFT        = 'PHSH'
 		public constant integer SPELL_INNER_FIRE_CONJ    = 'INFI'
 		public constant integer SPELL_HOWL_TERROR        = 'HOTE'
+		public constant integer SPELL_DISPEL_MAGIC       = 'DIMA'
 		public constant integer SPELL_CONJURER_SPELLBOOK = 'CJSB'
 
 		// Priest Spells

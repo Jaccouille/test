@@ -1,0 +1,54 @@
+package DispelMagic
+
+import ChannelAbilityPreset
+import ID
+import Lodash
+import Assets
+import ToolTipsUtils
+import BuffObjEditing
+import ObjectIds
+import ClosureEvents
+import ClosureForGroups
+import LinkedList
+
+constant CAST_RANGE = 400.
+constant COOLDOWN = 60.
+constant MANACOST = 30
+constant DURATION = 0.
+constant AOE = 250.
+
+constant TOOLTIP_NORM = "Dispel Magic"
+constant TOOLTIP_EXTENDED = "Removes all buffs/debuff".format(DURATION.toToolTipLightBlue(), COOLDOWN.toToolTipLightBlue())
+constant TARGET_ALLOWED = "air,ground,ward,invu,vuln,tree"
+
+
+class DispelConjurer extends AbilityDefinitionDispelMagic
+    construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
+        super(newAbilityId)
+        this.setHotkeyNormal(hotkey)
+        this.setName(TOOLTIP_NORM)
+        this.presetTooltipNormal(lvl -> makeToolTipNorm(hotkey, TOOLTIP_NORM))
+        this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED)
+        this.setButtonPositionNormalX(buttonPos.a)
+        this.setButtonPositionNormalY(buttonPos.b)
+        this.setManaCost(1, MANACOST)
+        this.setCooldown(1, COOLDOWN)
+        this.setDurationHero(1, DURATION)
+        this.setDurationNormal(1, DURATION)
+        this.setTargetsAllowed(1, TARGET_ALLOWED)
+        this.setCastRange(1, CAST_RANGE)
+        this.setCheckDependencies(false)
+        this.setRequirements("")
+        this.setSummonedUnitDamage(1, 0)
+        this.setAreaofEffect(1, AOE)
+
+
+@compiletime function createDispelMagic()
+    new DispelConjurer(SPELL_DISPEL_MAGIC, "E", new Pair(2, 1))
+
+
+init
+    // EventListener.onPointCast(SPELL_DISPEL_MAGIC) (unit caster, vec2 target) ->
+    //     forUnitsInRange(target, AOE) (unit u) ->
+    //         if u.hasAbility(id)
+    //             u.removeAbility(id)

@@ -38,7 +38,7 @@ constant DEMENTIA_MASTER_SPELL_LVL_3 = DEMENTIA_MASTER_SPELL_LVL_2 + "," + comma
 
 // Conjurer
 constant CONJURER_SPELL_LVL_1 = commaList(SPELL_INNER_FIRE_CONJ, SPELL_HOWL_TERROR)
-constant CONJURER_SPELL_LVL_2 = CONJURER_SPELL_LVL_1+","+commaList("")
+constant CONJURER_SPELL_LVL_2 = CONJURER_SPELL_LVL_1+","+commaList(SPELL_DISPEL_MAGIC)
 constant CONJURER_SPELL_LVL_3 = CONJURER_SPELL_LVL_2+","+commaList("")
 
 // Priest Inherited SpellBooks

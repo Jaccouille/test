@@ -46,6 +46,8 @@ public function S2ID(string s) returns integer
         return UNIT_HYPNOTIST
     if s == "UNIT_DEMENTIA_MASTER"
         return UNIT_DEMENTIA_MASTER
+    if s == "UNIT_CONJURER"
+        return UNIT_CONJURER
     if s == "UNIT_PRIEST"
         return UNIT_PRIEST
     if s == "UNIT_BOOSTER"
