@@ -137,8 +137,9 @@ public class ClassSelector
             pool
             ..addUnitType(UNIT_HUNTER, 1)
             ..addUnitType(UNIT_MAGE, 1)
-            ..addUnitType(UNIT_BEAST_MASTER, 1)
+            ..addUnitType(UNIT_CONJURER, 1)
             ..addUnitType(UNIT_PRIEST, 1)
+            ..addUnitType(UNIT_BEAST_MASTER, 1)
             ..addUnitType(UNIT_THIEF, 1)
             ..addUnitType(UNIT_SCOUT, 1)
             ..addUnitType(UNIT_GATHERER, 1)
