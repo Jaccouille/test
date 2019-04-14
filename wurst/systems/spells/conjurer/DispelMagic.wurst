@@ -3,13 +3,7 @@ package DispelMagic
 import ChannelAbilityPreset
 import ID
 import Lodash
-import Assets
 import ToolTipsUtils
-import BuffObjEditing
-import ObjectIds
-import ClosureEvents
-import ClosureForGroups
-import LinkedList
 
 constant CAST_RANGE = 400.
 constant COOLDOWN = 60.
@@ -45,10 +39,3 @@ class DispelConjurer extends AbilityDefinitionDispelMagic
 
 @compiletime function createDispelMagic()
     new DispelConjurer(SPELL_DISPEL_MAGIC, "E", new Pair(2, 1))
-
-
-init
-    // EventListener.onPointCast(SPELL_DISPEL_MAGIC) (unit caster, vec2 target) ->
-    //     forUnitsInRange(target, AOE) (unit u) ->
-    //         if u.hasAbility(id)
-    //             u.removeAbility(id)
