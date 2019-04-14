@@ -31,7 +31,7 @@ class HowlOfTerror extends AbilityDefinitionPitLordHowlofTerror
         this.setDurationNormal(1, DURATION + 10)
         this.setTargetsAllowed(1, TARGET_ALLOWED)
         this.setDamageIncrease(1, DAMAGE_DECREASED)
-        this.setAnimationNames("stand,victory")
+        this.setAnimationNames("spell,channel")
         this.setAreaofEffect(1, AOE)
 
 @compiletime function createHowlOfTerror()
