@@ -6,6 +6,7 @@ import Lodash
 import Assets
 import ToolTipsUtils
 import BuffObjEditing
+import LegacyColors
 
 constant BUFF_ID = compiletime(BUFF_ID_GEN.next())
 constant BUFF_ORIGINAL_ID = 'Binf'
@@ -15,8 +16,8 @@ constant COOLDOWN = 20.
 constant MANACOST = 0
 constant DURATION = 15.
 
-constant DAMAGE_INCREASE = 0.10
-constant DEFENSE_INCREASE = 1.
+constant DAMAGE_INCREASE = 0.20
+constant DEFENSE_INCREASE = 3.
 
 constant TOOLTIP_NORM = "Inner Fire"
 constant TOOLTIP_EXTENDED = "Increase damage of the troll/unit by {0} and armor by {1}." + makeToolTipDuration(DURATION, COOLDOWN)
@@ -32,22 +33,27 @@ function createBuff()
 class InnerFireConjurer extends AbilityDefinitionInnerFire
     construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
         super(newAbilityId)
-        this.setHeroAbility(true)
+        this.setCheckDependencies(false)
         this.setRequirements("")
-        this.setLevels(3)
+        this.setRequirementsLevels("")
+        this.setHeroAbility(false)
+        this.setLevels(1)
+        this.setRequiredLevel(1)
+        this.setLevelSkipRequirement(1)
         this.setHotkeyNormal(hotkey)
         this.setName(TOOLTIP_NORM)
         this.presetTooltipNormal(lvl -> makeToolTipNormHero(hotkey, TOOLTIP_NORM, lvl))
-        this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED.format((DAMAGE_INCREASE + lvl * 0.05).toToolTipRed(), (DEFENSE_INCREASE + lvl * 1).toToolTipOrange()))
+        this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED.format(DAMAGE_INCREASE.toToolTipRed(), DEFENSE_INCREASE.toToolTipOrange()))
         this.setButtonPositionNormalX(buttonPos.a)
         this.setButtonPositionNormalY(buttonPos.b)
         this.presetManaCost(lvl -> MANACOST)
         this.presetCooldown(lvl -> COOLDOWN)
+        this.setIconResearch(Icons.bTNInnerFire)
         this.presetDurationHero(lvl -> DURATION)
         this.presetDurationNormal(lvl -> DURATION * 2)
         this.presetTargetsAllowed(lvl -> TARGET_ALLOWED)
-        this.presetDamageIncrease(lvl -> DAMAGE_INCREASE + lvl * 0.05)
-        this.presetDefenseIncrease(lvl -> DEFENSE_INCREASE.toInt() + lvl * 1)
+        this.presetDamageIncrease(lvl -> DAMAGE_INCREASE)
+        this.presetDefenseIncrease(lvl -> DEFENSE_INCREASE.toInt())
         this.presetAutocastRange(lvl -> CAST_RANGE)
         this.presetBuffs(lvl -> toRawCode(BUFF_ID))
 

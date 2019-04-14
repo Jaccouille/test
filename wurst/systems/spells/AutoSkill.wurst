@@ -56,6 +56,9 @@ init
     ..put(UNIT_HYPNOTIST           , SPELL_HYPNOTIST_SPELLBOOK       )
     ..put(UNIT_DEMENTIA_MASTER     , SPELL_DEMENTIA_MASTER_SPELLBOOK )
 
+    // Conjurer
+    ..put(UNIT_CONJURER            , SPELL_CONJURER_SPELLBOOK        )
+
     // Priest
     ..put(UNIT_PRIEST              , SPELL_PRIEST_SPELLBOOK          )
     ..put(UNIT_BOOSTER             , SPELL_BOOSTER_SPELLBOOK         )
