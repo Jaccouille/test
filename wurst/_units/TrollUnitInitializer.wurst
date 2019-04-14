@@ -74,6 +74,13 @@ function getTrollUnits() returns LinkedList<TrollUnit>
             NAME_CONJURER, HERO_SPELLS_CONJURER, NORMAL_SPELLS_CONJURER,
             Soundsets.witchDoctor, pair(2,0), pair(950, 500)),
 
+        new SubTrollUnit(
+            UNIT_HEMOMANCER, 11, 4, 280, 1.75, 1,
+            "Hemomancer", TOOLTIP_MAGE, M_TROLL_SLASHER, "Conjurer", "E",
+            NAME_HEMOMANCER, HERO_SPELLS_HEMOMANCER, NORMAL_SPELLS_HEMOMANCER,
+            Soundsets.heroLich, pair(2,0), pair(1250, 800)),
+
+
             // Priest
         new UnSubTrollUnit(
             UNIT_PRIEST, 10, 4, 270, 1.77, 1,

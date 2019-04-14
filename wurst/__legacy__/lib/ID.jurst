@@ -51,6 +51,7 @@ library ID
 		public constant integer UNIT_GUI_SHAPESHIFTER_TIGER   = 'O00Z'
 
 		public constant integer UNIT_CONJURER                = 'CONJ'
+		public constant integer UNIT_HEMOMANCER              = 'HEMO'
 
 		public constant integer UNIT_MAGE                = 'O01Z'
 		public constant integer UNIT_MAGE_1              = 'CMA1'
@@ -565,6 +566,9 @@ library ID
 		public constant integer SPELL_DISPEL_MAGIC       = 'DIMA'
 		public constant integer SPELL_PURIFICATION       = 'PURI'
 		public constant integer SPELL_CONJURER_SPELLBOOK = 'CJSB'
+		// Hemomancer Spells
+		public constant integer SPELL_HEMOMANCER_SPELLBOOK = 'HESB'
+		public constant integer SPELL_SUB_CONJ_INHERITED_SPELLBOOK = 'CISB'
 
 		// Priest Spells
 		public constant integer SPELL_THE_GLOW                    = 'A02F'

@@ -11,6 +11,7 @@ constant TOOLTIP_TRACKER_SPELLBOOK         = "The Tracker Knowledge, contains va
 constant TOOLTIP_WARRIOR_SPELLBOOK         = "The Warrior Skills, contains description of the warrior abilities."
 constant TOOLTIP_JUGGERNAUT_SPELLBOOK      = "The Juggernaut Skill set, can use spells from tracker & warrior too."
 constant TOOLTIP_CONJURER_SPELLBOOK        = "The Conjurer Spells, contains various offensive spells."
+constant TOOLTIP_HEMOMANCER_SPELLBOOK      = "The Hemomancer Voodoo magic, contains various crowd control and energy zapping spells."
 constant TOOLTIP_MAGE_SPELLBOOK            = "The Mage Spells, contains various offensive spells."
 constant TOOLTIP_ELEMENTALIST_SPELLBOOK    = "The Elementalist Masteries, contains various damage dealing spells."
 constant TOOLTIP_HYPNOTIST_SPELLBOOK       = "The Hypnotist Voodoo magic, contains various crowd control and energy zapping spells."
@@ -46,6 +47,7 @@ function getSpellBooks() returns LinkedList<SpellBookObject>
         new HeroSpellBookObject(SPELL_WARRIOR_SPELLBOOK          , "Warrior Skills"          , "E", TOOLTIP_WARRIOR_SPELLBOOK         , WARRIOR_SPELL_HASH         , new Pair(1, 1), "TrollPredator"     , 3, 0, 0),
         new HeroSpellBookObject(SPELL_JUGGERNAUT_SPELLBOOK       , "Juggernaut Skills"       , "E", TOOLTIP_JUGGERNAUT_SPELLBOOK      , JUGGERNAUT_SPELL_HASH      , new Pair(1, 1), "TrollPredator"     , 3, 0, 0),
         new HeroSpellBookObject(SPELL_CONJURER_SPELLBOOK         , "Offensive Spells"        , "E", TOOLTIP_CONJURER_SPELLBOOK        , CONJURER_SPELL_HASH        , new Pair(1, 1), "NecromancerAdept"  , 3, 2, 1),
+        new HeroSpellBookObject(SPELL_HEMOMANCER_SPELLBOOK       , "Hemomancer Spells"       , "E", TOOLTIP_HEMOMANCER_SPELLBOOK      , HEMOMANCER_SPELL_HASH       , new Pair(1, 1), "BookOfTheDead"     , 3, 0, 0),
         new HeroSpellBookObject(SPELL_MAGE_SPELLBOOK             , "Offensive Spells"        , "E", TOOLTIP_MAGE_SPELLBOOK            , MAGE_SPELL_HASH            , new Pair(1, 1), "NecromancerAdept"  , 3, 2, 1),
         new HeroSpellBookObject(SPELL_ELEMENTALIST_NEW_SPELLBOOK , "Elementalist Spells"     , "E", TOOLTIP_ELEMENTALIST_SPELLBOOK    , ELEMENTALIST_SPELL_HASH    , new Pair(1, 1), "Manual"            , 3, 0, 0),
         new HeroSpellBookObject(SPELL_HYPNOTIST_SPELLBOOK        , "Hypnotist Spells"        , "E", TOOLTIP_HYPNOTIST_SPELLBOOK       , HYPNOTIST_SPELL_HASH       , new Pair(1, 1), "BookOfTheDead"     , 3, 0, 0),
