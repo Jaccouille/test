@@ -24,7 +24,7 @@ let COOLDOWN = 75.
 
 let HERO_DURATION = 7.0
 let NORMAL_DURATION = 30.0
-let TARGET_ALLOWED = "hero,ennemies"
+let TARGET_ALLOWED = "hero,enemy"
 
 let ANIMATION_NAME = "channel"
 let TOOLTIP_NORM = "Jealousy"
@@ -32,7 +32,7 @@ let TOOLTIP_EXTENDED = ("The Hypnotist curses an enemy causing nearby allies to 
                        "casting animation to make it hard to notice. A jealousied troll will be attacked by his allied towers as well. "+
                        "Lasts {0} seconds. Has {1} seconds cooldown.").format(HERO_DURATION.toToolTipOrange(), COOLDOWN.toToolTipLightBlue())
 
-let BUFF_ID = BUFF_ID_GEN.next()
+let BUFF_ID = compiletime(BUFF_ID_GEN.next())
 let ORIGINAL_BUFF_ID = 'ANmr' // Mindrot
 
 function createBuff()
