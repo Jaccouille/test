@@ -58,6 +58,9 @@ function getTrollUpgrade() returns LinkedList<TrollUpgradeSubSpell>
         new TrollUpgradeSubSpell(SPELL_HYPNOTIST            , "Hypnotist"            , TOOLTIP_HYPNOTIST       , new Pair(2, 0), "Hypnotist"               , "E"),
         new TrollUpgradeSuperSubSpell(SPELL_DEMENTIA_MASTER , "Dementia Master"      , TOOLTIP_DEMENTIA_MASTER , new Pair(3, 0), "DarkTrollShadowPriest"   , "R"),
 
+        // Conjurer
+        new TrollUpgradeSubSpell(SPELL_HEMOMANCER            , "HEMOMANCER"            , TOOLTIP_HYPNOTIST       , new Pair(2, 0), "Hypnotist"               , "E"),
+
         // Priest
         new TrollUpgradeSubSpell(SPELL_BOOSTER              , "Booster"              , TOOLTIP_BOOSTER         , new Pair(1, 0), "ForestTrollShadowPriest" , "W"),
         new TrollUpgradeSubSpell(SPELL_MASTER_HEALER        , "Master Healer"        , TOOLTIP_MASTER_HEALER   , new Pair(2, 0), "MasterHealer"            , "E"),

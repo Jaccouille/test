@@ -21,7 +21,7 @@ constant DEFENSE_INCREASE = 3.
 
 constant TOOLTIP_NORM = "Inner Fire"
 constant TOOLTIP_EXTENDED = "Increase damage of the troll/unit by {0} and armor by {1}." + makeToolTipDuration(DURATION, COOLDOWN)
-constant TARGET_ALLOWED = "	air,ground,friend,neutral,self"
+constant TARGET_ALLOWED = "air,ground,friend,neutral,self"
 
 function createBuff()
     new BuffDefinition(BUFF_ID, BUFF_ORIGINAL_ID)

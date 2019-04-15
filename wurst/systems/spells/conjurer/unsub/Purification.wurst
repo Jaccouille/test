@@ -9,6 +9,7 @@ import RegisterEvents
 import HealingSystem
 import ClosureTimers
 import ClosureForGroups
+import ClosureEvents
 
 constant CAST_RANGE = 3000.
 constant COOLDOWN = 15.
@@ -49,19 +50,16 @@ class Purification extends ChannelAbilityPreset
 @compiletime function createRangedHeal()
     new Purification(SPELL_PURIFICATION, "R", new Pair(3, 0))
 
-function onCast()
-    var target = GetSpellTargetUnit()
-    new HealingInstance(target, HEALING_AMOUNT, HealingType.ABILITY)
-    let healFx = target.addEffect(Abilities.replenishHealthCasterOverhead, "overhead")
-    doAfter(1.5) ->
-        healFx.destr()
-    forUnitsInRange(target.getPos(), AOE) (unit u) ->
-        if u.isEnemyOf(target.getOwner()) and not u.isInvulnerable() and u.isAlive()
-            let dmgFx = u.addEffect(Abilities.deathCoilSpecialArt, "origin")
-            target.damageTarget(u, DAMAGE_AMOUNT)
-            doAfter(1.0) ->
-                dmgFx.destr()
-
 init
-    registerSpellEffectEvent(SPELL_PURIFICATION) ->
-        onCast()
+    EventListener.onTargetCast(SPELL_PURIFICATION) (unit caster, unit target) ->
+        var target = GetSpellTargetUnit()
+        new HealingInstance(target, HEALING_AMOUNT, HealingType.ABILITY)
+        let healFx = target.addEffect(Abilities.replenishHealthCasterOverhead, "overhead")
+        doAfter(1.5) ->
+            healFx.destr()
+        forUnitsInRange(target.getPos(), AOE) (unit u) ->
+            if u.isEnemyOf(target.getOwner()) and not u.isInvulnerable() and u.isAlive()
+                let dmgFx = u.addEffect(Abilities.deathCoilSpecialArt, "origin")
+                target.damageTarget(u, DAMAGE_AMOUNT)
+                doAfter(1.0) ->
+                    dmgFx.destr()

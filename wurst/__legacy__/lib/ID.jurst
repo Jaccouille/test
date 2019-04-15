@@ -567,6 +567,7 @@ library ID
 		public constant integer SPELL_PURIFICATION       = 'PURI'
 		public constant integer SPELL_CONJURER_SPELLBOOK = 'CJSB'
 		// Hemomancer Spells
+		public constant integer SPELL_BLOOD_RUSH         = 'BLRU'
 		public constant integer SPELL_HEMOMANCER_SPELLBOOK = 'HESB'
 		public constant integer SPELL_SUB_CONJ_INHERITED_SPELLBOOK = 'CISB'
 
@@ -779,6 +780,7 @@ library ID
 		public constant integer SPELL_ELEMENTALIST   	= 'S014'
 		public constant integer SPELL_HYPNOTIST      	= 'S015'
 		public constant integer SPELL_DEMENTIA_MASTER	= 'S016'
+		public constant integer SPELL_HEMOMANCER      	= 'S01O'
 		public constant integer SPELL_BOOSTER        	= 'S017'
 		public constant integer SPELL_MASTER_HEALER  	= 'S018'
 		public constant integer SPELL_SAGE           	= 'S019'
