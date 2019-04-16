@@ -1,0 +1,10 @@
+package AbilityUtils
+
+import Assets
+import ClosureTimers
+
+public function spellRecoil(real damage, unit caster)
+    let recoilFx = caster.addEffect(Objects.orcBloodWitchDoctor, "origin")
+    caster.subHP(damage)
+    doAfter(1) () ->
+        recoilFx.destr()

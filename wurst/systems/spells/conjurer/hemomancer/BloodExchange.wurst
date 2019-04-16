@@ -1,0 +1,41 @@
+package BloodExchange
+
+import ChannelAbilityPreset
+import ID
+import Lodash
+import Assets
+import ToolTipsUtils
+import BuffObjEditing
+import ObjectIds
+
+constant CAST_RANGE = 500.
+constant COOLDOWN = 45.
+constant MANACOST = 0
+constant DURATION = 5.
+constant TOOLTIP_NORM = "Blood Exchange"
+constant TOOLTIP_EXTENDED = "Drain the blood of an enemy or share yours with a friendly unit. Can drain/share up to {0}/{1} health point."
+                            + makeToolTipDuration(DURATION, COOLDOWN)
+constant TARGET_ALLOWED = "air,ground,organic"
+
+class BloodExchange extends AbilityDefinitionDarkRangerDrain
+    construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
+        super(newAbilityId)
+        this.setHotkeyNormal(hotkey)
+        this.setName(TOOLTIP_NORM)
+        this.presetTooltipNormal(lvl -> makeToolTipNorm(hotkey, TOOLTIP_NORM))
+        this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED)
+        this.setButtonPositionNormalX(buttonPos.a)
+        this.setButtonPositionNormalY(buttonPos.b)
+        this.setManaCost(1, MANACOST)
+        this.setCooldown(1, COOLDOWN)
+        this.setDurationHero(1, DURATION)
+        this.setDurationNormal(1, DURATION)
+        this.setHitPointsDrained(1, 100)
+//        this.setLifeTransferredPerSecond(1, 25)
+        this.setAreaofEffect(1, 600)
+        this.setHeroAbility(false)
+        this.setTargetsAllowed(1, TARGET_ALLOWED)
+        this.setLevels(1)
+
+@compiletime function createBloodExchange()
+    new BloodExchange(SPELL_BLOOD_EXCHANGE, "R", new Pair(3, 0))

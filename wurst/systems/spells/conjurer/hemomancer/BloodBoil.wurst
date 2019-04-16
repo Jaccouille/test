@@ -1,0 +1,48 @@
+package BloodBoil
+
+import ChannelAbilityPreset
+import ID
+import Lodash
+import Assets
+import ToolTipsUtils
+import BuffObjEditing
+import ObjectIds
+
+// constant BUFF_ID = compiletime(BUFF_ID_GEN.next())
+// constant BUFF_ORIGINAL_ID = 'origId'
+constant CAST_RANGE = 400.
+constant COOLDOWN = 60.
+constant MANACOST = 0
+constant DURATION = 6.
+constant TOOLTIP_NORM = "Blood Boil"
+constant TOOLTIP_EXTENDED = "toolTipExtended".format(DURATION.toToolTipLightBlue(), COOLDOWN.toToolTipLightBlue())
+constant TARGET_ALLOWED = "targetAllowed"
+
+
+class BloodBoil extends AbilityDefinitionFlameStrikeCreep
+    construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
+        super(newAbilityId)
+        this.setHotkeyNormal(hotkey)
+        this.setName(TOOLTIP_NORM)
+        this.presetTooltipNormal(lvl -> makeToolTipNorm(hotkey, TOOLTIP_NORM))
+        this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED)
+        this.setButtonPositionNormalX(buttonPos.a)
+        this.setButtonPositionNormalY(buttonPos.b)
+        this.setIconNormal(Icons.bTNAbsorbMagic)
+        this.setIconResearch(Icons.bTNAbsorbMagic)
+        this.setManaCost(1, MANACOST)
+        this.setCooldown(1, COOLDOWN)
+        this.setDurationHero(1, DURATION)
+        this.setDurationNormal(1, DURATION)
+        this.setTargetsAllowed(1, TARGET_ALLOWED)
+        this.setArtSpecial(Abilities.cloudOfFog)
+        this.setArtEffect(Abilities.cloudOfFog)
+        this.setHeroAbility(false)
+        this.setMaximumDamage(1, 50)
+        this.setAreaofEffect(1, 350)
+        this.setFullDamageDealt(1, 6)
+        this.setHalfDamageDealt(1, 0)
+        this.setCastingTime(1, 0)
+
+@compiletime function createBloodBoil()
+    new BloodBoil(SPELL_BLOOD_BOIL, "W", new Pair(1, 0))

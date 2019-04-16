@@ -22,9 +22,7 @@ let DAMAGE_AMOUNT = 50.
 constant TOOLTIP_NORM = "Purification"
 constant TOOLTIP_EXTENDED = "Heal a friendly unit for {0} and deals {1} damage to its surrounding enemies in a short radius."
                             .format(HEALING_AMOUNT.toToolTipGreen(), DAMAGE_AMOUNT.toToolTipRed())
-constant TARGET_ALLOWED = "targetAllowed"
-
-
+constant TARGET_ALLOWED = "air,ground,friend,vuln,invu,self,organic,nonancient,neutral"
 
 class Purification extends ChannelAbilityPreset
     construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)

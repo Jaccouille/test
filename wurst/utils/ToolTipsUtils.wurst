@@ -32,6 +32,11 @@ public function makeToolTipDuration(real DURATION, real COOLDOWN) returns string
     let toolTip = " Lasts {0} seconds, has {1} seconds cooldown.".format(DURATION.toToolTipLightBlue(), COOLDOWN.toToolTipLightBlue())
     return toolTip
 
+public function makeToolTipDurationAndRecoil(real DURATION, real COOLDOWN, real RECOIL_DAMAGE) returns string
+    let toolTip = " Lasts {0} seconds, has {1} seconds cooldown. {2}".format(DURATION.toToolTipLightBlue(), COOLDOWN.toToolTipLightBlue(),
+                  (COLOR_RED + "Caster take " + RECOIL_DAMAGE.toString() + " recoil damage.|r"))
+    return toolTip
+
 public function real.toToolTip() returns string
     return (this.formatForTooltip())
 

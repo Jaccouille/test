@@ -1,0 +1,99 @@
+package BloodRush
+
+import ChannelAbilityPreset
+import ID
+import Lodash
+import Assets
+import ToolTipsUtils
+import BuffObjEditing
+import ClosureEvents
+import ClosureTimers
+import AbilityUtils
+
+
+constant BUFF_ID = compiletime(BUFF_ID_GEN.next())
+constant BUFF_ORIGINAL_ID = 'Binf' // innerFire
+
+constant ABIL_ATTACK_BONUS = compiletime(ABIL_ID_GEN.next())
+constant CAST_RANGE = 400.
+constant COOLDOWN = 40.
+constant MANACOST = 0
+constant DURATION = 10.
+constant BONUS_DAMAGE = 10.
+constant RECOIL_DAMAGE = 50.
+
+constant ICON = "ReplaceableTextures\\CommandButtons\\BTNBloodRush.blp"
+constant TOOLTIP_NORM = "BloodRush"
+constant TOOLTIP_EXTENDED = "The Hemomancer boost the metabolism of an friendly unit giving it {0} additional damage."
+                            .format(BONUS_DAMAGE.toToolTipOrange()) + makeToolTipDurationAndRecoil(DURATION, COOLDOWN, RECOIL_DAMAGE)
+constant TARGET_ALLOWED = "air,ground,friend,neutral,self"
+
+function createBuff()
+    new BuffDefinition(BUFF_ID, BUFF_ORIGINAL_ID)
+        ..setIcon(ICON)
+        ..setArtSpecial(1, "")
+        ..setTooltipNormal(1, TOOLTIP_NORM)
+        ..setTooltipNormalExtended(1, "This unit is under the effect of bloodRush, its attack damage is increased.")
+        ..setArtTarget(1, Abilities.headhunterWEAPONSLeft)
+        ..setTargetAttachmentPoint0(1, "hand,left")
+        ..setTargetAttachmentPoint1(1, "hand,right")
+        ..setTargetAttachments(1, 2)
+
+function createDamageBonus()
+    new AbilityDefinitionAttackBonusPlus10(ABIL_ATTACK_BONUS)
+    ..setAttackBonus(1, BONUS_DAMAGE.toInt())
+    ..setItemAbility(false)
+
+class BloodRush extends AbilityDefinitionInnerFire
+    construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
+        super(newAbilityId)
+        this.presetManaCost(lvl -> MANACOST)
+        this.presetCooldown(lvl -> COOLDOWN)
+        this.setHeroAbility(false)
+        this.setItemAbility(false)
+        this.presetTargetsAllowed(lvl -> TARGET_ALLOWED)
+        this.setHotkeyNormal(hotkey)
+        this.setName(TOOLTIP_NORM)
+        this.presetTooltipNormal(lvl -> makeToolTipNorm(hotkey, TOOLTIP_NORM))
+        this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED)
+        this.setIconNormal(ICON)
+        this.setIconResearch(ICON)
+        this.setIconTurnOff(ICON)
+        this.setButtonPositionNormalX(buttonPos.a)
+        this.setButtonPositionNormalY(buttonPos.b)
+        this.setTargetsAllowed(1, TARGET_ALLOWED)
+        this.setArtCaster("")
+        this.setDurationHero(1, DURATION)
+        this.setDurationNormal(1, DURATION)
+        this.setBuffs(1, toRawCode(BUFF_ID))
+        this.setRequirements("")
+        this.setDamageIncrease(1, 0)
+        this.setDefenseIncrease(1, 0)
+        this.setEffectSound(Sounds.berserkerTarget)
+
+
+@compiletime function createBloodRush()
+    new BloodRush(SPELL_BLOOD_RUSH, "Q", new Pair(0, 0))
+    createDamageBonus()
+    createBuff()
+
+
+init
+    EventListener.onTargetCast(SPELL_BLOOD_RUSH) (unit caster, unit target) ->
+        spellRecoil(RECOIL_DAMAGE, caster)
+        target.addAbility(ABIL_ATTACK_BONUS)
+
+
+//        let spellSound = new SoundDefinition(Sounds.berserkerTarget, false)
+//        spellSound.playOnPoint(target.getPos3Real())
+
+        let spellSound = CreateSound(Sounds.headHunterYesAttack3, false, false , true, 12700, 12700, "")
+        StartSound(spellSound)
+        KillSoundWhenDone(spellSound)
+        AttachSoundToUnit(spellSound, target)
+
+        // Check if the buff still exist, if not, remove damage bonus
+        doPeriodically(1) (CallbackPeriodic cb) ->
+            if not target.hasAbility(BUFF_ID) or not target.isAlive()
+                target.removeAbility(ABIL_ATTACK_BONUS)
+                destroy cb
