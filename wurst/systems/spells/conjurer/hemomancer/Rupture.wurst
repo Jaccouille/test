@@ -7,6 +7,7 @@ import ToolTipsUtils
 import BuffObjEditing
 import ClosureEvents
 import TimerUtils
+import AbilityUtils
 
 constant ICON_PATH = "ReplaceableTextures\\CommandButtons\\BTNBloodSprinkle.blp"
 constant EFFECT_PATH = "Models\\BloodDropRupture.mdx"
@@ -18,12 +19,14 @@ constant COOLDOWN = 60.
 constant MANACOST = 0
 constant DURATION = 6.
 
+constant RECOIL_DAMAGE = 0.15
+
 // Change this value if you to decrease/increase damage done, it's a bit messy down there
 constant DAMAGE_FACTOR = 0.1
 
 constant TOOLTIP_NORM = "Rupture"
-constant TOOLTIP_EXTENDED = "The Hemomancer use its blood art to make his enemy bleed profusely, the more it run, the more damage it takes."
-                            + makeToolTipDuration(DURATION, COOLDOWN)
+constant TOOLTIP_EXTENDED = "The Hemomancer use its blood art to make his enemy bleed profusely, the more it runs, the more damage it takes."
+                            + makeToolTipDurationAndRecoil(DURATION, COOLDOWN, RECOIL_DAMAGE)
 constant TARGET_ALLOWED = "ground,enemy,hero"
 
 function createBuff()
@@ -103,3 +106,4 @@ class Rupture
 init
     EventListener.onTargetCast(SPELL_RUPTURE) (unit caster, unit target) ->
         new Rupture(caster, target)
+        spellRecoil(getPercentageMaxHp(caster.getMaxHP(), RECOIL_DAMAGE), caster)

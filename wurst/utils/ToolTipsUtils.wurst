@@ -8,6 +8,12 @@ function real.formatForTooltip() returns string
     else
         return this.toInt().toString()
 
+function real.formatForRecoilToolTip() returns string
+    if this < 1 and this > 0
+        return R2I(this * 100).toString() + "% of its max health point as recoil damage.|r"
+    else
+        return this.toInt().toString() + " recoil damage.|r"
+
 public function makeToolTipNormHero(string hotkey, string toolTip, int level) returns string
     let description = GENERAL_COLOR+"["+SPECIAL_COLOR+hotkey+GENERAL_COLOR+"] - "+toolTip+" - Level "+level.toString()
     return description
@@ -34,7 +40,7 @@ public function makeToolTipDuration(real DURATION, real COOLDOWN) returns string
 
 public function makeToolTipDurationAndRecoil(real DURATION, real COOLDOWN, real RECOIL_DAMAGE) returns string
     let toolTip = " Lasts {0} seconds, has {1} seconds cooldown. {2}".format(DURATION.toToolTipLightBlue(), COOLDOWN.toToolTipLightBlue(),
-                  (COLOR_RED + "Caster take " + RECOIL_DAMAGE.toString() + " recoil damage.|r"))
+                  (COLOR_RED + "Caster take " + RECOIL_DAMAGE.formatForRecoilToolTip()))
     return toolTip
 
 public function real.toToolTip() returns string

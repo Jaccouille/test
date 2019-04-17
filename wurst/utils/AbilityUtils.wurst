@@ -8,3 +8,6 @@ public function spellRecoil(real damage, unit caster)
     caster.subHP(damage)
     doAfter(1) () ->
         recoilFx.destr()
+
+public function getPercentageMaxHp(real maxHp, real recoilDamagePercentage) returns real
+    return (maxHp * recoilDamagePercentage)

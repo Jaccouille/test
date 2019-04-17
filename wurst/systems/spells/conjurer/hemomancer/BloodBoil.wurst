@@ -10,6 +10,7 @@ import ClosureEvents
 import ClosureTimers
 import DummyCaster
 import Orders
+import AbilityUtils
 
 constant BUFF_ID = compiletime(BUFF_ID_GEN.next())
 constant BUFF_ORIGINAL_ID = 'Buhf' // Unholy Frenzy
@@ -24,6 +25,7 @@ constant CAST_RANGE = 400.
 constant COOLDOWN = 60.
 constant MANACOST = 0
 constant DURATION = 6.
+constant RECOIL_DAMAGE = 0.15
 
 constant AS_BUFF = 0.15
 constant MISS_CHANCE = 0.25
@@ -33,9 +35,9 @@ constant DEBUFF_DURATION = 6.
 constant TOTAL_DAMAGE = 50.
 constant TOOLTIP_NORM = "Blood Boil"
 constant TOOLTIP_EXTENDED = ("Boil the blood of enemy trolls in target area, dealing {0} damage over {1} seconds, "+
-                            "trolls with boiling blood gain {2} attack speed but have {3} chance to miss. Has {4} seconds cooldown.")
-                            .format(TOTAL_DAMAGE.toToolTipRed(), DURATION.toToolTipLightBlue(), AS_BUFF.toToolTipOrange(), MISS_CHANCE.toToolTipPurple(),
-                             COOLDOWN.toToolTipLightBlue())
+                            "trolls with boiling blood gain {2} attack speed but have {3} chance to miss.")
+                            .format(TOTAL_DAMAGE.toToolTipRed(), DURATION.toToolTipLightBlue(), AS_BUFF.toToolTipOrange(), MISS_CHANCE.toToolTipPurple())
+                            + makeToolTipDurationAndRecoil(DURATION, COOLDOWN, RECOIL_DAMAGE)
 
 function createBuff()
     new BuffDefinition(BUFF_ID, BUFF_ORIGINAL_ID)
@@ -97,6 +99,7 @@ class BloodBoil extends AbilityDefinitionRainofFire
 
 init
     EventListener.onPointCast(SPELL_BLOOD_BOIL) (unit caster, vec2 target) ->
+        spellRecoil(getPercentageMaxHp(caster.getMaxHP(), RECOIL_DAMAGE), caster)
         let bloodFx = addEffect(EFFECT_PATH, target)
         doAfter(DURATION) () ->
             bloodFx.destr()
