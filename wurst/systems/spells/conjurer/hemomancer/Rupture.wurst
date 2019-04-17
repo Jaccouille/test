@@ -1,0 +1,105 @@
+package Rupture
+
+import ChannelAbilityPreset
+import ID
+import Lodash
+import ToolTipsUtils
+import BuffObjEditing
+import ClosureEvents
+import TimerUtils
+
+constant ICON_PATH = "ReplaceableTextures\\CommandButtons\\BTNBloodSprinkle.blp"
+constant EFFECT_PATH = "Models\\BloodDropRupture.mdx"
+
+constant BUFF_ORIGINAL_ID = 'BNab' // Acid bomb
+
+constant CAST_RANGE = 800.
+constant COOLDOWN = 60.
+constant MANACOST = 0
+constant DURATION = 6.
+
+// Change this value if you to decrease/increase damage done, it's a bit messy down there
+constant DAMAGE_FACTOR = 0.1
+
+constant TOOLTIP_NORM = "Rupture"
+constant TOOLTIP_EXTENDED = "The Hemomancer use its blood art to make his enemy bleed profusely, the more it run, the more damage it takes."
+                            + makeToolTipDuration(DURATION, COOLDOWN)
+constant TARGET_ALLOWED = "ground,enemy,hero"
+
+function createBuff()
+    new BuffDefinition(BUFF_RUPTURE, BUFF_ORIGINAL_ID)
+        ..setIcon(ICON_PATH)
+        ..setTooltipNormal(1, TOOLTIP_NORM)
+        ..setTooltipNormalExtended(1, "This unit is bleeding¸ the faster it run¸ the more damage it take, last {0}".format(DURATION.toToolTipLightBlue()))
+        ..setArtTarget(1, EFFECT_PATH)
+
+class RuptureDummy extends AbilityDefinitionPurge
+    construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
+        super(newAbilityId)
+        this.setHotkeyNormal(hotkey)
+        this.setName(TOOLTIP_NORM)
+        this.presetTooltipNormal(lvl -> makeToolTipNorm(hotkey, TOOLTIP_NORM))
+        this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED)
+        this.setButtonPositionNormalX(buttonPos.a)
+        this.setButtonPositionNormalY(buttonPos.b)
+        this.setManaCost(1, MANACOST)
+        this.setCooldown(1, COOLDOWN)
+        this.setIconNormal(ICON_PATH)
+        this.setDurationHero(1, DURATION)
+        this.setDurationNormal(1, DURATION)
+        this.setBuffs(1, toRawCode(BUFF_RUPTURE))
+        this.setTargetsAllowed(1, TARGET_ALLOWED)
+        this.setUnitPauseDuration(1, 0)
+        this.setHeroPauseDuration(1, 0)
+        this.setMovementUpdateFrequency(1, 0)
+        this.setSummonedUnitDamage(1, 0)
+        this.setAttackUpdateFrequency(1, 0)
+
+
+@compiletime function creationRupture()
+    new RuptureDummy(SPELL_RUPTURE, "E", new Pair(2, 0))
+    createBuff()
+
+class Rupture
+    use TimedLoop
+    real x
+    real y
+    unit caster
+    unit target
+    real duration = DURATION
+    //Debug purpose
+    real damageCount
+
+    construct(unit caster, unit target)
+        this.x = target.getPos().x
+        this.y = target.getPos().y
+        this.caster = caster
+        this.target = target
+        startTimedLoop()
+
+    override function onTimedLoop()
+        let dx = target.getPos().x - x
+        let dy = target.getPos().y - y
+        let sq = SquareRoot(dx * dx + dy * dy)
+        duration -= ANIMATION_PERIOD
+        // Check if target has moved
+        if sq > 0
+            // Set new pos value
+            x = target.getPos().x
+            y = target.getPos().y
+
+            // Not gonna lie, I've always been bad at math, I just tested some value until I was satisfied
+            UnitDamageTarget(caster, target, DAMAGE_FACTOR * sq, false, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_MAGIC, null)
+            // Debug purpose
+            damageCount += DAMAGE_FACTOR *sq
+
+        if duration <= 0 or not target.hasAbility(BUFF_RUPTURE)
+            stopTimedLoopAndDestroy()
+    ondestroy
+        // Debug, max pure damage inflicted is 410 over 6 seconds (when you run with anabolic boots)
+        //print(damageCount)
+
+
+init
+    EventListener.onTargetCast(SPELL_RUPTURE) (unit caster, unit target) ->
+        new Rupture(caster, target)

@@ -5,6 +5,7 @@ import ID
 
 public constant HUNTER_CLASS_LIST      = asList(UNIT_HUNTER       , UNIT_WARRIOR           , UNIT_TRACKER        , UNIT_JUGGERNAUT)
 public constant MAGE_CLASS_LIST        = asList(UNIT_MAGE         , UNIT_ELEMENTALIST_NEW  , UNIT_HYPNOTIST      , UNIT_DEMENTIA_MASTER )
+public constant CONJURER_CLASS_LIST    = asList(UNIT_CONJURER     , UNIT_HEMOMANCER        , UNIT_HYPNOTIST      , UNIT_DEMENTIA_MASTER )
 public constant PRIEST_CLASS_LIST      = asList(UNIT_PRIEST       , UNIT_BOOSTER           , UNIT_MASTER_HEALER  , UNIT_SAGE)
 public constant BEASTMASTER_CLASS_LIST = asList(UNIT_BEAST_MASTER , UNIT_SHAPESHIFTER_WOLF , UNIT_CHICKEN_FORM   , UNIT_ULTIMATE_FORM)
 public constant THIEF_CLASS_LIST       = asList(UNIT_THIEF        , UNIT_ESCAPE_ARTIST     , UNIT_CONTORTIONIST  , UNIT_ASSASSIN)
@@ -24,7 +25,7 @@ public constant TROLL_UNIT_LIST = new LinkedList<int>()..addAll(HUNTER_CLASS_LIS
                                                         ..addAll(GATHERER_CLASS_LIST))
 
 
-public constant TROLL_INVENTORY_SLOT_3_LIST = new LinkedList<int>()..addAll(HUNTER_CLASS_LIST)..addAll(MAGE_CLASS_LIST)
+public constant TROLL_INVENTORY_SLOT_3_LIST = new LinkedList<int>()..addAll(HUNTER_CLASS_LIST)..addAll(MAGE_CLASS_LIST)..addAll(CONJURER_CLASS_LIST)
 public constant TROLL_INVENTORY_SLOT_4_LIST = new LinkedList<int>()..addAll(PRIEST_CLASS_LIST)..addAll(BEASTMASTER_CLASS_LIST)
 public constant TROLL_INVENTORY_SLOT_5_LIST = new LinkedList<int>()..addAll(THIEF_CLASS_LIST)..addAll(SCOUT_CLASS_LIST)
 public constant TROLL_INVENTORY_SLOT_6_LIST = new LinkedList<int>()..addAll(GATHERER_CLASS_LIST)
