@@ -59,7 +59,7 @@ public function real.toToolTipYellow() returns string
     return (COLOR_YELLOW + this.formatForTooltip() + "|r")
 
 public function real.toToolTipPurple() returns string
-    return (COLOR_PURPLE + this.formatForTooltip() + "|r")
+    return ("|cffb600ed" + this.formatForTooltip() + "|r")
 
 public function real.toToolTipLightBlue() returns string
     return (COLOR_LIGHT_BLUE + this.formatForTooltip() + "|r")
