@@ -569,8 +569,9 @@ library ID
 		// Hemomancer Spells
 		public constant integer SPELL_BLOOD_RUSH         = 'BLRU'
 		public constant integer SPELL_BLOOD_BOIL         = 'BLBO'
-		public constant integer SPELL_BLOOD_EXCHANGE	 = 'BLEX'
-		public constant integer SPELL_RUPTURE			 = 'HERU'
+		public constant integer SPELL_BLOOD_EXCHANGE     = 'BLEX'
+		public constant integer SPELL_RUPTURE            = 'HERU'
+		public constant integer SPELL_VAMPIRIC_LUST      = 'VALU'
 		public constant integer SPELL_HEMOMANCER_SPELLBOOK = 'HESB'
 		public constant integer SPELL_SUB_CONJ_INHERITED_SPELLBOOK = 'CISB'
 
