@@ -94,7 +94,7 @@ public constant HERO_SPELLS_GATHERER     = commaList(         SPELL_ITEM_RADAR  
 // Unsub Normal Spells
 public constant  NORMAL_SPELLS_HUNTER       = commaList(SPELL_HUNTER_WEB)
 public constant  NORMAL_SPELLS_MAGE         = commaList(SPELL_NULL_DAMAGE)
-public constant  NORMAL_SPELLS_CONJURER     = commaList(SPELL_VAMPIRIC_LUST)
+public constant  NORMAL_SPELLS_CONJURER     = commaList(SPELL_EQUILIBRIUM)
 public constant  NORMAL_SPELLS_PRIEST       = commaList('ANdr')
 public constant  NORMAL_SPELLS_BEAST_MASTER = commaList(SPELL_PET_SPELLS, SPELL_SPIRIT_BEAST )
 public constant  NORMAL_SPELLS_THIEF        = commaList(SPELL_TELEPORT)

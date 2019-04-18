@@ -1,0 +1,80 @@
+package Equilibrium
+
+import ChannelAbilityPreset
+import ID
+import Lodash
+import Assets
+import ToolTipsUtils
+import BuffObjEditing
+import ObjectIds
+import ClosureTimers
+import ClosureEvents
+import OrderIds
+import HealingSystem
+
+constant ICON_PATH = "ReplaceableTextures\\CommandButtons\\BTNEquilibrium"
+constant BUFF_PATH = "Models\\BloodShieldCaster.mdx"
+
+constant BUFF_ID = compiletime(BUFF_ID_GEN.next())
+constant ORIGINAL_BUFF_ID = 'BEim' // Immolation
+constant CAST_RANGE = 0.
+constant COOLDOWN = 2.
+constant MANACOST = 5
+constant MANA_DRAINED = 15.
+constant HEALING_AMOUNT = 15.
+constant TOOLTIP_NORM = "Equilibrium"
+constant TOOLTIP_EXTENDED = ("The Hemomancer can generate more blood with its magic, exchanging mana for health point. "+
+                            "Regenerate {0} health point for {1} mana point per seconds.").format(HEALING_AMOUNT.toToolTipGreen(), MANA_DRAINED.toToolTipBlue())
+constant TARGET_ALLOWED = "targetAllowed"
+
+function createBuff()
+    new BuffDefinition(BUFF_ID, ORIGINAL_BUFF_ID)
+    ..setIcon(ICON_PATH+"On.blp")
+    ..setArtSpecial(1, "")
+    ..setArtTarget(1, BUFF_PATH)
+    ..setEffectSoundLooping(1, Sounds.manaShieldCaster1)
+    ..setTooltipNormal(1, TOOLTIP_NORM)
+    ..setTooltipNormalExtended(1, "This unit is replenishing its health using its mana")
+
+class EquilibriumDummy extends AbilityDefinitionImmolationcreep
+    construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
+        super(newAbilityId)
+        this.setCheckDependencies(false)
+        this.setDamageperInterval(1, 0)
+        this.setManaDrainedperSecond(1, MANA_DRAINED)
+        this.setBufferManaRequired(1, 15)
+        this.setIconNormal(ICON_PATH+"On.blp")
+        this.setIconTurnOff(ICON_PATH+"Off.blp")
+        this.setButtonPositionNormalX(buttonPos.a)
+        this.setButtonPositionNormalY(buttonPos.b)
+        this.setButtonPositionTurnOffX(buttonPos.a)
+        this.setButtonPositionTurnOffY(buttonPos.b)
+        this.setBuffs(1, toRawCode(BUFF_ID))
+        this.setTargetsAllowed(1, "")
+        this.setCooldown(1, COOLDOWN)
+        this.setAreaofEffect(1, 1)
+        this.setHeroAbility(false)
+        this.setLevels(1)
+        this.setAreaofEffect(1, 1)
+        this.setManaCost(1, MANACOST)
+        this.setTooltipNormal(1, makeToolTipNorm(hotkey, "Activate "+TOOLTIP_NORM))
+        this.setTooltipNormalExtended(1, TOOLTIP_EXTENDED)
+        this.setTooltipTurnOffExtended(1, TOOLTIP_EXTENDED)
+        this.setTooltipTurnOff(1, makeToolTipNorm(hotkey, "Deactivate "+TOOLTIP_NORM))
+        this.setHotkeyNormal(hotkey)
+        this.setHotkeyTurnOff(hotkey)
+
+@compiletime function creationEquilibrium()
+    new EquilibriumDummy(SPELL_EQUILIBRIUM, "A", new Pair(0, 1))
+    createBuff()
+
+init
+    EventListener.add(EVENT_PLAYER_UNIT_ISSUED_ORDER) () ->
+        let caster = GetTriggerUnit()
+
+        switch GetIssuedOrderId()
+            case Orders.immolation
+                doPeriodically(1) (CallbackPeriodic cb) ->
+                    if not caster.hasAbility(BUFF_ID)
+                        destroy cb
+                    new HealingInstance(caster, HEALING_AMOUNT, HealingType.ABILITY)
