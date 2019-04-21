@@ -3,6 +3,7 @@ package Rupture
 import ChannelAbilityPreset
 import ID
 import Lodash
+import Assets
 import ToolTipsUtils
 import BuffObjEditing
 import ClosureEvents
@@ -78,6 +79,7 @@ class Rupture
         this.y = target.getPos().y
         this.caster = caster
         this.target = target
+        this.damageCount = 0
         startTimedLoop()
 
     override function onTimedLoop()
@@ -106,4 +108,5 @@ class Rupture
 init
     EventListener.onTargetCast(SPELL_RUPTURE) (unit caster, unit target) ->
         new Rupture(caster, target)
+        addEffect(Objects.orcSmallDeathExplode, target.getPos())
         spellRecoil(getPercentageMaxHp(caster.getMaxHP(), RECOIL_DAMAGE), caster)
