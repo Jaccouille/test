@@ -575,6 +575,9 @@ library ID
 		public constant integer SPELL_EQUILIBRIUM        = 'EQUI'
 		public constant integer SPELL_HEMOMANCER_SPELLBOOK = 'HESB'
 		public constant integer SPELL_SUB_CONJ_INHERITED_SPELLBOOK = 'CISB'
+		// Reaper Spells
+		public constant integer SPELL_PRESSURE         = 'REPR'
+
 
 		// Priest Spells
 		public constant integer SPELL_THE_GLOW                    = 'A02F'
@@ -853,7 +856,9 @@ library ID
 		// Buffs
 		//#####################################################
 
-		public constant integer BUFF_RUPTURE           = 'Brup'
+
+		public constant integer BUFF_PRESSURE          = 'BPRE'
+		public constant integer BUFF_RUPTURE           = 'BRUP'
 		public constant integer BUFF_GOK               = 'Bakb'
 		public constant integer BUFF_SPRINTING         = 'B01H'
 		public constant integer BUFF_SPEAR_INCOMING    = 'B01M'

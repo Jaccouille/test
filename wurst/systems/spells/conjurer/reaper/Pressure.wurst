@@ -1,0 +1,103 @@
+package Pressure
+
+
+import ChannelAbilityPreset
+import ID
+import Lodash
+import Assets
+import ToolTipsUtils
+import BuffObjEditing
+import ClosureEvents
+import OrderIds
+
+constant ICON_PATH = "ReplaceableTextures\\CommandButtons\\BTNEquilibrium"
+
+
+constant ABIL_AURA_ID = compiletime(ABIL_ID_GEN.next())
+constant BUFF_ID = compiletime(BUFF_ID_GEN.next())
+constant ORIGINAL_BUFF_ID = 'BEim' // Immolation
+constant CAST_RANGE = 0.
+constant COOLDOWN = 2.
+constant MANACOST = 5
+constant MANA_DRAINED = 2.
+constant AOE = 750.
+constant AS_DECREASE = 0.10
+constant MS_DECREASE = 0.10
+constant TOOLTIP_NORM = "Pressure"
+constant TOOLTIP_EXTENDED = ("The Reaper emits a high pressure field around him slowing all enemy trolls movement and attack speed by {0} and causing them to "+
+                            "degenerate health point faster. Drain {1} mana per seconds.").format(AS_DECREASE.toToolTipOrange(), MANA_DRAINED.toToolTipBlue())
+constant TARGET_ALLOWED = "enemy,hero"
+
+function createBuffCaster()
+    new BuffDefinition(BUFF_ID, ORIGINAL_BUFF_ID)
+    ..setIcon(Icons.bTNLament)
+    ..setArtSpecial(1, "")
+    ..setArtTarget(1, "")
+    ..setName(1, "Pressure Caster")
+    ..setTooltipNormal(1, TOOLTIP_NORM)
+    ..setTooltipNormalExtended(1, "This unit is emiting a high pressure field¸ it slowes and slowly damage nearby enemy trolls")
+
+function createBuffTarget()
+    new BuffDefinition(BUFF_PRESSURE, ORIGINAL_BUFF_ID)
+    ..setIcon(Icons.bTNLament)
+    ..setArtSpecial(1, "")
+    ..setName(1, "Pressure Target")
+    ..setTooltipNormal(1, TOOLTIP_NORM)
+    ..setTooltipNormalExtended(1, "This unit is being pressured¸ it is slowed and loose health point faster")
+
+class PressureAura extends AbilityDefinitionTaurenChieftainEnduranceAura
+    construct(int newAbilityId)
+        super(newAbilityId)
+        this.setHeroAbility(false)
+        this.setLevels(1)
+        this.setName("Pressure Aura (real)")
+        this.setBuffs(1, toRawCode(BUFF_PRESSURE))
+        this.setTargetsAllowed(1, TARGET_ALLOWED)
+        this.setAttackSpeedIncrease(1, -AS_DECREASE)
+        this.setMovementSpeedIncrease(1, -MS_DECREASE)
+        this.setAreaofEffect(1, AOE)
+        this.setArtTarget(Abilities.thornsAura)
+
+class PressureDummy extends AbilityDefinitionImmolationcreep
+    construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
+        super(newAbilityId)
+        this.setCheckDependencies(false)
+        this.setDamageperInterval(1, 0)
+        this.setManaDrainedperSecond(1, MANA_DRAINED)
+        this.setBufferManaRequired(1, 15)
+        this.setIconNormal(Icons.bTNLament)
+        this.setIconTurnOff(Icons.bTNLament)
+        this.setButtonPositionNormalX(buttonPos.a)
+        this.setButtonPositionNormalY(buttonPos.b)
+        this.setButtonPositionTurnOffX(buttonPos.a)
+        this.setButtonPositionTurnOffY(buttonPos.b)
+        this.setBuffs(1, toRawCode(BUFF_ID))
+        this.setTargetsAllowed(1, "")
+        this.setCooldown(1, COOLDOWN)
+        this.setAreaofEffect(1, 1)
+        this.setHeroAbility(false)
+        this.setLevels(1)
+        this.setAreaofEffect(1, 1)
+        this.setManaCost(1, MANACOST)
+        this.setTooltipNormal(1, makeToolTipNorm(hotkey, "Activate "+TOOLTIP_NORM))
+        this.setTooltipNormalExtended(1, TOOLTIP_EXTENDED)
+        this.setTooltipTurnOffExtended(1, TOOLTIP_EXTENDED)
+        this.setTooltipTurnOff(1, makeToolTipNorm(hotkey, "Deactivate "+TOOLTIP_NORM))
+        this.setHotkeyNormal(hotkey)
+        this.setHotkeyTurnOff(hotkey)
+
+@compiletime function creationPressure()
+    new PressureDummy(SPELL_PRESSURE, "Q", new Pair(0, 1))
+    new PressureAura(ABIL_AURA_ID)
+    createBuffTarget()
+    createBuffCaster()
+
+init
+    EventListener.add(EVENT_PLAYER_UNIT_ISSUED_ORDER) () ->
+        let caster = GetTriggerUnit()
+
+        switch GetIssuedOrderId()
+            case Orders.immolation
+                caster.addAbility(ABIL_AURA_ID)
+            case Orders.unimmolation
+                caster.removeAbility(ABIL_AURA_ID)

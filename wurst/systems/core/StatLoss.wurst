@@ -48,6 +48,8 @@ init
                     energyLoss *= 3
                     healthLoss *= 3
 
+                if troll.hasAbility(BUFF_PRESSURE)
+                    healthLoss += 1
                 if troll.hasAbility(BUFF_BONFIRE_ID)
                     heatLoss -= 2
 
