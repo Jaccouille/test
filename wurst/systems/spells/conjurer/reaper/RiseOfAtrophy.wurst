@@ -1,0 +1,120 @@
+package RiseOfAtrophy
+
+import ChannelAbilityPreset
+import ID
+import Lodash
+import Assets
+import ToolTipsUtils
+import BuffObjEditing
+import HashMap
+import ClosureForGroups
+import ClosureTimers
+import DamageType
+import ClosureEvents
+
+constant BUFF_ID = compiletime(BUFF_ID_GEN.next())
+constant NON_STACKING_BUFF_ID = compiletime(BUFF_ID_GEN.next())
+constant BUFF_ORIGINAL_ID = 'Bssd'
+constant BUFF_NON_STACKING_ORIGINAL_ID = 'Bspo'
+constant AS_DECREASE = 0.25
+constant DURATION = 5.
+constant MAX_STACK = 4
+constant AOE = 400.
+constant DAMAGE = 25.
+constant TOOLTIP_NORM = "Rise Of Atrophy"
+constant TOOLTIP_EXTENDED = ("Empower basic attack, slow enemy by {0}, after {1} consecutive hit on the same target, a small explosion occurs, dealing {2} damage to nearby units."+
+                            " Stack last {3} seconds").format(AS_DECREASE.toToolTipOrange(), MAX_STACK.toReal().toToolTipOrange(), DAMAGE.toToolTipRed(), DURATION.toToolTipLightBlue())
+//constant TARGET_ALLOWED = "targetAllowed"
+
+function createBuff()
+    new BuffDefinition(BUFF_ID, BUFF_ORIGINAL_ID)
+        ..setIcon(Icons.pASBTNIncinerate)
+        ..setArtSpecial(1,"")
+        ..setTooltipNormal(1, TOOLTIP_NORM+"(Stacking)")
+        ..setTooltipNormalExtended(1, "")
+        ..setTargetAttachmentPoint0(1, "chest")
+        ..setArtTarget(1, Abilities.incinerateBuff)
+
+function createBuffNonStacking()
+    new BuffDefinition(NON_STACKING_BUFF_ID, BUFF_NON_STACKING_ORIGINAL_ID)
+        ..setIcon(Icons.pASBTNIncinerate)
+        ..setArtSpecial(1,"")
+        ..setTooltipNormal(1, TOOLTIP_NORM+"(Non Stacking)")
+        ..setTooltipNormalExtended(1, "")
+        ..setTargetAttachmentPoint0(1, "chest")
+        ..setArtTarget(1, Abilities.incinerateBuff)
+
+class RiseOfAtrophy extends AbilityDefinitionSlowPoison
+    construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
+        super(newAbilityId)
+        this.setHotkeyNormal(hotkey)
+        this.setName(TOOLTIP_NORM)
+        this.presetTooltipNormal(lvl -> makeToolTipNorm(hotkey, TOOLTIP_NORM))
+        this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED)
+        this.setButtonPositionNormalX(buttonPos.a)
+        this.setButtonPositionNormalY(buttonPos.b)
+        this.setIconNormal(Icons.pASBTNIncinerate)
+        this.setIconResearch(Icons.pASBTNIncinerate)
+        this.setDurationHero(1, DURATION)
+        this.setDurationNormal(1, DURATION)
+        this.setBuffs(1, commaList(toRawCode(BUFF_ID), toRawCode(NON_STACKING_BUFF_ID)))
+        //this.setTargetsAllowed(1, TARGET_ALLOWED)
+        this.setAttackSpeedFactor(0, 0)
+        this.setMovementSpeedFactor(1, AS_DECREASE)
+        this.setDamagePerSecond(1, 0)
+
+
+@compiletime function creationRiseOfAtrophy()
+    new RiseOfAtrophy(SPELL_RISE_ATROPHY, "E", new Pair(1, 1))
+    createBuff()
+    createBuffNonStacking()
+
+IterableMap<unit, RiseOfAtrophyInstance> instances = new IterableMap<unit, RiseOfAtrophyInstance>()
+
+class RiseOfAtrophyInstance
+    int stack
+    unit victim
+    unit attacker
+    real clock
+
+    construct(unit victim, unit attacker)
+        clock = DURATION
+        this.victim = victim
+        this.attacker = attacker
+        stack = 1
+        updateClock()
+
+    function updateClock()
+        doPeriodically(1) (CallbackPeriodic cb) ->
+            clock -= 1
+            if clock <= 0
+                destroy cb
+                destroy this
+
+    function onAttackerHit()
+        clock = DURATION
+        stack += 1
+        if stack == MAX_STACK
+            addEffect(Abilities.fireLordDeathExplode, victim.getPos())
+            forUnitsInRange(victim.getPos(), AOE) (unit u) ->
+                if u.getOwner().isAllyOf(victim.getOwner()) and not victim.isType(UNIT_TYPE_STRUCTURE)
+                    attacker.damageTarget(u, DAMAGE, false, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_MAGIC, null)
+            clock = 0
+
+    ondestroy
+        if victim.hasAbility(BUFF_ID)
+            victim.removeAbility(BUFF_ID)
+        if victim.hasAbility(NON_STACKING_BUFF_ID)
+            victim.removeAbility(NON_STACKING_BUFF_ID)
+        instances.remove(victim)
+
+init
+    EventListener.add(EVENT_UNIT_DAMAGED) ->
+        if getDamageType() == DamageType.ATTACK
+            let victim = GetTriggerUnit()
+            let attacker = GetEventDamageSource()
+            if attacker.hasAbility(SPELL_RISE_ATROPHY)
+                if not instances.has(victim) and not victim.isType(UNIT_TYPE_STRUCTURE) and not victim.getOwner().isAllyOf(attacker.getOwner())
+                    instances.put(victim, new RiseOfAtrophyInstance(victim, attacker))
+                else if instances.has(victim)
+                    instances.get(victim).onAttackerHit()

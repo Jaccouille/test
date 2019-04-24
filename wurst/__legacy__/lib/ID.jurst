@@ -577,6 +577,7 @@ library ID
 		public constant integer SPELL_SUB_CONJ_INHERITED_SPELLBOOK = 'CISB'
 		// Reaper Spells
 		public constant integer SPELL_PRESSURE         = 'REPR'
+		public constant integer SPELL_RISE_ATROPHY     = 'RIAT'
 
 
 		// Priest Spells
