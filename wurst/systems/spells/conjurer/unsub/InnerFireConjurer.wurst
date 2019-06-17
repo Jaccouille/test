@@ -6,7 +6,6 @@ import Lodash
 import Assets
 import ToolTipsUtils
 import BuffObjEditing
-import LegacyColors
 
 constant BUFF_ID = compiletime(BUFF_ID_GEN.next())
 constant BUFF_ORIGINAL_ID = 'Binf'
@@ -20,7 +19,8 @@ constant DAMAGE_INCREASE = 0.20
 constant DEFENSE_INCREASE = 3.
 
 constant TOOLTIP_NORM = "Inner Fire"
-constant TOOLTIP_EXTENDED = "Increase damage of the troll/unit by {0} and armor by {1}." + makeToolTipDuration(DURATION, COOLDOWN)
+constant TOOLTIP_EXTENDED = "Increase damage of the target unit by {0} and armor by {1}.".format(DAMAGE_INCREASE.toToolTipRed(), DEFENSE_INCREASE.toToolTipOrange())+
+                             makeToolTipDuration(DURATION, COOLDOWN)
 constant TARGET_ALLOWED = "air,ground,friend,neutral,self"
 
 function createBuff()
@@ -28,7 +28,7 @@ function createBuff()
         ..setIcon(Icons.bTNInnerFire)
         ..setArtTarget(1, Abilities.innerFireTarget)
         ..setTooltipNormal(1, TOOLTIP_NORM)
-        ..setTooltipNormalExtended(1, "This unit has Inner Fire, its armor and attack damage are increased.")
+        ..setTooltipNormalExtended(1, "This unit has Inner Fire. Its armor and attack damage are increased.")
 
 class InnerFireConjurer extends AbilityDefinitionInnerFire
     construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
@@ -42,8 +42,8 @@ class InnerFireConjurer extends AbilityDefinitionInnerFire
         this.setLevelSkipRequirement(1)
         this.setHotkeyNormal(hotkey)
         this.setName(TOOLTIP_NORM)
-        this.presetTooltipNormal(lvl -> makeToolTipNormHero(hotkey, TOOLTIP_NORM, lvl))
-        this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED.format(DAMAGE_INCREASE.toToolTipRed(), DEFENSE_INCREASE.toToolTipOrange()))
+        this.presetTooltipNormal(lvl -> makeToolTipNorm(hotkey, TOOLTIP_NORM))
+        this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED)
         this.setButtonPositionNormalX(buttonPos.a)
         this.setButtonPositionNormalY(buttonPos.b)
         this.presetManaCost(lvl -> MANACOST)

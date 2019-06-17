@@ -8,8 +8,9 @@ import ToolTipsUtils
 import BuffObjEditing
 import ClosureEvents
 import ClosureTimers
-import DummyCaster
 import OrderIds
+import DamageEvent
+import InstantDummyCaster
 
 constant BUFF_ID = compiletime(BUFF_ID_GEN.next())
 constant BUFF_ORIGINAL_ID = 'Bpsh' // PhaseShift
@@ -19,11 +20,9 @@ constant DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 constant CAST_RANGE = 0
 constant COOLDOWN = 20.
 constant MANACOST = 5
-constant DURATION = 2.
+constant DURATION = 4.
 constant TOOLTIP_NORM = "Phase Shift"
-constant TOOLTIP_EXTENDED = "This unit has shifted out of existence and cannot be harmed temporarily."
-                        .format(DURATION.toToolTipLightBlue(), COOLDOWN.toToolTipLightBlue())
-constant TARGET_ALLOWED = "targetAllowed"
+constant TOOLTIP_EXTENDED = "The Conjurer shift between dimension and cannot be harmed." + makeToolTipDuration(DURATION, COOLDOWN)
 
 function createBuff()
     new BuffDefinition(BUFF_ID, BUFF_ORIGINAL_ID)
@@ -52,7 +51,6 @@ class PhaseShift extends AbilityDefinitionWindWalk
         this.presetCooldown(lvl -> COOLDOWN)
         this.setHeroAbility(false)
         this.setItemAbility(false)
-        this.presetTargetsAllowed(lvl -> TARGET_ALLOWED)
         this.setHotkeyNormal(hotkey)
         this.setName(TOOLTIP_NORM)
         this.presetTooltipNormal(lvl -> makeToolTipNorm(hotkey, TOOLTIP_NORM))
@@ -66,21 +64,18 @@ class PhaseShift extends AbilityDefinitionWindWalk
         this.setDurationHero(1, 0.01)
 
 @compiletime function createPhaseShift()
-    new PhaseShift(SPELL_PHASE_SHIFT, "R", new Pair(2, 1))
+    new PhaseShift(SPELL_PHASE_SHIFT, "E", new Pair(1, 1))
     new DummyPhaseShift(DUMMY_ABIL_ID)
     createBuff()
 
 
 init
-    EventListener.add(EVENT_UNIT_DAMAGED) ->
-        let damaged = GetTriggerUnit()
+    DamageEvent.addListener() () ->
+        let damaged = DamageEvent.getTarget()
         if damaged.hasAbility(BUFF_ID)
-            BlzSetEventDamage(0)
+            DamageEvent.setAmount(0)
     EventListener.onCast(SPELL_PHASE_SHIFT) (unit caster) ->
-        new DummyCaster()
-            ..owner(caster.getOwner())
-            ..origin(caster.getPos() + vec2(100,0))
-            ..castTarget(DUMMY_ABIL_ID, 1, Orders.innerfire, caster)
+        InstantDummyCaster.castTarget(caster.getOwner(), DUMMY_ABIL_ID, 1, Orders.innerfire, caster)
         doPeriodicallyTimed(0.3, DURATION) cb ->
             if caster.isAlive()
                 flashEffect(Abilities.aIilTarget, caster.getPos())

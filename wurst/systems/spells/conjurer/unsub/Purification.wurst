@@ -5,7 +5,6 @@ import ID
 import Lodash
 import Assets
 import ToolTipsUtils
-import RegisterEvents
 import HealingSystem
 import ClosureTimers
 import ClosureForGroups
@@ -16,32 +15,33 @@ constant COOLDOWN = 15.
 constant MANACOST = 15
 constant AOE = 200.
 
+constant MODEL = "Models\\Spells\\SoulDischarge.mdx"
+
 let HEALING_AMOUNT = 50.
-let DAMAGE_AMOUNT = 50.
+let DAMAGE_AMOUNT = 35.
 
 constant TOOLTIP_NORM = "Purification"
 constant TOOLTIP_EXTENDED = "Heal a friendly unit for {0} and deals {1} damage to its surrounding enemies in a short radius."
-                            .format(HEALING_AMOUNT.toToolTipGreen(), DAMAGE_AMOUNT.toToolTipRed())
+                            .format(HEALING_AMOUNT.toToolTipGreen(), DAMAGE_AMOUNT.toToolTipRed()) + makeToolTipCooldown(COOLDOWN)
 constant TARGET_ALLOWED = "air,ground,friend,vuln,invu,self,organic,nonancient,neutral"
 
-class Purification extends ChannelAbilityPreset
+class Purification extends AbilityDefinitionHeal
     construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
-        super(newAbilityId, 1, true)
+        super(newAbilityId)
         this.setIconNormal(Icons.bTNRegenerate)
         this.setButtonPositionNormalX(buttonPos.a)
         this.setButtonPositionNormalY(buttonPos.b)
         this.presetCastRange(lvl -> CAST_RANGE)
         this.presetCastingTime(lvl -> 0)
-        this.presetFollowThroughTime(lvl -> 1)
         this.presetCooldown(lvl -> COOLDOWN)
         this.presetManaCost(lvl -> MANACOST)
-        this.presetTargetType(lvl -> 1)
         this.presetTargetsAllowed(lvl -> TARGET_ALLOWED)
-        this.presetOptions(lvl -> 1)
-        this.presetBaseOrderID(lvl -> "heal")
         this.setHeroAbility(false)
+        this.setArtTarget("")
+        this.setAnimationNames("channel")
         this.setHotkeyNormal(hotkey)
         this.setName(TOOLTIP_NORM)
+        this.setHitPointsGained(1, 0)
         this.presetTooltipNormal(lvl -> makeToolTipNorm(hotkey, TOOLTIP_NORM))
         this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED)
 
@@ -52,12 +52,12 @@ init
     EventListener.onTargetCast(SPELL_PURIFICATION) (unit caster, unit target) ->
         var target = GetSpellTargetUnit()
         new HealingInstance(target, HEALING_AMOUNT, HealingType.ABILITY)
-        let healFx = target.addEffect(Abilities.replenishHealthCasterOverhead, "overhead")
+        let healFx = addEffect(MODEL, target.getPos())..setScale(0.5)
         doAfter(1.5) ->
             healFx.destr()
         forUnitsInRange(target.getPos(), AOE) (unit u) ->
             if u.isEnemyOf(target.getOwner()) and not u.isInvulnerable() and u.isAlive()
                 let dmgFx = u.addEffect(Abilities.deathCoilSpecialArt, "origin")
-                target.damageTarget(u, DAMAGE_AMOUNT)
+                target.damageTarget(u, DAMAGE_AMOUNT, false, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_MAGIC, null)
                 doAfter(1.0) ->
                     dmgFx.destr()

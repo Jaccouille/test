@@ -95,7 +95,7 @@ public constant HERO_SPELLS_GATHERER     = commaList(         SPELL_ITEM_RADAR  
 // Unsub Normal Spells
 public constant  NORMAL_SPELLS_HUNTER       = commaList(SPELL_HUNTER_WEB)
 public constant  NORMAL_SPELLS_MAGE         = commaList(SPELL_NULL_DAMAGE)
-public constant  NORMAL_SPELLS_CONJURER     = commaList(SPELL_CONJURER_SPELLBOOK)
+public constant  NORMAL_SPELLS_CONJURER     = commaList(SPELL_PHASE_SHIFT)
 public constant  NORMAL_SPELLS_PRIEST       = commaList('ANdr')
 public constant  NORMAL_SPELLS_BEAST_MASTER = commaList(SPELL_PET_SPELLS, SPELL_SPIRIT_BEAST )
 public constant  NORMAL_SPELLS_THIEF        = commaList(SPELL_TELEPORT)
@@ -191,11 +191,17 @@ public constant  TOOLTIP_HUNTER      = "Fast and strong, the hunter is hard to b
                                         "and catch enemies, he can learn "+COLOR_RED+"Track|r which amplifies damage and gives vision on target. A good damage class. "+
                                         INVENTORY_3_SLOT+DIFFICULTY_EASY
 
-public constant  TOOLTIP_MAGE         = "Slow with moderate damage, the Troll Mage is equipped with more offensive spells than the Priest. "+
+public constant  TOOLTIP_MAGE         = "Slow with moderate damage, the Mage is equipped with more offensive spells than the Priest. "+
                                         "He has "+COLOR_ORANGE+"Null Damage|r and can learn many "+COLOR_ORANGE+"Offensive Spells|r. A good damage class. "+
                                         INVENTORY_3_SLOT+DIFFICULTY_HARD
 
-public constant  TOOLTIP_PRIEST       = "Slow with low damage, the Troll Priest has many buff and healing spells. He has "+COLOR_ORANGE+"The Glow|r, which increases"+                                           "movement rate of nearby allies, and can learn many "+COLOR_ORANGE+"Defensive Spells|r. A good support class. "+
+public constant  TOOLTIP_CONJURER     = "Slow with moderate damage, the Conjurer is a versatile caster, he can buff his allies and debuff his enemies. "+
+                                        "He has "+COLOR_ORANGE+"Phase Shift|r which allow him to dodge any incoming damage for 1.5 seconds and can learn additional "+
+                                         "utility spells. A good support class which can adapt to multiple strategy. "+
+                                        INVENTORY_3_SLOT+DIFFICULTY_HARD
+
+public constant  TOOLTIP_PRIEST       = "Slow with low damage, the Priest has many buff and healing spells. He has "+COLOR_ORANGE+"The Glow|r, which increases"+
+                                        "movement rate of nearby allies, and can learn many "+COLOR_ORANGE+"Defensive Spells|r. A good support class. "+
                                         INVENTORY_4_SLOT+DIFFICULTY_HARD
 
 public constant  TOOLTIP_BEAST_MASTER = "Fast and strong, the Beast Master can tame pet which assist him in battle. His regular skill "+COLOR_ORANGE+"Spirit of the "+

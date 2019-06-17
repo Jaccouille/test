@@ -12,7 +12,7 @@ constant DURATION = 0.
 constant AOE = 250.
 
 constant TOOLTIP_NORM = "Dispel Magic"
-constant TOOLTIP_EXTENDED = "Removes all buffs from units in a target area.".format(DURATION.toToolTipLightBlue(), COOLDOWN.toToolTipLightBlue())
+constant TOOLTIP_EXTENDED = "Removes all buffs from units in a target area.".format(DURATION.toToolTipLightBlue(), COOLDOWN.toToolTipLightBlue()) + makeToolTipCooldown(COOLDOWN)
 constant TARGET_ALLOWED = "air,ground,ward,invu,vuln,tree"
 
 
