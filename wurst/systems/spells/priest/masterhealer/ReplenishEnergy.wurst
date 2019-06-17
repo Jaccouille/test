@@ -31,8 +31,8 @@ class ReplenishEnergy extends AbilityDefinitionArchMageBrillianceAura
         this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED)
         this.setButtonPositionNormalX(buttonPos.a)
         this.setButtonPositionNormalY(buttonPos.b)
-        this.setIconNormal(Icons.bTNTranquility)
-        this.setIconResearch(Icons.bTNTranquility)
+        this.setIconNormal(Icons.pASBTNRegenerate)
+        this.setIconResearch(Icons.pASBTNRegenerate)
         this.setBuffs(1, toRawCode(BUFF_ID))
         this.setCheckDependencies(false)
         this.setHeroAbility(false)
@@ -40,4 +40,5 @@ class ReplenishEnergy extends AbilityDefinitionArchMageBrillianceAura
 
 @compiletime function createReplenishEnergy()
     new ReplenishEnergy(SPELL_REPLENISH_ENERGY, new Pair(2, 1))
+    new ReplenishEnergy(SPELL_SAGE_REPLENISH_ENERGY, new Pair(0, 2))
     createBuff()

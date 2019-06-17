@@ -8,9 +8,10 @@ import EatRawMeat
 import LinkedList
 import HashMap
 import IdListConstant
+import MagicMist
 
 // Custom Models
-public constant  CUSTOM_MODEL_PATH = "Models\\"
+public constant  CUSTOM_MODEL_PATH = "Models\\Units\\"
 
 public constant  M_SPY                     = CUSTOM_MODEL_PATH+"Spy.mdx"
 public constant  M_SAGE                    = CUSTOM_MODEL_PATH+"Sage.mdx"
@@ -39,7 +40,7 @@ public constant  M_CHAOS_TROLL_NECROMANCER = CUSTOM_MODEL_PATH+"ChaosTrollNecrom
 
 // Troll Names
 public constant  NAME_HUNTER          = "Wonton,Liche,Taz,Koonta"
-public constant  NAME_WARRIOR         = "TGP_Warsquirrel the Tank,WTFBBQ the Angry,Taz,Koonta"
+public constant  NAME_WARRIOR         = "TGP_Warsquirrel the Tank,WTFBBQ the Angry,AlphaMale"
 public constant  NAME_TRACKER         = "Wonton,Liche,Taz,Koonta"
 public constant  NAME_JUGGERNAUT      = "Gigantalees"
 public constant  NAME_MAGE            = "Nomey,Hargut,Eskei,Kwee"
@@ -51,7 +52,7 @@ public constant  NAME_BOOSTER         = "Tojo,Baki,Flamefoot"
 public constant  NAME_MASTER_HEALER   = "Mog,Baki,Vargas,Dead'Jellow"
 public constant  NAME_SAGE            = "Meijin"
 public constant  NAME_BEAST_MASTER    = "Masterman,Beanbag,Foosh,Maximus,Lil-Ra"
-public constant  NAME_SHAPESHIFTER    = "Doge the Wolf,Bill The Bear,Run Kitty Run,Tony The Tiger"
+public constant  NAME_SHAPESHIFTER    = ["Danny The Dog","Bill The Bear","Paul The Panther","Tony The Tiger"]
 public constant  NAME_CHICKEN_FORM    = "Clucky,The Free Ranger,The Colonel,Chicken a la King"
 public constant  NAME_ULTIMATE_FORM   = "Rendo"
 public constant  NAME_THIEF           = "Eugene,Kel,Morgoth"
@@ -59,11 +60,11 @@ public constant  NAME_ESCAPE_ARTIST   = "Mr. Overrated,Never-Steal Joe,Hawat the
 public constant  NAME_CONTORTIONIST   = "Spookyface,Battyboi,Smokehouse"
 public constant  NAME_ASSASSIN        = "Venzuva"
 public constant  NAME_SCOUT           = "Kippy,Zan'dar,Renegade_Rogue"
-public constant  NAME_OBSERVER        = "Kippy,IcyDeadPeople,Renegade_Rogue"
+public constant  NAME_OBSERVER        = "Kippy,Icy Ded Peeple,Renegade_Rogue"
 public constant  NAME_RADAR_SCOUT     = "Kippy,Zan'dar,Renegade_Rogue"
 public constant  NAME_TRAPPER         = "Kippy,Zan'dar,Renegade_Rogue"
 public constant  NAME_SPY             = "Umbrage"
-public constant  NAME_GATHERER        = "Themoles,Unpa,Zepac,Shishmortis'fork"
+public constant  NAME_GATHERER        = "Themoles,Chin'Jin,Zepac,Shishmortis'fork"
 public constant  NAME_RADAR_GATHERER  = "Themoles,Unpa,Zepac,Shishmortis'fork"
 public constant  NAME_HERB_MASTER     = "Themoles,Unpa,Zepac,Shishmortis'fork"
 public constant  NAME_OMNIGATHERER    = "Mortis"
@@ -111,7 +112,7 @@ public constant HERO_SPELLS_BOOSTER        = commaList(SPELL_BOOSTER_SPELLBOOK  
 public constant HERO_SPELLS_MASTER_HEALER  = commaList(SPELL_MASTER_HEALER_SPELLBOOK    , SPELL_SAGE)
 public constant HERO_SPELLS_ESCAPE_ARTIST  = commaList(SPELL_ESCAPE_ARTIST_SPELLBOOK    , SPELL_ASSASSIN)
 public constant HERO_SPELLS_CONTORTIONIST  = commaList(SPELL_CONTORTIONIST_SPELLBOOK    , SPELL_ASSASSIN)
-public constant HERO_SPELLS_TRAPPER        = commaList(SPELL_TRACK_TRAP                 , SPELL_SPY)
+public constant HERO_SPELLS_TRAPPER        = commaList(SPELL_TRAPPER_SPELLBOOK          , SPELL_SPY)
 public constant HERO_SPELLS_OBSERVER       = commaList(SPELL_WARD_AREA                  , SPELL_SPY)
 public constant HERO_SPELLS_RADAR_SCOUT    = commaList(SPELL_MOTION_SENSOR_RADAR        , SPELL_SPY)
 public constant HERO_SPELLS_RADAR_GATHERER = commaList(SPELL_TELE_GATHER                , SPELL_OMNIGATHERER)
@@ -145,7 +146,7 @@ public constant HERO_SPELLS_SHAPESHIFTER_TIGER   = commaList(SPELL_SHAPESHIFTER_
 public constant NORMAL_SPELLS_SHAPESHIFTER_WOLF    = SHAPESHIFTER_FORM_SPELL
 
 // Didn't want to add an attribute to trollunit constructor just for setting base armor
-public constant NORMAL_SPELLS_SHAPESHIFTER_BEAR    = SHAPESHIFTER_FORM_SPELL + "," + commaList(ABILITY_ARMOR_BONUS4)
+public constant NORMAL_SPELLS_SHAPESHIFTER_BEAR    = SHAPESHIFTER_FORM_SPELL + "," + commaList('AId4')
 
 public constant NORMAL_SPELLS_SHAPESHIFTER_PANTHER = SHAPESHIFTER_FORM_SPELL
 public constant NORMAL_SPELLS_SHAPESHIFTER_TIGER   = SHAPESHIFTER_FORM_SPELL
@@ -154,7 +155,7 @@ public constant NORMAL_SPELLS_SHAPESHIFTER_TIGER   = SHAPESHIFTER_FORM_SPELL
 public constant  HERO_SPELLS_CHICKEN_FORM   = commaList(SPELL_FOWL_PLAY, SPELL_SHORTNESS, SPELL_ULTIMATE_FORM)
 
 // SuperSub Hero Spells
-public constant  HERO_SPELLS_JUGGERNAUT      = commaList(SPELL_THE_JUGGERNAUT)
+public constant  HERO_SPELLS_JUGGERNAUT      = commaList(SPELL_RAGE)
 public constant  HERO_SPELLS_DEMENTIA_MASTER = commaList(SPELL_DEMENTIA_MASTER_SPELLBOOK)
 public constant  HERO_SPELLS_SAGE            = commaList(SPELL_SAGE_SPELLBOOK)
 public constant  HERO_SPELLS_ULTIMATE_FORM   = commaList("")
@@ -261,7 +262,7 @@ public constant  TOOLTIP_RADAR_SCOUT     = "The Radar Scout is adept at using ra
                                             "detector radar. "+
                                             SUBCLASS_WARNING+DIFFICULTY_MEDIUM
 
-public constant  TOOLTIP_TRAPPER         = "The Trapper got an advanced radar allowing him to locate precisely animals, enemies or even trade ship. He also has the "+                                               "abilit to place traps which either reveals enemy position or slow them down. "+
+public constant  TOOLTIP_TRAPPER         = "The Trapper got an advanced radar allowing him to locate precisely animals, enemies or even trade ship. He also has the "+                                               "ability to place traps which either reveals enemy position or slow them down. "+
                                             SUBCLASS_WARNING+DIFFICULTY_MEDIUM
 
 public constant  TOOLTIP_RADAR_GATHERER  = "The Radar is adept at locating and gathering items, he got an improved Item Radar and he can learn "+

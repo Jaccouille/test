@@ -2,6 +2,7 @@ package Radars
 
 import Assets
 import Tribe
+import ToolTipsUtils
 import LinkedList
 import IsTypeThing
 import LegacyColors
@@ -21,7 +22,11 @@ constant let MAP_MAGIC_BUFF_ID = 'BHbd'
 constant let RADAR_RANGE_PER_LEVEL = 200.
 constant let MAP_MAGIC_RANGE_BONUS = 1500.
 
-constant string array SPELLBOOKSPELLS = ["XGFT, XGFZ, XGFR, XGFC", "XGFT, XGFZ, XGFR, XGFC, XGFF, XGFS", "XGFT, XGFZ, XGFR, XGFC, XGFF, XGFS, XGFM"]
+constant string array SPELLBOOKSPELLS = [commaList(SPELL_ID_FIND_TINDER, SPELL_ID_FIND_STICK, SPELL_ID_FIND_MUSHROOM, SPELL_ID_FIND_CLAYBALL),
+                                         commaList(SPELL_ID_FIND_TINDER, SPELL_ID_FIND_STICK, SPELL_ID_FIND_MUSHROOM, SPELL_ID_FIND_CLAYBALL,
+                                          SPELL_ID_FIND_FLINT, SPELL_ID_FIND_STONE),
+                                         commaList(SPELL_ID_FIND_TINDER, SPELL_ID_FIND_STICK, SPELL_ID_FIND_MUSHROOM, SPELL_ID_FIND_CLAYBALL,
+                                          SPELL_ID_FIND_FLINT, SPELL_ID_FIND_STONE, SPELL_ID_FIND_MANA)]
 
 constant let TOOLTIP_EXT_FIND_STICK    = "Pings all nearby sticks in the minimap and reveals them for a short duration. Ignores items near enemies."
 constant let TOOLTIP_EXT_FIND_TINDER   = "Pings all nearby tinder in the minimap and reveals them for a short duration. Ignores items near enemies."
@@ -59,8 +64,10 @@ class Radar
     string name     = "Find "
     string toolTip  = "placeholder"
     string toolTipExt  = "placeholder"
+    string orderId = "channel"
+    string icon = "ReplaceableTextures\\CommandButtons\\BTN{0}.blp"
 
-    construct(int id, string itemName, string toolTipExt, string hotkey, int buttonPosX, int buttonPosY, string color)
+    construct(int id, string itemName, string toolTipExt, string icon, string hotkey, int buttonPosX, int buttonPosY, string color, string orderId)
         this.id = id
         this.hotkey   = hotkey
         this.name     += itemName
@@ -68,8 +75,10 @@ class Radar
         this.buttonPosX  = buttonPosX
         this.buttonPosY  = buttonPosY
         this.toolTip  = GENERAL_COLOR+"[" + color + hotkey + GENERAL_COLOR + "] - " + this.name + "|r"
+        this.orderId = orderId
+        this.icon = this.icon.format(icon)
 
-    function buildSpell()
+    function buildRadarSpell()
         new ChannelAbilityPreset(id, 1, true)
         ..presetTargetTypes(Targettype.NONE)
         ..setAnimationNames("spell,slam")
@@ -77,22 +86,24 @@ class Radar
         ..setButtonPositionNormalY(buttonPosY)
         ..setButtonPositionResearchX(buttonPosX)
         ..setButtonPositionResearchY(buttonPosY)
-        ..setIconNormal(SPELL_ICON)
-        ..setIconResearch(SPELL_ICON)
-        ..setIconTurnOff(SPELL_ICON)
+        ..setIconNormal(icon)
+        ..setIconResearch(icon)
+        ..setIconTurnOff(icon)
         ..setHeroAbility(false)
         ..setItemAbility(false)
         ..setHotkeyNormal(hotkey)
         ..setName(name)
+        ..setLevels(3)
         ..setTooltipNormal(1, toolTip)
         ..setTooltipNormalExtended(1, toolTipExt)
         ..presetOptions(lvl -> 1)
         ..presetCooldown(lvl -> COOLDOWN)
         ..presetManaCost(lvl -> MANACOST)
         ..presetFollowThroughTime(lvl -> CASTTIME)
+        ..presetBaseOrderID(lvl -> orderId)
 
 @compiletime function createSpellbook()
-    new AbilityDefinitionSpellBook(SPELL_ID_SPELLBOOK)
+    new AbilityDefinitionSpellBook(SPELL_ITEM_RADAR)
     ..setButtonPositionNormalX(1)
     ..setButtonPositionNormalY(1)
     ..setButtonPositionResearchX(0)
@@ -113,7 +124,7 @@ class Radar
     ..presetMinimumSpells(lvl -> 11)
     ..presetSpellList(lvl -> SPELLBOOKSPELLS[lvl - 1])
     ..presetCooldown(lvl -> COOLDOWN)
-    ..presetTooltipNormal(lvl -> "(|cffffcc00R|r) - Look up radar spell ")
+    ..presetTooltipNormal(lvl -> makeToolTipNormHero("R", "Look up Radar Spells", lvl))
     ..presetTooltipNormalExtended(lvl -> "Contains various item radar abilities for more efficient gathering.")
     ..presetSharedSpellCooldown(lvl -> true)
 
@@ -149,18 +160,15 @@ public function removeRadarDummy(widget w)
         dummy.remove()
 
 public function revealDummytoTeam(unit dummy, player whoseTeam)
-    let team = Tribe.ofPlayer(whoseTeam).getMembers()
-    if team.has(GetLocalPlayer())
+    let tribePlayers = Tribe.ofPlayer(whoseTeam).getForce()
+    if tribePlayers.containsPlayer(localPlayer)
         dummy.setVertexColor(255, 255, 255, 255)
 
 function onCast(int itemId)
     var caster = GetSpellAbilityUnit()
     var casterPos = caster.getPos()
     var owner = caster.getOwner()
-    var efx = addEffect("Abilities\\Spells\\Human\\Thunderclap\\ThunderClapCaster.mdl", casterPos)
-    efx.setScale(1.5)
-    efx.setTimeScale(1.5)
-    efx.destr()
+    flashEffect(Abilities.thunderclapCaster, casterPos)
 
     //Calculate range
     var range = min(RADAR_RANGE_BASE + RADAR_RANGE_PER_LEVEL * caster.getLevel(), MAX_RANGE)
@@ -195,6 +203,9 @@ function onCast(int itemId)
 
                 //Ping
                 PingMinimapForForceEx(GetPlayersAllies(owner), i.getPos().x, i.getPos().y, 10, bj_MINIMAPPINGSTYLE_SIMPLE, 0, 255, 0)
+//    if caster.getTypeId() == UNIT_GATHERER
+//        print("fuck")
+//        caster.setAbilityCooldown(SPELL_ITEM_RADAR, caster.getAbilityLevel(SPELL_ITEM_RADAR), COOLDOWN)
 
 function areHostilesNearItem(player p, item itm) returns bool
     let g = CreateGroup()..enumUnitsInRange(itm.getPos(), 350)
@@ -207,17 +218,17 @@ function areHostilesNearItem(player p, item itm) returns bool
 
 function getRadarSpells() returns LinkedList<Radar>
     return asList(
-        new Radar(SPELL_ID_FIND_TINDER  , "Tinders"      , TOOLTIP_EXT_FIND_TINDER  , "Q", 2, 0, SPECIAL_COLOR),
-        new Radar(SPELL_ID_FIND_STICK   , "Sticks"       , TOOLTIP_EXT_FIND_STICK   , "W", 2, 0, SPECIAL_COLOR),
-        new Radar(SPELL_ID_FIND_MUSHROOM, "Mushrooms"    , TOOLTIP_EXT_FIND_MANA    , "E", 2, 0, SPECIAL_COLOR),
-        new Radar(SPELL_ID_FIND_CLAYBALL, "Clay Balls"   , TOOLTIP_EXT_FIND_CLAYBALL, "R", 2, 0, SPECIAL_COLOR),
-        new Radar(SPELL_ID_FIND_FLINT   , "Flints"       , TOOLTIP_EXT_FIND_FLINT   , "A", 2, 0, SPECIAL_COLOR),
-        new Radar(SPELL_ID_FIND_STONE   , "Stones"       , TOOLTIP_EXT_FIND_STONE   , "S", 3, 0, SPECIAL_COLOR),
-        new Radar(SPELL_ID_FIND_MANA    , "Mana Crystals", TOOLTIP_EXT_FIND_MANA    , "D", 2, 0, SPECIAL_COLOR)
+        new Radar(SPELL_ID_FIND_TINDER   , "Tinders"       , TOOLTIP_EXT_FIND_TINDER   , "ShimmerWeed"     , "Q", 2, 0, SPECIAL_COLOR, "taunt"),
+        new Radar(SPELL_ID_FIND_STICK    , "Sticks"        , TOOLTIP_EXT_FIND_STICK    , "NatureTouchGrow" , "W", 2, 0, SPECIAL_COLOR, "tranquility"),
+        new Radar(SPELL_ID_FIND_MUSHROOM , "Mushrooms"     , TOOLTIP_EXT_FIND_MANA     , "Mushroom"        , "E", 2, 0, SPECIAL_COLOR, "waterelemental"),
+        new Radar(SPELL_ID_FIND_CLAYBALL , "Clay Balls"    , TOOLTIP_EXT_FIND_CLAYBALL , "ThunderLizardEgg", "R", 2, 0, SPECIAL_COLOR, "unbearform"),
+        new Radar(SPELL_ID_FIND_FLINT    , "Flints"        , TOOLTIP_EXT_FIND_FLINT    , "StaffOfSanctuary", "A", 2, 0, SPECIAL_COLOR, "bearform"),
+        new Radar(SPELL_ID_FIND_STONE    , "Stones"        , TOOLTIP_EXT_FIND_STONE    , "GolemStormBolt"  , "S", 3, 0, SPECIAL_COLOR, "unflamingarrows"),
+        new Radar(SPELL_ID_FIND_MANA     , "Mana Crystals" , TOOLTIP_EXT_FIND_MANA     , "ManaStone"       , "D", 2, 0, SPECIAL_COLOR, "unrobogoblin")
     )
 
 @compiletime function buildRadarSpells()
-    getRadarSpells().forEach(spell -> spell.buildSpell())
+    getRadarSpells().forEach(spell -> spell.buildRadarSpell())
 
 init
     registerSpellEffectEvent(SPELL_ID_FIND_STONE, () -> onCast(ITEM_STONE))
