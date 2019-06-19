@@ -60,7 +60,7 @@ let HELP_MESSAGE = (
 
 let SPAWN_HELP_MESSAGE = (
     GOLD_COLOR+"Spawn multiple units and items at once\n|r"+
-    GENERAL_COLOR +"-spawn herbs/materials/craftedMaterials/buildings/trollclassname/uTrolls/sTrolls/ssTrolls/trolls [count]\n"+
+    GENERAL_COLOR +"-spawn herbs/materials/craftedmaterials/buildings/trollclassname/uTrolls/sTrolls/ssTrolls/trolls [count]\n"+
     "To spawn herbs/materials/all building in order to test crafting\n"+
     "Example : "+SPECIAL_COLOR+"-spawn hunter\n|r"+GENERAL_COLOR+"Will spawn all hunter's class unit"
 )
