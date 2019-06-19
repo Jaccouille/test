@@ -78,4 +78,6 @@ init
         InstantDummyCaster.castTarget(caster.getOwner(), DUMMY_ABIL_ID, 1, Orders.innerfire, caster)
         doPeriodicallyTimed(0.3, DURATION) cb ->
             if caster.isAlive()
-                flashEffect(Abilities.aIilTarget, caster.getPos())
+                var fx = addEffect(Abilities.aIilTarget, caster.getPos())
+                doAfter(0.5) () ->
+                    fx.destr()
