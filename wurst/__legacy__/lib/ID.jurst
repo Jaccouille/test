@@ -416,6 +416,7 @@ library ID requires ObjectIdGenerator, AdvanceIDs
 		public constant integer SPELL_CURE_ALL_ITEM    = compiletime(ABIL_ID_GEN.next())
 		public constant integer SPELL_SUPER_FORM_CAST  = 'A03N'
 		public constant integer SPELL_SUPERSUB_COURAGE = 'A0CW'
+		public constant integer SPELL_FIRE_BOMB	       = compiletime(ABIL_ID_GEN.next())
 
 		// Spear Cast
 		public constant integer SPELL_SPEAR_CAST         = 'A0D0'
@@ -941,7 +942,8 @@ library ID requires ObjectIdGenerator, AdvanceIDs
 		public constant integer ITEM_CAMOUFLAGE_COAT = 'I02W'
 		public constant integer ITEM_DARK_THISTLES   = 'I02X'
 		public constant integer ITEM_EMP             = 'I03M'
-		public constant integer ITEM_FIRE_BOMB       = 'I04J'
+		public constant integer ITEM_FIRE_BOMB       = compiletime(ITEM_ID_GEN.next())
+		// public constant integer ITEM_FIRE_BOMB       = 'I04J'
 		public constant integer ITEM_NETS            = 'I024'
 		public constant integer ITEM_HUNTING_NET     = compiletime(ABIL_ID_GEN.next())
 		public constant integer ITEM_SMOKE_BOMB      = 'I02A'

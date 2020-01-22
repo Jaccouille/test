@@ -1,0 +1,98 @@
+package FireBomb
+
+import Items
+import Assets
+import ID
+import LinkedList
+import ChannelAbilityPreset
+import ToolTipsUtils
+import ClosureEvents
+import InstantDummyCaster
+import ClosureTimers
+import Orders
+
+let ABIL_BURN_UNIT = compiletime(ABIL_ID_GEN.next())
+let ABIL_BURN_TREE = compiletime(ABIL_ID_GEN.next())
+let DUMMY_UNIT = compiletime(UNIT_ID_GEN.next())
+
+let ICON = ICON_PATH.format("LiquidFire")
+let MODEL = "Models\\LiquidFire.mdx"
+let DURATION = 5.
+let COOLDOWN = 15.
+let CAST_RANGE = 600.
+let AOE = 200.
+
+let FULL_DMG = 25.
+let HALF_DMG = 10.
+
+// So hum to get the amount of total damage, I tested the spell and just looked how much damage it did in game
+// I did this spell months ago and don't remember exactly why I chose those numbers, I believe I manually tested it until I was satisfied
+let TT = "A shell of destructible material that is highly flammable when thrown. Dealing approximatively {0} damage over {1} seconds. Good against buildings."
+                .format(80..toToolTipRed(), DURATION.toToolTipLightBlue())+ makeToolTipCooldown(COOLDOWN)
+let TARGET_ALLOWED = "enemies,friend,neutral,self,structure,tree"
+
+class FireBombAbility extends AbilityDefinitionBallsofFire
+    construct(int abilId)
+        super(abilId)
+        this.setName("Fire Bomb Burn")
+        this.setDummyAbility()
+        this.setMissileArt(Abilities.batTrollMissile)
+        this.setMissileSpeed(700)
+        this.setLevels(1)
+        this.setBuildingReduction(1, 0.75)
+        this.setFullDamageDealt(1, FULL_DMG)
+        this.setFullDamageInterval(1, 2.10)
+        this.setHalfDamageDealt(1, HALF_DMG)
+        this.setHalfDamageInterval(1, 1)
+        this.setMaximumDamage(1, 0)
+        this.setDurationHero(1, DURATION)
+        this.setDurationNormal(1, DURATION)
+        this.setAreaofEffect(1, AOE)
+
+//Flamestrike ability, only purpose is to destroy trees
+class FireBombFlamestrike extends AbilityDefinitionFlameStrikeCreep
+    construct(int abilId)
+        super(abilId)
+        this.setName("Fire Bomb Destroy Tree")
+        this.setDummyAbility()
+        this.setArtEffect("")
+        this.setArtSpecial("")
+        this.setFullDamageDealt(1, 0)
+        this.setHalfDamageDealt(1, 0)
+        this.setMaximumDamage(1, 0)
+        this.setBuffs(1, "")
+        this.setEffects(1, "")
+        this.setTargetsAllowed(1, "tree")
+        this.setCastingTime(1, 0)
+        this.setAreaofEffect(1, AOE)
+
+
+// The idea is to use burning oil ability from demolisher (Orc Catapult), create a hidden demolisher unit and attack target point
+// So we have a burning projectile, just to make sure damage start the moment projectile hit, because flamestrike is instant and has no missile
+// Note: Wrote this comment 6 month ago and kinda forgot why, I believe that's because I really wanted the damage to start when the projectile land
+@compiletime function createFireBomb()
+    new UnitDefinition(DUMMY_UNIT, 'ocat')
+    ..setModelFile("dummy.mdl")
+    ..setCollisionSize(0.0)
+    ..setAttack1DamageBase(1)
+    ..setNormalAbilities(commaList("Aloc", ABIL_BURN_UNIT.toRawCode()))
+    ..setHideMinimapDisplay(true)
+    ..setAttack1RangeMotionBuffer(0)
+    ..setMinimumAttackRange(0)
+
+    new FireBombAbility(ABIL_BURN_UNIT)
+    new FireBombFlamestrike(ABIL_BURN_TREE)
+    new ItemChannelCast(SPELL_FIRE_BOMB, "FireBomb", CAST_RANGE, AOE, COOLDOWN)
+    new PerishableItem(ITEM_FIRE_BOMB, ICON, MODEL, "Fire Bomb", "F", TT, 30, 1.20, asList(255, 255, 255), SPELL_FIRE_BOMB.toRawCode(), SPELL_FIRE_BOMB.toRawCode(), 2)
+
+init
+    EventListener.onPointCast(SPELL_FIRE_BOMB) (unit caster, vec2 target) ->
+        // Set caster animation to attack so it feels like it's throwing the fire bomb
+        caster.setAnimation("attack")
+
+        // Create the dummy demolisher who will attack the target AoE
+        createUnit(caster.getOwner(), DUMMY_UNIT, caster.getPos(), caster.getFacingAngle())..hide()..issuePointOrderById(Orders.attackground, target)..setTimedLife(2)
+
+        // Cast flame strike to destroy trees, do it 1.5 second after the projectile launched, this is pretty vulgar but it works
+        doAfter(1.5) () ->
+            InstantDummyCaster.castPoint(caster.getOwner(), ABIL_BURN_TREE, 1, Orders.flamestrike, target)

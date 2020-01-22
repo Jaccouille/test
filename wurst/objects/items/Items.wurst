@@ -110,6 +110,11 @@ public class AttackSpeedBonusAbility extends AbilityDefinitionAttackSpeedIncreas
         this.setAttackSpeedIncrease(1, attackSpeedBonus)
         this.setEditorSuffix("(Wurst)")
 
+/**
+A class used to create an item channel ability, those abilities are used for item dummyCast
+TODO: Create a dummy cast class but for windwalk ability, difference between windwalk and channel, is that windwalk do not interrupt the unit current order,
+      feels less clunky to use
+**/
 public class ItemChannelCast extends ChannelAbilityPreset
     construct(int abilId, string name, Targettype targetType, real castRange, real cooldown)
         super(abilId, 1, true)
@@ -121,4 +126,20 @@ public class ItemChannelCast extends ChannelAbilityPreset
         this.setManaCost(1, 0)
         this.setCooldown(1, cooldown)
         this.setCastRange(1, castRange)
+        this.setEditorSuffix("(Wurst)")
+
+    construct(int abilId, string name, real castRange, real aoe, real cooldown)
+        super(abilId, 1, true)
+        this.setName(name + " Cast")
+        this.setCheckDependencies(false)
+        this.setHeroAbility(false)
+        this.setItemAbility(true)
+        this.setManaCost(1, 0)
+        this.presetTargetTypes(Targettype.POINT)
+        this.setCooldown(1, cooldown)
+        this.setCastRange(1, castRange)
+        this.setAreaofEffect(1, aoe)
+        this.presetOption(Option.TARGETIMAGE, true)
+        this.setFollowThroughTime(1, 1)
+        this.setAnimationNames("spell")
         this.setEditorSuffix("(Wurst)")
