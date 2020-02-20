@@ -1,4 +1,4 @@
-library MixingPot initializer onInit requires ID, PublicLibrary, RegisterEvents
+library MixingPot initializer onInit requires RegisterEvents
 
 function removeHerbs takes unit u returns nothing
     call removeItem(u,ITEM_RIVER_STEM)

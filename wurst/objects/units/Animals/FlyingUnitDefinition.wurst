@@ -1,0 +1,214 @@
+package FlyingUnitDefinition
+
+// Standard library imports:
+import Assets
+import UnitObjEditing
+import ObjectIds
+import LinkedList
+
+// Local imports:
+import LocalObjectIDs
+
+// The abilities for a standard hawk.
+constant HAWK_ABIL = commaList(
+    AbilityIds.wander,
+    AbilityIds.inventory,
+    AbilityIds.trueSight1
+)
+
+// The abilities for a tamed hawk, which may be incremented during growth.
+public let hawkAbilities = asList(
+    'A03T',  // Gathering Radius
+    'A03V',  // Health
+    'A03W',  // Inventory
+    'A03U',  // Movement Radius
+    'A03S'   // Movement Speed
+)
+
+// TODO: Use commaList for lists.
+constant TAMED_HAWK_ABIL = hawkAbilities.joinBy((int i) -> i.toRawCode(), ",")
+
+class HawkDefinition extends UnitDefinition
+    construct(int unitId)
+        super(unitId, UnitIds.wareagle1)
+        this.setNormalAbilities(HAWK_ABIL)
+        this.setUpgradesUsed("")
+        this.setScalingValue(1)
+        this.setMovementHeight(450)
+        this.setMovementHeightMinimum(50)
+        this.setSpeedBase(400)
+        this.setGoldBountyAwardedBase(0)
+        this.setGoldBountyAwardedNumberofDice(0)
+        this.setGoldBountyAwardedSidesperDie(0)
+        this.setHitPointsMaximumBase(135)
+        this.setSightRadiusDay(75)
+        this.setSightRadiusNight(75)
+        this.setLevel(4)
+        this.setHitPointsRegenerationType("")
+        this.setNameEditorSuffix("(Wurst)")
+
+// Hatchling
+class HawkHatchlingDefinition extends TamedHawkDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setNormalAbilities(TAMED_HAWK_ABIL)
+        this.setScalingValue(0.5)
+        this.setMovementHeightMinimum(400)
+        this.setSpeedBase(300)
+        this.setLevel(3)
+        this.setHitPointsMaximumBase(40)
+        this.setName("Hawk Hatchling")
+
+class ForestDragonHatchlingDefinition extends HawkHatchlingDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setName("Forest Dragon Hatchling")
+        this.setModelFile(Units.greenDragon1)
+        this.setIconGameInterface(Icons.bTNGreenDragon)
+        this.setUnitSoundSet(Soundsets.azureDragon)
+
+class RedDragonHatchlingDefinition extends HawkHatchlingDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setName("Red Dragon Hatchling")
+        this.setModelFile(Units.redDragon1)
+        this.setIconGameInterface(Icons.bTNRedDragon)
+        this.setUnitSoundSet(Soundsets.azureDragon)
+        this.setSpeedBase(360)
+        this.setHitPointsMaximumBase(80)
+
+class BronzeDragonHatchlingDefinition extends HawkHatchlingDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setName("Bronze Dragon Hatchling")
+        this.setModelFile(Units.redDragon1)
+        this.setIconGameInterface(Icons.bTNBronzeDragon)
+        this.setUnitSoundSet(Soundsets.azureDragon)
+        this.setSpeedBase(300)
+        this.setHitPointsMaximumBase(100)
+
+class NetherDragonHatchlingDefinition extends HawkHatchlingDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setNormalAbilities(TAMED_HAWK_ABIL)
+        this.setName("Nether Dragon Hatchling")
+        this.setModelFile(Units.netherDragon)
+        this.setIconGameInterface(Icons.bTNNetherDragon)
+        this.setUnitSoundSet(Soundsets.netherDragon)
+        this.setSpeedBase(522)
+        this.setHitPointsMaximumBase(300)
+
+// Adolescent
+class TamedHawkDefinition extends HawkDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setNormalAbilities(TAMED_HAWK_ABIL)
+        this.setSpeedBase(260)
+        this.setSightRadiusDay(0)
+        this.setSightRadiusNight(0)
+        this.setName("Tamed Hawk")
+
+class ForestDragonDefinition extends TamedHawkDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setModelFile(Units.greenDragon1)
+        this.setIconGameInterface(Icons.bTNGreenDragon)
+        this.setName("Tamed Forest Dragon")
+        this.setUnitSoundSet(Soundsets.azureDragon)
+
+class RedDragonDefinition extends TamedHawkDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setModelFile(Units.redDragon1)
+        this.setIconGameInterface(Icons.bTNRedDragon)
+        this.setName("Tamed Red Dragon")
+        this.setUnitSoundSet(Soundsets.azureDragon)
+        this.setHitPointsMaximumBase(150)
+
+class BronzeDragonDefinition extends TamedHawkDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setModelFile(Units.redDragon1)
+        this.setIconGameInterface(Icons.bTNBronzeDragon)
+        this.setName("Tamed Bronze Dragon")
+        this.setUnitSoundSet(Soundsets.azureDragon)
+        this.setHitPointsMaximumBase(205)
+
+class NetherDragonDefinition extends TamedHawkDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setNormalAbilities(TAMED_HAWK_ABIL)
+        this.setModelFile(Units.netherDragon)
+        this.setIconGameInterface(Icons.bTNNetherDragon)
+        this.setName("Tamed Nether Dragon")
+        this.setUnitSoundSet(Soundsets.azureDragon)
+        this.setHitPointsMaximumBase(400)
+        this.setSpeedBase(522)
+
+// Greater
+class AlphaHawkDefinition extends TamedHawkDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setNormalAbilities(TAMED_HAWK_ABIL)
+        this.setName("Alpha Hawk")
+        this.setLevel(15)
+        this.setSpeedBase(220)
+        this.setScalingValue(1.40)
+        this.setMovementHeight(550)
+        this.setMovementHeightMinimum(50)
+        this.setHitPointsMaximumBase(230)
+
+class GreaterForestDragonDefinition extends AlphaHawkDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setName("Greater Forest Dragon")
+        this.setModelFile(Units.greenDragon1)
+        this.setIconGameInterface(Icons.bTNGreenDragon)
+        this.setUnitSoundSet(Soundsets.azureDragon)
+
+class GreaterRedDragonDefinition extends GreaterForestDragonDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setName("Greater Red Dragon")
+        this.setModelFile(Units.redDragon1)
+        this.setIconGameInterface(Icons.bTNRedDragon)
+
+class GreaterBronzeDragonDefinition extends GreaterForestDragonDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setModelFile(Units.redDragon1)
+        this.setIconGameInterface(Icons.bTNBronzeDragon)
+        this.setName("Greater Bronze Dragon")
+        this.setHitPointsMaximumBase(320)
+
+class GreaterNetherDragonDefinition extends GreaterForestDragonDefinition
+    construct(int unitId)
+        super(unitId)
+        this.setNormalAbilities(TAMED_HAWK_ABIL)
+        this.setModelFile(Units.netherDragon)
+        this.setIconGameInterface(Icons.bTNBronzeDragon)
+        this.setName("Greater Nether Dragon")
+        this.setSpeedBase(522)
+        this.setHitPointsMaximumBase(600)
+
+@compiletime function createFylingAnimals()
+    new HawkDefinition                 (UNIT_HAWK                   )
+    new HawkHatchlingDefinition        (UNIT_HAWK_HATCHLING         )
+    new TamedHawkDefinition            (UNIT_HAWK_ADOLESCENT        )
+    new AlphaHawkDefinition            (UNIT_ALPHA_HAWK             )
+
+    new ForestDragonHatchlingDefinition(UNIT_FOREST_DRAGON_HATCHLING)
+    new ForestDragonDefinition         (UNIT_FOREST_DRAGON          )
+    new GreaterForestDragonDefinition  (UNIT_GREATER_FOREST_DRAGON  )
+
+    new RedDragonHatchlingDefinition   (UNIT_RED_DRAGON_HATCHLING   )
+    new RedDragonDefinition            (UNIT_RED_DRAGON             )
+    new GreaterRedDragonDefinition     (UNIT_GREATER_RED_DRAGON     )
+
+    new BronzeDragonHatchlingDefinition(UNIT_BRONZE_DRAGON_HATCHLING)
+    new BronzeDragonDefinition         (UNIT_BRONZE_DRAGON          )
+    new GreaterBronzeDragonDefinition  (UNIT_GREATER_BRONZE_DRAGON  )
+
+    new NetherDragonHatchlingDefinition(UNIT_NETHER_DRAGON_HATCHLING)
+    new NetherDragonDefinition         (UNIT_NETHER_DRAGON)
+    new GreaterNetherDragonDefinition  (UNIT_GREATER_NETHER_DRAGON  )

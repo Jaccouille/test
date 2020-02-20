@@ -1,0 +1,12 @@
+package GroupUtils
+
+let trolls = CreateGroup()
+
+public function getTrolls() returns group
+    return trolls
+
+public function removeTroll(unit troll)
+    trolls.removeUnit(troll)
+
+public function addTroll(unit troll)
+    trolls.addUnit(troll)

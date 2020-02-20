@@ -1,0 +1,13 @@
+package PetAbilities
+
+// Local imports:
+import LocalObjectIDs
+
+public function setPetAbilities(player p, bool hasPet)
+    SetPlayerAbilityAvailable(p, ABILITY_PET_TAME,    not hasPet)
+    SetPlayerAbilityAvailable(p, ABILITY_PET_RELEASE,     hasPet)
+    SetPlayerAbilityAvailable(p, ABILITY_PET_SLEEP,       hasPet)
+
+init
+    ForForce(bj_FORCE_ALL_PLAYERS) ->
+        setPetAbilities(GetEnumPlayer(), false)

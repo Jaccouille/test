@@ -4,9 +4,7 @@ import Items
 import AbilityObjectCreationUtils
 import ItemObjEditing
 import ObjectIds
-import ID
 import Orders
-import LegacyColors
 import LinkedList
 import ToolTipsUtils
 import ClosureEvents

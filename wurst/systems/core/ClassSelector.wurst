@@ -1,16 +1,24 @@
 package ClassSelector
-import RegisterEvents
-import LinkedList
+
+// Local imports:
 import ClosureTimers
-import TimerUtils
-import UnitExtensions
-import PlayerExtensions
-import UnitPoolExtensions
+import HashMap
+import LinkedList
+import RegisterEvents
+
+// Third-party imports:
 import LodashExtensions
+
+// Local imports:
+import ColorUtils
 import GameConfig
-import GameMode
+import LocalObjectIDs
+import PlayerExtensions
+import StringExtensions
+import UnitExtensions
+import UnitPoolExtensions
+import TimerUtils
 import Tribe
-import PublicLibrary
 
 let UNIT_TROLL_TOTEM = 'o00H'
 
@@ -61,8 +69,8 @@ public class ClassSelector
 
         if not gameConfig.isAllTrollEnabled()
             selectionTime = gameConfig.getSelectionTimeAllowed()
-            print(GENERAL_COLOR + "Choose a troll class|r")
-            print(GENERAL_COLOR + "You will be appointed a random troll if you do not pick|r")
+            print("Choose a troll class.".color(GENERAL_COLOR))
+            print("Your class will be random otherwise.".color(GENERAL_COLOR))
 
         let clock = getTimer()
 
@@ -181,15 +189,12 @@ public class ClassSelector
 
         setClassUnavailable(trollId)
         totem.removeUnitFromStock(trollId)
-        udg_trolls.addUnit(troll)
-        udg_PUnits[owner.getId()] = troll
+        owner.setTroll(troll)
 
-        setUpSkillTriggers(troll)
         troll
-        ..modifySkillPoints(-1)
-        ..suspendXp(true)
-        ..pause()
-        ..setHeat(gameConfig.getMaxHeat())
+            ..suspendXp(true)
+            ..pause()
+            ..setHeat(gameConfig.getMaxHeat())
 
         if gameConfig.isStartWithFire()
             troll.addItemById(ITEM_FIRE_KIT)
@@ -204,8 +209,7 @@ public class ClassSelector
 
         setClassAvailable(trollId)
         totem.addUnitToStock(trollId, 0, 1)
-        udg_trolls.removeUnit(troll)
-        udg_PUnits[owner.getId()] = null
+        owner.removeTroll()
 
         troll.remove()
         sold.remove()

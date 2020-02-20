@@ -4,8 +4,6 @@ import Items
 import AbilityObjEditing
 import ItemObjEditing
 import ObjectIds
-import ID
-import LegacyColors
 import LinkedList
 import ToolTipsUtils
 

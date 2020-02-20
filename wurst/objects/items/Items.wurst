@@ -1,0 +1,101 @@
+package Items
+
+import ItemObjEditing
+import ChannelAbilityPreset
+
+
+// Default to the base ID most commonly used.
+// bspd is the id of boot of speed
+public function createBasicItem(int newId) returns ItemDefinition
+    return createBasicItem(newId, 'bspd')
+
+public function createUsableItem(int newId) returns ItemDefinition
+    return createUsableItem(newId, 'bspd')
+
+public function createPerishableItem(int newId) returns ItemDefinition
+    return createPerishableItem(newId, 'bspd')
+
+function createBasicItem(int newId, int oldId) returns ItemDefinition
+    return new ItemDefinition(newId, oldId)
+        ..setGoldCost(0)
+        ..setDroppedWhenCarrierDies(true)
+        ..setHotkey("")
+        ..setLevel(0)
+        ..setHitPoints(75)
+        ..setClassification("Permanent")
+        ..setMaxStack(0)
+
+function createUsableItem(int newId, int oldId) returns ItemDefinition
+    return createBasicItem(newId, oldId)
+        ..setActivelyUsed(true)
+
+function createPerishableItem(int newId, int oldId) returns ItemDefinition
+    return createUsableItem(newId, oldId)
+        ..setPerishable(true)
+
+//Item Abilities
+//Attack Bonus ability (Axes)
+public class AttackBonusAbility extends AbilityDefinitionAttackBonusPlus1
+    construct(int abilId, string name, int damage)
+        super(abilId)
+        this.setName("Attack Bonus ({0})".format(name))
+        this.setAttackBonus(1, damage)
+        this.setEditorSuffix("(Wurst)")
+
+// The stats bonus Ability for Item
+public class StatBonusAbility extends AbilityDefinitionAttributeModifierSkill
+    construct(int abilId, string name, int strength, int agility, int intelligence)
+        super(abilId)
+        this.setName("Stats Bonus ({0})".format(name))
+        this.setStrengthBonus(1, strength)
+        this.setAgilityBonus(1, agility)
+        this.setIntelligenceBonus(1, intelligence)
+        this.setEditorSuffix("(Wurst)")
+
+public class MoveSpeedBonusAbility extends AbilityDefinitionMoveSpeedBonus
+    construct(int abilId, string name, int speedBonus)
+        super(abilId)
+        this.setName("Move Speed Bonus ({0})".format(name))
+        this.setMovementSpeedBonus(1, speedBonus)
+        this.setEditorSuffix("(Wurst)")
+
+public class AttackSpeedBonusAbility extends AbilityDefinitionAttackSpeedIncrease
+    construct(int abilId, string name, real attackSpeedBonus)
+        super(abilId)
+        this.setName("Attack Speed Bonus ({0})".format(name))
+        this.setAttackSpeedIncrease(1, attackSpeedBonus)
+        this.setEditorSuffix("(Wurst)")
+
+public function createItemChannelCast(int abilId) returns ChannelAbilityPreset
+    return new ChannelAbilityPreset(abilId, 1, true)
+        ..setCheckDependencies(false)
+        ..setHeroAbility(false)
+        ..setItemAbility(true)
+        ..setEditorSuffix("(Wurst)")
+
+/**
+    Use this to create an item spell who doesn't play an animation
+    Contrary to the Channel ability, Berserk do not stop the unit current order when casted.
+**/
+public function createItemBerserkCast(int newId) returns AbilityDefinitionBeserk
+    return new AbilityDefinitionBeserk(newId)
+        ..setArtCaster("")
+        ..setArtEffect("")
+        ..setArtTarget("")
+        ..setArtSpecial("")
+        ..setHeroAbility(false)
+        ..setItemAbility(true)
+        ..setLevels(1)
+        ..setTooltipNormal(1, "dummy spell")
+        ..setTooltipNormalExtended(1, "dummy spell")
+        ..setManaCost(1, 0)
+        ..setAnimationNames("")
+        ..setDurationHero(1, 0.01)
+        ..setDurationNormal(1, 0.01)
+        ..setCastingTime(1, 0)
+        ..setDamageTakenIncrease(1, 0)
+        ..setAttackSpeedIncrease(1, 0)
+        ..setMovementSpeedIncrease(1, 0)
+        ..setBuffs(1, "")
+        ..setEffectSound("")
+        ..setEditorSuffix("(Wurst)")

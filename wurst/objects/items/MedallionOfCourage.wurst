@@ -1,0 +1,41 @@
+package MedallionOfCourage
+
+// Stanard library imports:
+import EventHelper
+import LinkedList
+import RegisterEvents
+import SimError
+
+// Local imports:
+import ColorUtils
+import LocalObjectIDs
+import IdListConstant
+import StringExtensions
+
+// Medallion item cast
+function onCast(unit caster, item target)
+    let owner = caster.getOwner()
+    let unitId = caster.getTypeId()
+
+    if unitId == UNIT_HUNTER or unitId == UNIT_BEAST_MASTER
+        simError(owner, "This unit cannot use this item, read the item description")
+        return
+    if SUB_TROLL_UNIT_LIST.has(unitId) or SUPERSUB_TROLL_UNIT_LIST.has(unitId)
+        simError(owner, "You need to be a basic troll (mage, priest, thief, scout, gatherer) in order to use this item")
+        return
+
+    if GetPlayerTechResearched(caster.getOwner(), UPGD_MEDALLION_COURAGE, true) == false
+        SetPlayerTechResearched(caster.getOwner(), UPGD_MEDALLION_COURAGE, 1)
+        let medalHint = caster.getProperName().color(GOLD_COLOR) + " acquired a super class choice! Check your hero skill and reach level 9 to use it.".color(GENERAL_COLOR)
+        printTimedToPlayer(medalHint, 5, owner)
+        target.remove()
+    else
+        simError(owner, "This unit already used the Medallion of Courage")
+
+init
+    registerPlayerUnitEvent(EVENT_PLAYER_UNIT_USE_ITEM) ->
+        if EventData.getManipulatedItem().getTypeId() == ITEM_MEDALLION_COURAGE
+            onCast(
+                EventData.getManipulatingUnit(),
+                EventData.getManipulatedItem()
+            )

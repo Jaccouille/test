@@ -3,11 +3,9 @@ package GlovesDefinition
 import Items
 import ItemObjEditing
 import BattleGlovesCritical
-import ID
 import LinkedList
 import ToolTipsUtils
 import ObjectIds
-import LegacyColors
 
 constant ABIL_ATTACK_SPEED_ELK    = compiletime(ABIL_ID_GEN.next())
 constant ABIL_ATTACK_SPEED_WOLF   = compiletime(ABIL_ID_GEN.next())

@@ -1,14 +1,48 @@
 package UnitExtensions
-import StackNSplit
+
+// Standard library imports:
+import ItemObjEditing
 import LinkedList
+import ObjectIdGenerator
+
+// Third-party imports:
+import StackNSplit
 import Lodash
-import GameConfig
-import PublicLibrary
+
+// Local imports:
 import Brambles
+import Construction
+import GameConfig
+import GroupUtils
+import HashMap
+import IdListConstant
+import LocalObjectIDs
+import ManaBurn
 
 public let BUFF_ENSNARE_GROUND = 'Beng'
 public let BUFF_ENSNARE_AIR = 'Bena'
 public let BUFF_ENTANGLE = 'BEer'
+
+
+constant DUMMY_ITEM_ID = compiletime(ITEM_ID_GEN.next())
+@compiletime function createDummyItem()
+    new ItemDefinition(DUMMY_ITEM_ID, 'bspd')
+
+/**
+    Adds an item by handle to the given slot.
+*/
+public function unit.addItemHandleToSlot(item itm, int targetSlot)
+    // Compute the list of intervening empty slots.
+    let emptySlots = filter(slot -> UnitItemInSlot(this, slot) == null,
+                            range(0, targetSlot).toList())
+    // Fill each intervening slot.
+    for _ in emptySlots
+        this.addItemById(DUMMY_ITEM_ID)
+    // Add the item to the first available slot, which is now the target slot.
+    this.addItemHandle(itm)
+    // Remove the dummy items.
+    for slot in emptySlots
+        UnitItemInSlot(this, slot).remove()
 
 public function unit.getHeroSkillPoints() returns integer
     return GetHeroSkillPoints(this)
@@ -75,10 +109,10 @@ public function unit.isStructure() returns boolean
     return IsUnitType(this, UNIT_TYPE_STRUCTURE)
 
 public function unit.isTroll() returns boolean
-    return IsUnitTroll(this)
+    return TROLL_UNIT_LIST.has(this.getTypeId())
 
-public function unit.getHeat() returns int
-    return this.getOwner().getGold()
+public function unit.getHeat() returns real
+    return this.getOwner().getGold().toReal()
 
 public function unit.setHeat(int heat)
     this.getOwner().setGold(heat)
@@ -90,7 +124,6 @@ public function unit.addHeat(int heat)
 public function unit.subHeat(int heat)
     let owner = this.getOwner()
     owner.setGold(max(owner.getGold() - heat, 0))
-
 
 public function unit.getItemMatching(Predicate<item> predicate) returns item
     let inventorySize = this.inventorySize()
@@ -119,12 +152,6 @@ public function unit.dropItems(int count)
 
 public function unit.dropItems()
     this.dropItems(this.inventorySize())
-
-public function unit.setUserDataEx(int data)
-    SetUnitUserDataEx(this, data)
-
-public function unit.getUserDataEx() returns int
-    return GetUnitUserDataEx(this)
 
 public function unit.addSleep(bool value)
     UnitAddSleep(this, value)
@@ -189,3 +216,29 @@ public function unit.isEnemyBuildingAround(real radius) returns bool
             return true
     nearbyUnits.destr()
     return false
+
+public function unit.isEnemyDefense() returns bool
+    return this.getTypeId() == UNIT_ENSNARE_TRAP
+        or this.getTypeId() == UNIT_OMNITOWER
+
+public function unit.isConstructing() returns bool
+    return isConstructing(this)
+
+public function unit.burnMana(real damage)
+    burnMana(this, damage)
+
+public function unit.registerTroll()
+    addTroll(this)
+
+public function unit.deregisterTroll()
+    removeTroll(this)
+
+public function unit.isItemInSlot(int slot) returns bool
+    return this.itemInSlot(slot) != null
+
+public function unit.isItemInSlot(int slot, int id) returns bool
+    let target = this.itemInSlot(slot)
+    return target != null and target.getTypeId() == id
+
+public function unit.isBoss() returns bool
+    return BOSS_LIST.has(this.getTypeId())

@@ -1,0 +1,25 @@
+package Heat
+import RegisterEvents
+import GameConfig
+import UnitExtensions
+import LocalObjectIDs
+
+public constant ABILITY_HEAT = 'A002'
+public constant ABILITY_MAGE_HEAT = 'A023'
+public constant BUFF_FROZEN_TO_BONE = BUFF_FROZE_TO_BONE
+
+// TODO sync with cast range
+@configurable let FIRE_RANGE = 380.0
+
+function heat()
+    let heroes = CreateGroup()..enumUnitsInRange(GetSpellAbilityUnit().getPos(), FIRE_RANGE, Condition(() -> begin
+        return GetFilterUnit().isTroll()
+    end))
+    for hero from heroes
+        hero.addHeat(gameConfig.getHeatPerCast())
+        if hero.hasAbility(BUFF_FROZEN_TO_BONE)
+            hero.removeAbility(BUFF_FROZEN_TO_BONE)
+
+init
+    registerSpellEffectEvent(ABILITY_HEAT, function heat)
+    registerSpellEffectEvent(ABILITY_MAGE_HEAT, function heat)

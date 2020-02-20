@@ -1,0 +1,15 @@
+package CookMeat
+import RegisterEvents
+import LocalObjectIDs
+import ClosureForGroups
+
+public constant ABILITY_COOK_MEAT = 'A04B'
+@configurable let COOK_MEAT_RANGE = 600.0
+
+init
+    registerSpellEffectEvent(ABILITY_COOK_MEAT) ->
+        let firePos = GetSpellAbilityUnit().getPos()
+        forUnitsInRange(firePos, COOK_MEAT_RANGE) (unit u) ->
+            if u.getTypeId() == UNIT_MEAT
+                createItem(ITEM_COOKED_MEAT, u.getPos())
+                u.remove()

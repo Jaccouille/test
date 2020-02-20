@@ -1,7 +1,7 @@
 package Packing
 import RegisterEvents
 import HashMap
-import ID
+import LocalObjectIDs
 
 let cancelOnlyMap = new HashMap<int, int>()
 ..put(UNIT_ARMORY, ITEM_ARMORY_KIT)
@@ -18,6 +18,7 @@ let cancelOnlyMap = new HashMap<int, int>()
 ..put(UNIT_TROLL_HUT, ITEM_TROLL_HUT_KIT)
 ..put(UNIT_WITCH_DOCTORS_HUT, ITEM_WITCH_DOCTORS_HUT_KIT)
 ..put(UNIT_WORKSHOP, ITEM_WORKSHOP_KIT)
+..put(UNIT_FORGE, ITEM_FORGE_KIT)
 
 let cancelAndDeathMap = new HashMap<int, int>()
 ..put(UNIT_TENT, ITEM_TENT_KIT)
@@ -32,7 +33,7 @@ function replaceBuildingWithKit(int structureId, vec2 pos)
             createItem(kit, pos)
 
 init
-    registerSpellEffectEvent(SPELL_PACK_BUILDING) ->
+    registerSpellEffectEvent(ABILITY_PACK_BUILDING) ->
         let structure = GetTriggerUnit()
         let structureId = structure.getTypeId()
         let pos = structure.getPos()

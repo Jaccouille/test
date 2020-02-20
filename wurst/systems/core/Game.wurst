@@ -1,10 +1,16 @@
 package Game
-import UnitExtensions
+
+// Standard library imports:
 import ClosureTimers
-import PublicLibrary
-import InitializeUnits
+
+// Local imports:
 import ClassSelector
+<<<<<<< HEAD
 import Interface
+=======
+import ColorUtils
+import StringExtensions
+>>>>>>> 1f3279ecb7f0d636be9ceed9c84c874ed2968497
 
 public constant GAME_TIMER = CreateTimer()
 
@@ -14,10 +20,9 @@ public function registerGameStartEvent(code handler)
     listeners.addAction(handler)
 
 public function generateMap()
-    gg_trg_spawn_call_first.execute()
     listeners.execute()
     SetTimeOfDay(6)
-    print(GENERAL_COLOR + "Game has begun!|r")
+    print("Game has begun!".color(GENERAL_COLOR))
     GAME_TIMER.start(99999999, null)
 
 init
@@ -29,14 +34,12 @@ init
 
     // TODO remove legacy initialization or move elsewhere
     InitGameCache("ITT.w3v")
-    udg_jumpCache = bj_lastCreatedGameCache
-    udg_GameHash = InitHashtable()
-    prepareSpells()
 
     registerClassSelectionEndEvent(function generateMap)
 
     nullTimer() ->
         ForForce(bj_FORCE_ALL_PLAYERS) ->
+<<<<<<< HEAD
             let enumPlayer = GetEnumPlayer()
             CreateFogModifierRect(enumPlayer, FOG_OF_WAR_VISIBLE, gg_rct_vision, true, false).start()
             // TODO remove legacy bm pet system
@@ -46,3 +49,12 @@ init
         MAMMOTH_GATE.setInvulnerable(true)
         MAMMOTH.setOwner(players[PLAYER_NEUTRAL_AGGRESSIVE], true)
         initUi()
+=======
+            CreateFogModifierRect(
+                GetEnumPlayer(),
+                FOG_OF_WAR_VISIBLE,
+                gg_rct_vision,
+                true,
+                false
+            ).start()
+>>>>>>> 1f3279ecb7f0d636be9ceed9c84c874ed2968497

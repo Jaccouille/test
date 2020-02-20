@@ -1,10 +1,27 @@
 package SpawningTestHelpers
 
+<<<<<<< HEAD
 import CheatPack
 import ChatCommands
 import Game
+=======
+// Standard library imports:
+import HashMap
+import LinkedList
+>>>>>>> 1f3279ecb7f0d636be9ceed9c84c874ed2968497
 import SimError
+
+// Third-pary imports:
+import Lodash
+import LodashExtensions
+import ObjectIDManager
+import Toolkit
+
+// Local imports:
+import ColorUtils
+import IdListConstant
 import PlayerExtensions
+<<<<<<< HEAD
 import GameConfig
 import IDUtils
 import LegacyColors
@@ -85,35 +102,135 @@ function spawnItems(LinkedList<int> itemList, vec2 trollPos, int count)
         pos.y += 100
         for i = count downto 1
             createItem(elem, pos)
+=======
+import StringExtensions
+
+let units = new OwnedIterableMap<string, LinkedList<int>>()
+    ..put("trolls"          , TROLL_UNIT_LIST)
+    ..put("mage"            , MAGE_CLASS_LIST)
+    ..put("thief"           , THIEF_CLASS_LIST)
+    ..put("scout"           , SCOUT_CLASS_LIST)
+    ..put("hunter"          , HUNTER_CLASS_LIST)
+    ..put("priest"          , PRIEST_CLASS_LIST)
+    ..put("gatherer"        , GATHERER_CLASS_LIST)
+    ..put("strolls"         , SUB_TROLL_UNIT_LIST)
+    ..put("utrolls"         , UNSUB_TROLL_UNIT_LIST)
+    ..put("beastmaster"     , BEASTMASTER_CLASS_LIST)
+    ..put("buildings"       , CRAFTING_BUILDING_LIST)
+    ..put("sstrolls"        , SUPERSUB_TROLL_UNIT_LIST)
+    ..put("animals"         , HOSTILE_ANIMALS_LIST)
+    ..put("pets"            , PETS_LIST)
+    ..put("dragons"         , DRAGON_LIST)
+
+let items = new OwnedIterableMap<string, LinkedList<int>>()
+    ..put("herbs"           , HERB_LIST)
+    ..put("hides"           , HIDE_LIST)
+    ..put("boots"           , BOOTS_LIST)
+    ..put("gloves"          , GLOVES_LIST)
+    ..put("coats"           , COAT_LIST)
+    ..put("materials"       , MATERIAL_LIST)
+    ..put("craftedmaterials", CRAFTED_MATERIAL_LIST)
+    ..put("axes"            , AXE_LIST)
+    ..put("shields"         , SHIELD_LIST)
+    ..put("battles"         , BATTLE_ITEM_LIST)
+    ..put("spears"          , SPEAR_LIST)
+    ..put("scrolls"         , SCROLL_LIST)
+    ..put("cloaks"          , CLOAK_LIST)
+    ..put("potions"         , POTION_LIST)
+    ..put("hydrarecipe"     , HYDRA_RECIPE_LIST)
+    ..put("kits"            , BUILDING_KIT_LIST)
+
+let spawns = new OwnedIterableMap<string, LinkedList<int>>()
+    ..addAll(units)
+    ..addAll(items)
+
+let CREATE_HELP_MESSAGE = compiletime(
+    asList(
+        "Create units and items using:".color(GOLD_COLOR),
+        "-create [pid] [count] [player]".color(ENERGY_COLOR),
+        "[pid] is the ID of the object, e.g. UNIT_PANTHER,",
+        "[count] is the number of copies to spawn,",
+        "[player] is the index of the player to own created units.",
+        "For example, to spawn two panthers for player one, use:",
+        "-create UNIT_PANTHER 2 1".color(ENERGY_COLOR)
+    ).joinBy("\n")
+)
+
+let SPAWN_HELP_MESSAGE = compiletime(
+    asList(
+        "Spawn multiple units or items at once using:".color(GOLD_COLOR),
+        "-spawn [{0}]".format(spawns.keys().joinBy(BAR)).color(ENERGY_COLOR),
+        "For example, to spawn each type of hunter, use:",
+        "-spawn hunter".color(ENERGY_COLOR)
+    ).joinBy("\n")
+)
+
+let RESEARCH_HELP_MESSAGE = compiletime(
+    asList(
+        "Research upgrade using:".color(GOLD_COLOR),
+        "-research [pid]".color(ENERGY_COLOR),
+        "[pid] is the ID of the research, e.g. UPGD_MEDALLION_COURAGE,",
+        "For example, to research the medallion of courage upgrade, use:",
+        "-research UPGD_MEDALLION_COURAGE".color(ENERGY_COLOR),
+        "If the upgrade has been research already, this command will undo the research".color(GOLD_COLOR)
+    ).joinBy("\n")
+)
+
+>>>>>>> 1f3279ecb7f0d636be9ceed9c84c874ed2968497
 
 init
-    registerGameStartEvent() ->
-        if gameConfig.isTestModeEnabled()
-            registerCommandAll("create") (triggerPlayer, args) ->
-                let idStr = args.get(1).toUpperCase()
-                let id = S2ID(idStr)
-                var nbrArg = 1
-                if args.size() > 2
-                    nbrArg = (args.get(2).toInt())
+    registerToolkitCommand("create") (triggerPlayer, args) ->
+        let idStr = args.get(1).toUpperCase()
+        let id = idStr.asObjectID()
+        var nbrArg = 1
+        if args.size() > 2
+            nbrArg = (args.get(2).toInt())
 
-                if id <= 0
-                    print(HELP_MESSAGE)
-                else
-                    let owner = args.size() > 3 ? players[args.get(3).toInt() - 1] : triggerPlayer
-                    let troll = triggerPlayer.getTroll()
-                    let pos = troll.getPos().polarOffset(troll.getFacingAngle(), 100)
+        if id <= 0
+            print(CREATE_HELP_MESSAGE)
+        else
+            let owner = args.size() > 3 ? players[args.get(3).toInt() - 1] : triggerPlayer
+            let troll = triggerPlayer.getTroll()
+            let pos = troll.getPos().polarOffset(troll.getFacingAngle(), 100)
 
-                    if idStr.startsWith("UNIT_")
-                        for i = nbrArg downto 1
-                            if createUnit(owner, id, pos, angle(0)) == null
-                                simError(triggerPlayer, "{0} not found".format(idStr))
-                                break
-                    else if idStr.startsWith("ITEM_")
-                        for i = nbrArg downto 1
-                            if createItem(id, pos) == null
-                                simError(triggerPlayer, "{0} not found".format(idStr))
-                                break
+            if idStr.startsWith("UNIT_")
+                for i = nbrArg downto 1
+                    if createUnit(owner, id, pos, angle(0)) == null
+                        simError(triggerPlayer, "{0} not found".format(idStr))
+                        break
+            else if idStr.startsWith("ITEM_")
+                for i = nbrArg downto 1
+                    if createItem(id, pos) == null
+                        simError(triggerPlayer, "{0} not found".format(idStr))
+                        break
+            else
+                simError(triggerPlayer, "Cannot spawn {0}".format(idStr))
+
+    registerToolkitCommand("hostile") (triggerPlayer, args) ->
+        for target from ENUM_GROUP..enumUnitsSelected(triggerPlayer, null)
+            target.setOwner(players[PLAYER_NEUTRAL_AGGRESSIVE], true)
+
+    registerToolkitCommand("spawn") (triggerPlayer, args) ->
+        let troll = triggerPlayer.getTroll()
+        var pos = troll.getPos()
+        let listName = args.get(1).toLowerCase()
+        let toSpawn = spawns.get(listName)
+        let count = args.get(2).toInt() > 0
+            ? args.get(2).toInt()
+            : 1
+
+        if toSpawn == null
+            print(SPAWN_HELP_MESSAGE)
+        else
+            pos.x += 100
+            pos.y -= (toSpawn.size() / 2) * 100
+            for elem in toSpawn
+                pos.y += 100
+                for i = count downto 1
+                    if units.has(listName)
+                        createUnit(triggerPlayer, elem, pos, (270.0).asAngleDegrees())
                     else
+<<<<<<< HEAD
                         simError(triggerPlayer, "Cannot spawn {0}".format(idStr))
 
             registerCommandAll("hostile") (triggerPlayer, args) ->
@@ -147,3 +264,21 @@ init
                         spawnUnits(unitList, pos, count, owner)
                     else
                         spawnItems(itemList, pos, count)
+=======
+                        createItem(elem, pos)
+
+    registerToolkitCommand("research") (triggerPlayer, args) ->
+        let idStr = args.get(1).toUpperCase()
+        let id = idStr.asObjectID()
+
+        if id <= 0
+            print(RESEARCH_HELP_MESSAGE)
+        else
+            if idStr.startsWith("UPGD_")
+                if GetPlayerTechResearched(triggerPlayer, id, true) == false
+                    SetPlayerTechResearched(triggerPlayer, id, 1)
+                else
+                    SetPlayerTechResearched(triggerPlayer, id, 0)
+            else
+                simError(triggerPlayer, "Cannot research {0}".format(idStr))
+>>>>>>> 1f3279ecb7f0d636be9ceed9c84c874ed2968497

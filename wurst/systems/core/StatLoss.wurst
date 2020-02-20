@@ -1,14 +1,24 @@
 package StatLoss
-import Game
+
+// Standard library imports:
 import ClosureTimers
+
+// Local imports:
+import Game
 import GameConfig
-import IsTypeThing
+import GroupUtils
+import ItemExtensions
+import LocalObjectIDs
 
 constant BUFF_CAMO_ID = 'B009'
 constant BUFF_BONFIRE_ID = 'B01L'
 constant BUFF_DEPRESSED_THISTLE_ID = 'B00E'
+<<<<<<< HEAD
 constant BUFF_FROZE_TO_BONE_ID = 'BCbf'
 constant BUFF_THE_GLOW = 'BOae'
+=======
+constant BUFF_FROZE_TO_BONE_ID = BUFF_FROZE_TO_BONE
+>>>>>>> 1f3279ecb7f0d636be9ceed9c84c874ed2968497
 
 init
     registerGameStartEvent() ->
@@ -16,7 +26,7 @@ init
         let maxHeat = gameConfig.getMaxHeat()
 
         doPeriodically(gameConfig.getStatGainInterval()) cb ->
-            for troll in udg_trolls
+            for troll in getTrolls()
                 let owner = troll.getOwner()
                 var heat = owner.getGold()
 
@@ -28,9 +38,9 @@ init
 
                 for i = 0 to troll.inventorySize() - 1
                     let gear = troll.itemInSlot(i)
-                    if IsItemCoat(gear)
+                    if gear.isCoat()
                         heat += 5
-                    else if IsItemBoots(gear) or IsItemGloves(gear)
+                    else if gear.isBoots() or gear.isGloves()
                         heat += 2
                     else if gear.getTypeId() == ITEM_DD_PINION_FIRE
                         heat += 8
@@ -38,7 +48,7 @@ init
                 owner.setGold(min(maxHeat, heat))
 
         doPeriodically(gameConfig.getStatLossInterval()) cb ->
-            for troll in udg_trolls
+            for troll in getTrolls()
                 var heatLoss = lossAmount
                 var energyLoss = lossAmount
                 var healthLoss = lossAmount

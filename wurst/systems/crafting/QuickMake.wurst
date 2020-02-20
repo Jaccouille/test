@@ -1,13 +1,20 @@
 package QuickMake
+
+// Standard library imports:
 import ClosureEvents
 import LinkedList
-import ClosuresForItems
+
+// Third-party imports:
 import Lodash
-import UnitExtensions
-import IsTypeThing
-import LegacyTriggers
+
+// Local imports:
+import ClosuresForItems
+import HashMap
+import LocalObjectIDs
 import Mixing
 import Tannering
+import Transmute
+import UnitExtensions
 
 public class QuickMake
     let itemLists = new OwnedLinkedList<LinkedList<int>>()
@@ -57,7 +64,7 @@ public class QuickMake
 
                 //Special case for eob, once you get 2 spec, you don't want to be able to pick up 2 spec of another type
                 //Not pretty but couldn't figure out something else
-                if spellAbilityId == SPELL_QM_ESSENCE_BEES and specialHerb.get(found.getTypeId()) == herbThreshold
+                if spellAbilityId == ABILITY_QM_ESSENCE_BEES and specialHerb.get(found.getTypeId()) == herbThreshold
                     herbThreshold = 1
 
                 if found != null
@@ -77,7 +84,7 @@ public class QuickMake
 
         if caster.getName() == "Mixing Pot"
             mix(caster)
-        else if caster.getName() == "Tannery"
+        else if caster.getName() == "Tannery" or caster.getName() == "Ominous Altar"
             tan(caster, spellAbilityId)
 
         gg_trg_transmute.disable()
@@ -88,7 +95,7 @@ public class QuickMake
 
         gg_trg_transmute.enable()
 
-        if spellAbilityId == SPELL_QM_ESSENCE_BEES
+        if spellAbilityId == ABILITY_QM_ESSENCE_BEES
             herbThreshold = 2
         destroy items
         destroy inventory

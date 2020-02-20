@@ -1,0 +1,23 @@
+package EnsnareTrap
+
+
+import Building
+import LocalObjectIDs
+
+constant OLD_ABILITY_ID_PICKUPMEAT_TROLL = 'A00I'
+constant ABILITY_CARGO_HOLD = 'Sch2'
+
+public class EnsnareTrap extends Building
+    private static let unitTypeId = UNIT_ENSNARE_TRAP
+
+    static function initialize()
+        register(unitTypeId, building -> new EnsnareTrap(building))
+
+    construct(unit whichUnit)
+        super(whichUnit)
+
+    override function postCreate()
+        super.postCreate()
+
+init
+    EnsnareTrap.initialize()

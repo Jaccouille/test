@@ -1,6 +1,5 @@
 package ShieldsDefinition
 
-import ID
 import Assets
 import ObjectIds
 import LinkedList

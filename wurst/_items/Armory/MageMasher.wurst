@@ -4,7 +4,6 @@ import AbilityObjEditing
 import ObjectIdGenerator
 import ClosureEvents
 import DamageType
-import ID
 import Orders
 import Priest
 import Mage

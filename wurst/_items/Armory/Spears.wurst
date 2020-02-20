@@ -3,7 +3,6 @@ import ClosureEvents
 import DummyCaster
 import Orders
 import ClosureTimers
-import PublicLibrary
 
 constant ABILITY_SPEAR_HIT_DETECTION = 'A0EH'
 constant DARK_SPEAR_CONSECUTIVE_REDUCTION_FACTOR = 0.6666

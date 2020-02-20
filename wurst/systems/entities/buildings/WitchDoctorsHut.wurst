@@ -1,0 +1,33 @@
+package WitchDoctorsHut
+
+// Local imports:
+import Building
+import LocalObjectIDs
+
+public class WitchDoctorsHut extends Building
+    private static let unitTypeId = UNIT_WITCH_DOCTORS_HUT
+
+    static function initialize()
+        register(unitTypeId, building -> new WitchDoctorsHut(building))
+
+    construct(unit whichUnit)
+        super(whichUnit)
+
+    override function postCreate()
+        super.postCreate()
+
+        getUnit().addAbility(ABILITY_DROP_ITEMS)
+        getUnit().addAbility(ABILITY_QM_SCROLL_ARMOR)
+        getUnit().addAbility(ABILITY_QM_SCROLL_ROOT)
+        getUnit().addAbility(ABILITY_QM_SCROLL_LIVING_DEAD)
+        getUnit().addAbility(ABILITY_QM_SCROLL_TSUNAMI)
+        getUnit().addAbility(ABILITY_QM_CLOAK_FLAMES)
+        getUnit().addAbility(ABILITY_QM_CLOAK_FROST)
+        getUnit().addAbility(ABILITY_QM_CLOAK_HEALING)
+        getUnit().addAbility(ABILITY_QM_CLOAK_MANA)
+        getUnit().addAbility(ABILITY_QM_POISON)
+        getUnit().addAbility(ABILITY_QM_ULTRA_POISON)
+        getUnit().addAbility(ABILITY_WDH_SPELLBOOK_ID)
+
+init
+    WitchDoctorsHut.initialize()

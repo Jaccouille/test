@@ -7,7 +7,7 @@ Following are the default enabled arguments:
 -runcompiletimefunctions
 -injectobjects
 -stacktraces
--noExtractMapScript
+noExtractMapScript
 
 Optimization arguments (default disabled):
 

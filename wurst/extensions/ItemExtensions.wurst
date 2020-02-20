@@ -1,29 +1,47 @@
 package ItemExtensions
-import IsTypeThing
+
+// Local imports:
+import IdListConstant
+import LocalObjectIDs
 
 public function item.getType() returns itemtype
     return GetItemType(this)
 
+public function item.isHide() returns bool
+    return HIDE_LIST.has(this.getTypeId())
+
 public function item.isSpell() returns bool
-    return IsItemSpell(this)
+    return SCROLL_LIST.has(this.getTypeId())
 
 public function item.isAxe() returns bool
-    return IsItemAnyAxe(this)
+    return AXE_LIST.has(this.getTypeId())
 
 public function item.isShield() returns bool
-    return IsItemAnyShield(this)
+    return SHIELD_LIST.has(this.getTypeId())
+
+public function item.isBasicShield() returns bool
+    return this.getTypeId() == ITEM_SHIELD
 
 public function item.isCoat() returns bool
-    return IsItemCoat(this)
+    return COAT_LIST.has(this.getTypeId())
+
+public function item.isBasicCoat() returns bool
+    return BASIC_COAT_LIST.has(this.getTypeId())
 
 public function item.isGloves() returns bool
-    return IsItemGloves(this)
+    return GLOVES_LIST.has(this.getTypeId())
+
+public function item.isBasicGloves() returns bool
+    return BASIC_GLOVES_LIST.has(this.getTypeId())
 
 public function item.isBoots() returns bool
-    return IsItemBoots(this)
+    return BOOTS_LIST.has(this.getTypeId())
+
+public function item.isBasicBoots() returns bool
+    return BASIC_BOOTS_LIST.has(this.getTypeId())
 
 public function item.isPinion() returns bool
-    return IsItemPinion(this)
+    return PINION_LIST.has(this.getTypeId())
 
 public function item.isAxeOrShield() returns bool
     return this.isAxe() or this.isShield()
@@ -37,3 +55,10 @@ public function item.isAllyFireAround(real radius, unit caster) returns bool
             return true
     nearbyUnits.destr()
     return false
+
+// TODO: Automate this check somehow.
+public function item.isSpellbook() returns bool
+    return this.getTypeId() == ITEM_HORN_MAMMOTH
+
+public function item.isPole() returns bool
+    return POLE_LIST.has(this.getTypeId())

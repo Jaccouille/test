@@ -1,0 +1,51 @@
+package Cure
+
+// Standard library imports:
+import Assets
+import Orders
+import ClosureEvents
+import InstantDummyCaster
+import ChannelAbilityPreset
+
+// Local imports:
+import Items
+import LocalAssets
+import LocalObjectIDs
+import LocalItemObjEditing
+
+let ICON  = Icons.bTNLesserClarityPotion
+let MODEL = LocalItems.potionGreenSmall
+
+let CAST_RANGE = 500.
+let TARGET_ALLOWED = "friend,organic,self"
+let TT = "This potion is said to be able to cure anything."
+
+@compiletime function createAbil() returns ChannelAbilityPreset
+    return createItemChannelCast(ABILITY_CURE_ALL_ITEM)
+        ..setName("Cure Potion")
+        ..presetTargetTypes(Targettype.UNIT)
+        ..setTargetsAllowed(1, TARGET_ALLOWED)
+        ..setCastRange(1, CAST_RANGE)
+        ..setManaCost(1, 0)
+        ..setCooldown(1, 0)
+
+@compiletime function createCure() returns ItemDefinition
+    return createPerishableItem(ITEM_CURE_ALL)
+        ..setNameEnhance("Cure Potion")
+        ..setInterfaceIcon(ICON)
+        ..setModelUsed(MODEL)
+        ..setHotkey("S")
+        ..setTooltipBasic("Cure Potion")
+        ..setTooltipExtended(TT)
+        ..setLumberCost(12)
+        ..setAbilities(commaList(ABILITY_CURE_ALL_ITEM))
+        ..setScalingValue(0.5)
+        ..setCooldownGroup(commaList(ABILITY_CURE_ALL_ITEM))
+        ..setStockReplenishInterval(120)
+        ..setNumberofCharges(2)
+        ..setButtonPositionX(1)
+        ..setButtonPositionY(1)
+
+init
+    EventListener.onTargetCast(ABILITY_CURE_ALL_ITEM) (unit caster, unit target) ->
+        InstantDummyCaster.castTarget(caster.getOwner(), ABILITY_CURE_ALL, 1, Orders.autodispel, target)

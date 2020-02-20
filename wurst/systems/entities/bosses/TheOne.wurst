@@ -1,0 +1,96 @@
+package TheOne
+
+// Standard library imports:
+import ClosureTimers
+import RegisterEvents
+import LinkedList
+
+// Local imports:
+import LocalObjectIDs
+import JumpSystem
+import BonyAnimal
+import UnitEntity
+import BossUtilities
+
+public let THE_ONE_REGION = CreateRegion()
+    ..addRect(gg_rct_TheOne)
+
+let spawnSpot = gg_rct_TheOneCliff.getLeftTop()
+
+// The singleton instance.
+public TheOne theOne = null
+
+public class TheOne extends BonyAnimal
+    private static let unitTypeId = UNIT_ONE
+
+    static function initialize()
+        register(unitTypeId, target -> new TheOne(target))
+
+    // The callback responsible for periodically incrementing the level.
+    static CallbackPeriodic cb
+
+    construct(unit whichUnit)
+        super(whichUnit)
+
+    override function postCreate()
+        super.postCreate()
+
+    static function beginLevelling()
+        cb = doPeriodically(60) cb ->
+            if theOne != null and theOne.getUnit().isAlive()
+                theOne.getUnit().addLevels(1, true)
+
+    override function getDrops() returns LinkedList<int>
+        let drops = super.getDrops()
+            ..add(ITEM_ESSENCE_BEES)
+            ..add(ITEM_STEEL_INGOT)
+        return drops
+
+    override function getNumCorpses() returns int
+        return 3
+
+    // Avoid removing unit by not propagating the call upwards.
+    override function postDeath()
+        // Disable levelling while dead.
+        destroy cb
+
+public function spawnTheOne()
+    // Delay to effect slightly.
+    doAfter(1) ->
+        // Instantiate the singleton the first time it is needed.
+        if theOne == null
+            theOne = new TheOne(
+                // Spawn the unit.
+                createUnit(
+                    players[PLAYER_NEUTRAL_AGGRESSIVE],
+                    UNIT_ONE,
+                    spawnSpot,
+                    spawnSpot.angleTo(gg_rct_TheOne.getCenter())
+                )
+            )
+        else
+            // Revive the existing unit if it exists.
+            theOne.getUnit().revive(spawnSpot, true)
+
+        // Order the unit to jump into the arena.
+        performJump(theOne.getUnit(), gg_rct_TheOne.getCenter())
+
+        // Begin the callback to periodically increment the level.
+        TheOne.beginLevelling()
+
+public function canSpawnTheOne() returns boolean
+    return theOne == null or not theOne.getUnit().isAlive()
+
+init
+    TheOne.initialize()
+
+    CreateTrigger()
+        ..registerEnterRegion(THE_ONE_REGION, null)
+        ..addAction() ->
+            toggleInvulnerability(theOne, THE_ONE_REGION)
+    CreateTrigger()
+        ..registerLeaveRegion(THE_ONE_REGION, null)
+        ..addAction() ->
+            toggleInvulnerability(theOne, THE_ONE_REGION)
+    registerPlayerUnitEvent(EVENT_PLAYER_UNIT_DEATH) ->
+        toggleInvulnerability(theOne, THE_ONE_REGION)

@@ -1,0 +1,8 @@
+package Building
+
+// Local imports:
+import UnitEntity
+
+public abstract class Building extends UnitEntity
+    construct(unit whichUnit)
+        super(whichUnit)
