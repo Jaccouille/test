@@ -1,0 +1,7 @@
+Frame "BACKDROP" "ObserverConfigBackdrop" {
+    BackdropBackground  "UI\\Widgets\\EscMenu\\Human\\human-options-menu-background.blp",
+    BackdropCornerFlags "UL|UR|BL|BR|T|L|B|R",
+    BackdropCornerSize  0.0125,
+    BackdropBackgroundInsets 0.005 0.005 0.005 0.005,
+    BackdropEdgeFile  "UI\Widgets\ToolTips\Human\human-tooltip-border.blp",
+}

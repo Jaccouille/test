@@ -2,7 +2,6 @@ package ObserverBoard
 
 // Standard Library imports:
 import Dialog
-import HashMap
 import LinkedList
 import ClosureTimers
 import RegisterEvents
@@ -13,10 +12,11 @@ import Lodash
 // Local imports:
 import GameMode
 import Tribe
-import Boards
 import StringUtils
 import PlayerExtensions
 import DialogExtensions
+import ObserverUI
+import Boards
 
 let OPTION_NAME_COLOR = colorA(180, 180, 180, 255)
 let OPTION_VALUE_COLOR = colorA(115, 152, 255, 255)
@@ -81,100 +81,6 @@ class ObserverBoardVisionControl extends ObserverBoardControl
 
         diag.display(whichPlayer, true)
 
-class ObserverBoardZoomControl extends ObserverBoardControl
-    static let MAX = 1000
-
-    var currentValue = 0
-
-    construct(player whichPlayer)
-        super("Zoom", whichPlayer)
-        currentValue = whichPlayer.getZoom().toInt()
-
-    function setZoom(int amt)
-        this.whichPlayer.setZoom(amt.toReal())
-
-    override function getInitialValue() returns string
-        return currentValue.toString()
-
-    override function onSelect(VoidFunction<string> callback)
-        let diag = DialogCreate()
-        for zoom = 0 to MAX step 100
-            let zoomStr = zoom.toString()
-            diag
-            .addButton(zoomStr, 0)
-            .onClick() btn ->
-                setZoom(zoom)
-                callback.call(zoomStr)
-
-        diag.display(whichPlayer, true)
-
-class ObserverBoard
-    static let boards = new HashMap<player, thistype>()
-
-    player observer
-    LinkedList<ObserverBoardControl> options
-    let board = CreateMultiboard()
-    var selected = 0
-    var minimized = false
-
-    construct(player observer, LinkedList<ObserverBoardControl> options)
-        this.observer = observer
-        this.options = options
-
-        boards.put(observer, this)
-
-        board
-            ..setColumnCount(2)
-            ..setRowCount(options.size())
-            ..display(observer, true)
-            ..setItemsWidth(0.1)
-
-        var row = 0
-        for option in options
-            board
-                .getItem(row, 0)
-                ..setValue(option.getName())
-                ..setValueColor(OPTION_NAME_COLOR)
-                ..setStyle(true, false)
-                ..setWidth(0.05)
-                ..release()
-
-            board
-                .getItem(row, 1)
-                ..setValue(option.getInitialValue())
-                ..setValueColor(OPTION_VALUE_COLOR)
-                ..setStyle(true, false)
-                ..release()
-
-            row += 1
-
-        doPeriodically(0.1) cb ->
-            board.setTitle(getGameTimersBoardTitle())
-            let isMinimized = board.isMinimized()
-            if minimized and not isMinimized
-                displayOptions()
-            minimized = isMinimized
-
-    function displayOptions()
-        let diag = DialogCreate()
-        for option in options
-            diag
-            .addButton(option.getName(), 0)
-            .onClick(btn -> begin
-                let row = options.indexOf(option)
-                option.onSelect(value -> begin
-                    board
-                        .getItem(row, 1)
-                        ..setValue(value)
-                        ..release()
-                end)
-            end)
-
-        diag
-            .addButton("Quit", 0)
-            .onClick(btn -> skip)
-
-        diag.display(observer, true)
 
 function getObservers() returns LinkedList<player>
     let observers = new LinkedList<player>()
@@ -190,20 +96,14 @@ init
         for observer in observers
             nullTimer() () ->
                 scoreBoard.board.display(observer, true)
-            // Desync occur when you toggle the observer board
-            // Replaced it by scoreboard
-            // let options = asList<ObserverBoardControl>(
-            //     new ObserverBoardVisionControl(observer),
-            //     new ObserverBoardZoomControl(observer)
-            // )
-            // new ObserverBoard(observer, options)
+                enableUIForPlayer(observer)
 
-        destroy observers
 
     registerPlayerEvent(EVENT_PLAYER_END_CINEMATIC) ->
         let observer = GetTriggerPlayer()
         if observer.isObserverNew()
-            ObserverBoard.boards.get(observer).displayOptions()
+            enableUIForPlayer(observer)
+            // TODO: enable observer UI
 
     registerPlayerUnitEvent(EVENT_PLAYER_UNIT_SELECTED) ->
         let observer = GetTriggerPlayer()
