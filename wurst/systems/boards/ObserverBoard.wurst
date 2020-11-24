@@ -96,13 +96,13 @@ init
         for observer in observers
             nullTimer() () ->
                 scoreBoard.board.display(observer, true)
-                enableUIForPlayer(observer)
+                enableCameraControlForPlayer(observer)
 
 
     registerPlayerEvent(EVENT_PLAYER_END_CINEMATIC) ->
         let observer = GetTriggerPlayer()
         if observer.isObserverNew()
-            enableUIForPlayer(observer)
+            enableCameraControlForPlayer(observer)
             // TODO: enable observer UI
 
     registerPlayerUnitEvent(EVENT_PLAYER_UNIT_SELECTED) ->

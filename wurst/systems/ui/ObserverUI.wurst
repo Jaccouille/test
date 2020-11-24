@@ -1,30 +1,39 @@
 package ObserverUI
 
 import ClosureTimers
-import ClosureFrames
 
 let OFFSET_BORDER = 0.005
 let WIDTH_OFFSET = 0.01
-let HEIGHT_OFFSET = 0.01
+let HEIGHT_OFFSET = 0.02
 
-public function enableUIForPlayer(player p)
+
+// This is a simple camera control for observer, it has 2 sliders in a window
+// 1 for rotation and 1 for camera distance
+// ref https://www.hiveworkshop.com/threads/ui-creating-a-cam-control.315961/
+
+
+public function enableCameraControlForPlayer(player p)
     getFrame("ObserverConfigBackdrop", 0).setVisible(p, true)
     getFrame("QuestCheckBox", 4).setVisible(p, true)
 
 function updateCam()
     let sliderDist = getFrame("EscMenuSliderTemplate", 0)
     let sliderRot = getFrame("EscMenuSliderTemplate", 1)
+
+    // Adjust camera based on the value from the sliders
     SetCameraField(CAMERA_FIELD_TARGET_DISTANCE, sliderDist.getValue(), 0)
     SetCameraField(CAMERA_FIELD_ROTATION, sliderRot.getValue(), 1)
+
+    // Update slider value text
     getFrame("EscMenuLabelTextTemplate", 0).setText("Distance: " + sliderDist.getValue().toInt().toString())
     getFrame("EscMenuLabelTextTemplate", 1).setText("Rotation: " + sliderRot.getValue().toInt().toString())
 
 function createCamControl()
     createCameraSliders()
-    doPeriodically(0.1) (CallbackPeriodic cb) ->
+    doPeriodically(0.5) (CallbackPeriodic cb) ->
         updateCam()
 
-function createObserverConfigSlider(int offset) returns framehandle
+function createCameraSlider(int offset) returns framehandle
     let slider = createFrame("EscMenuSliderTemplate", getFrame("ObserverConfigBackdrop", 0), 0, offset)
     let label = createFrame("EscMenuLabelTextTemplate", slider, 0, offset)
 
@@ -33,63 +42,40 @@ function createObserverConfigSlider(int offset) returns framehandle
     return slider
 
 function createCameraSliders()
-    createObserverConfigSlider(0)
+    createCameraSlider(0)
         ..setMinMax(400, 3000)
         ..setValue(1650)
         ..setStepSize(50)
 
-    createObserverConfigSlider(1)
+    createCameraSlider(1)
         ..setMinMax(0, 360)
         ..setValue(90)
         ..setStepSize(5)
 
-function resetSlider()
-    print("reset slider triggered")
-    if GetLocalPlayer() == GetTriggerPlayer()
-        print(GetTriggerPlayer().getName())
-        getFrame("EscMenuSliderTemplate", 0).setValue(1650)
-        getFrame("EscMenuSliderTemplate", 1).setValue(90)
-
-function createResetButton()
-    let btn = createFrame("ScriptDialogButton", getFrame("ObserverConfigBackdrop", 0), 0, 0)
-    btn.setSize(0.09, 0.024)
-    btn.setPoint(FRAMEPOINT_TOPLEFT, getFrame("ObserverConfigBackdrop", 0), FRAMEPOINT_TOPLEFT, WIDTH_OFFSET, -HEIGHT_OFFSET * 3)
-    btn.setText("Reset Cam")
-    btn.onClick() ->
-        resetSlider()
-
-function oncheckBoxUIClick()
-    let enable = (BlzGetTriggerFrameEvent() == FRAMEEVENT_CHECKBOX_UNCHECKED)
-    print("triggered")
-    if GetLocalPlayer() == GetTriggerPlayer()
-        print("enabled : " + (enable ? "True" : "False"))
-        getFrame("ObserverConfigBackdrop", 0).setVisible(GetTriggerPlayer(), enable)
-
-function createHideBox() returns framehandle
-    let box = createFrame("QuestCheckBox", getOriginFrame(ORIGIN_FRAME_GAME_UI, 0), 0, 4)
-    let label = createFrame("EscMenuLabelTextTemplate", box, 0, 4)
-    label.setPoint(FRAMEPOINT_LEFT, box, FRAMEPOINT_RIGHT, 0, 0)
-    box.setAbsPoint(FRAMEPOINT_LEFT, 0.57, 0.23)
-    label.setText("Hide UI")
-    box.onCheckboxCheck() ->
-        oncheckBoxUIClick()
-    box.onCheckboxUncheck() ->
-        oncheckBoxUIClick()
-    return box
-
+// This is just a windows used to contains the sliders
+// The sliders are "child" of the windows, their position is relative to
+// this window
 function createBackDrop() returns framehandle
     let backdrop = createFrame("ObserverConfigBackdrop", getOriginFrame(ORIGIN_FRAME_GAME_UI, 0), 0, 0)
-    backdrop.setSize(0.25, 0.06)
-    backdrop.setAbsPoint(FRAMEPOINT_LEFT, 0.57, 0.19)
+    backdrop.setSize(0.25, 0.04)
+
+    // See https://www.hiveworkshop.com/threads/ui-positionate-frames.315860/
+    // if you want to adjust the backdrop position on the screen
+    backdrop.setAbsPoint(FRAMEPOINT_LEFT, 0.54, 0.18)
     return backdrop
 
 function initObserverConfigPanel()
     createBackDrop()..setVisible(false)
     createCamControl()
-    createResetButton()
-    createHideBox()..setVisible(false)
+
 
 init
+    // toc stand for "table of content", it imports the fdf files
+    // neccessary to build custom UI.
+    // I needed to define a custom back drop in the observerconfigbackdrop.fdf
+    // file, I was just following tutorial until something work, there
+    // doesn't seem to be official tutorial/documentation, just people messing
+    // around with UI native
     if loadTOCFile("UI\\mytableofcontent.toc") == false
         print("toc file loading failure")
     initObserverConfigPanel()
