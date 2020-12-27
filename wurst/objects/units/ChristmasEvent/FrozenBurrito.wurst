@@ -25,6 +25,7 @@ let TT_BURRITO = ("" +
 @compiletime function createFrozenBurrito()
     new AbilityDefinitionItemManaRestoreGreater(ABILITY_BURRITO_MANA)
         ..setManaPointsGained(1, MANA_RESTORED)
+        ..setCooldown(1, 0)
 
     createPerishableItem(ITEM_FROZEN_BURRITO)
         ..setScalingValue(0.8)
