@@ -67,6 +67,8 @@ let CHICKEN_WANDER_RANGE = 1000.
 
 public class Chicken extends Hostile
     private static let unitTypeId = UNIT_NEUTRAL_CHICKEN
+    private DamageListener dmgList
+    private CallbackPeriodic cb
     construct(unit whichUnit)
         super(whichUnit)
 
@@ -105,17 +107,22 @@ public class Chicken extends Hostile
         destroy itemArmorToSpawn
         destroy itemChargedToSpawn
 
-        DamageEvent.addListener() ->
+        dmgList = DamageEvent.addListener() ->
             let target = DamageEvent.getTarget()
             if target == getUnit()
                 and target.hasItemById(ITEM_COOKED_MEAT)
                 and target.getMissingHP() > 50
                 target.useItem(target.getItemById(ITEM_COOKED_MEAT))
 
-        doPeriodically(10) (CallbackPeriodic cb) ->
+        cb = doPeriodically(10) (CallbackPeriodic cb) ->
             let x = getUnit().getX() + GetRandomReal(-CHICKEN_WANDER_RANGE, CHICKEN_WANDER_RANGE)
             let y = getUnit().getY() + GetRandomReal(-CHICKEN_WANDER_RANGE, CHICKEN_WANDER_RANGE)
             getUnit().issuePointOrder("move", vec2(x, y))
+
+    override function postDeath()
+        destroy dmgList
+        destroy cb
+        super.postDeath()
 
 init
     Chicken.initialize()

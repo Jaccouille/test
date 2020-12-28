@@ -4,8 +4,8 @@ dependencies:
 - https://github.com/crojewsk/wurstExtLibs
 - https://github.com/theQuazz/wurst-lodash
 buildMapData:
-  name: Island Troll Tribes Winter v1.0d
-  fileName: Island.Troll.Tribes.Winter.v1.0d
+  name: Island Troll Tribes Winter v1.0e
+  fileName: Island.Troll.Tribes.Winter.v1.0e
   author: Quazz/MasterTroll/Jaccouille/Marsunpaisti/Xan Kriegor
   scenarioData:
     description: This is Island Troll Tribes 3.9a in a ice environnment,

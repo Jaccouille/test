@@ -31,7 +31,7 @@ let DUMMY_ABIL_ID = compiletime(ABIL_ID_GEN.next())
 function onEnterHandler(unit target)
     // Exit if the santa hat is not enabled for this player.
     if not enabled.get(target.getOwner()).toBool()
-        and not target.isTroll()
+        or not target.isTroll()
         return
 
     target.addAbility(DUMMY_ABIL_ID)

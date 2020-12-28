@@ -8,7 +8,7 @@ public class Snake extends Hostile
     private static let unitTypeId = UNIT_SNAKE
 
     static function initialize()
-        register(unitTypeId, fish -> new Snake(fish))
+        register(unitTypeId, snake -> new Snake(snake))
 
     construct(unit whichUnit)
         super(whichUnit)

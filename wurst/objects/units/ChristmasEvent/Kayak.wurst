@@ -12,6 +12,8 @@ import LocalObjectIDs
 import Items
 import LocalItemObjEditing
 import SimError
+import TextTagUtils
+import ColorUtils
 
 let ABILITY_CARGO_1_SLOT  = compiletime(ABIL_ID_GEN.next())
 let ABIL_KAYAK            = compiletime(ABIL_ID_GEN.next())
@@ -92,6 +94,7 @@ function createKayakingTrollUnit(int newId, string model) returns UnitDefinition
         ..setNormalAbilities(ABILITIES)
         ..setModelFile(model)
         ..setScalingValue(1.35)
+        ..setIsaBuilding(true)
 
 @compiletime function createTransportShip()
     new AbilityDefinitionCargoHoldShip(ABILITY_CARGO_1_SLOT)
@@ -147,6 +150,9 @@ init
                     if troll.getPos().distanceTo(kayak.getPos()) < 180
                         kayak.unpause()
                         BlzSetUnitSkin(kayak, trollToKayakMap.get(troll.getTypeId()))
+                        if kayak.getOwner() != troll.getOwner()
+                            kayak.setOwner(troll.getOwner(), true)
+                            createFadingTextTag(kayak, "Kayak stolen!", COLOR_YELLOW)
                     else
                         simError(EventData.getTriggerPlayer(), "Kayak's too far")
                 else
