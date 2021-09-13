@@ -370,11 +370,11 @@ function createBearForm(int unitId) returns HeroDefinition
     return createSubTroll(unitId)
         ..setNameEnhance("Bear Form")
         ..setAttackDamage(25)
-        ..setAttackSpeed(2.50)
+        ..setAttackSpeed(2.8)
         ..setModelFile(Units.grizzlyBear)
         ..setIcons(Icons.bTNGrizzlyBear)
         ..setUnitSoundSet(Soundsets.shaman)
-        ..setSpeedBase(290)
+        ..setSpeedBase(210)
         ..setButtonPositionX(1)
         ..setButtonPositionY(0)
         ..setScalingValue(1.15)
@@ -384,6 +384,7 @@ function createBearForm(int unitId) returns HeroDefinition
         ..setProperNames(NAME_SHAPESHIFTER[1])
         ..setProperNamesUsed(1)
         ..setHotkey("W")
+
         ..setAbilitiesEnhance(NORMAL_SPELLS_SHAPESHIFTER_BEAR, HERO_SPELLS_SHAPESHIFTER_BEAR)
 
 @compiletime function createBearForm()
