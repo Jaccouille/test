@@ -384,7 +384,8 @@ function createBearForm(int unitId) returns HeroDefinition
         ..setProperNames(NAME_SHAPESHIFTER[1])
         ..setProperNamesUsed(1)
         ..setHotkey("W")
-
+        ..setDefenseBase(4)
+        ..setAnimationCastPoint(0.550)
         ..setAbilitiesEnhance(NORMAL_SPELLS_SHAPESHIFTER_BEAR, HERO_SPELLS_SHAPESHIFTER_BEAR)
 
 @compiletime function createBearForm()
