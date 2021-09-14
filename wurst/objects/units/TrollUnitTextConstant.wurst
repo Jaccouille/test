@@ -41,6 +41,8 @@ public constant  NAME_GATHERER        = "Themoles,Chin'Jin,Zepac,Shishmortis'for
 public constant  NAME_RADAR_GATHERER  = "Themoles,Unpa,Zepac,Shishmortis'fork"
 public constant  NAME_HERB_MASTER     = "Themoles,Unpa,Zepac,Shishmortis'fork"
 public constant  NAME_OMNIGATHERER    = "Mortis"
+public constant  NAME_CONJURER        = "Mambo"
+public constant  NAME_HEMOMANCER      = "Mambo on Xanax"
 
 
 // Pretty Map to assign inventory abilities to trolls in constructor
@@ -56,6 +58,7 @@ public constant BASIC_TROLL_SPELLS = commaList(ABILITY_PANIC,ABILITY_SLEEP_OUTSI
 // Unsub Hero Spells
 public constant HERO_SPELLS_HUNTER       = commaList(ABILITY_TRACK,            ABILITY_WARRIOR,        ABILITY_TRACKER)
 public constant HERO_SPELLS_MAGE         = commaList(ABILITY_MAGE_SPELLBOOK,   ABILITY_ELEMENTALIST,   ABILITY_HYPNOTIST,    ABILITY_DEMENTIA_MASTER)
+public constant HERO_SPELLS_CONJURER     = commaList(ABILITY_CONJURER_SPELLBOOK , ABILITY_ELEMENTALIST   , ABILITY_HEMOMANCER)
 public constant HERO_SPELLS_PRIEST       = commaList(ABILITY_PRIEST_SPELLBOOK, ABILITY_BOOSTER,        ABILITY_MASTER_HEALER,ABILITY_SAGE)
 // The first ability is just a placeholder that is stripped during creation of the class menu.
 // TODO: Fix this hack by properly listing out abilities and class selection separately.
@@ -66,6 +69,7 @@ public constant HERO_SPELLS_GATHERER     = commaList(ABILITY_ITEM_RADAR,       A
 // Unsub Normal Spells
 public constant  NORMAL_SPELLS_HUNTER       = commaList(ABILITY_HUNTER_WEB)
 public constant  NORMAL_SPELLS_MAGE         = commaList(ABILITY_NEGATIVE_BLAST)
+public constant  NORMAL_SPELLS_CONJURER     = commaList(ABILITY_PHASE_SHIFT)
 public constant  NORMAL_SPELLS_PRIEST       = commaList(ABILITY_THE_GLOW)
 public constant  NORMAL_SPELLS_BEASTMASTER = commaList(ABILITY_PET_SPELLS,ABILITY_SPIRIT_BEAST)
 public constant  NORMAL_SPELLS_THIEF        = commaList(ABILITY_TELEPORT)
@@ -157,6 +161,11 @@ public constant  TOOLTIP_MAGE         = "" +
     "Slow with moderate damage,the Troll Mage is equipped with more offensive spells than the Priest. "+
     "He has "+COLOR_ORANGE.toColorString()+"Null Damage|r and can learn many "+COLOR_ORANGE.toColorString()+"Offensive Spells|r. A good damage class. "+
     INVENTORY_3_SLOT+DIFFICULTY_HARD
+
+public constant  TOOLTIP_CONJURER     = "Slow with moderate damage, the Conjurer is a versatile caster, he can buff his allies and debuff his enemies. "+
+    "He has "+COLOR_ORANGE.toColorString()+"Phase Shift|r which allow him to dodge any incoming damage for 1.5 seconds and can learn additional "+
+     "utility spells. A good support class which can adapt to multiple strategy. "+
+    INVENTORY_4_SLOT+DIFFICULTY_HARD
 
 public constant  TOOLTIP_PRIEST       = "" +
     "Slow with low damage,the Troll Priest has many buff and healing spells. He has "+COLOR_ORANGE.toColorString()+"The Glow|r,which increases"+

@@ -211,6 +211,30 @@ function createDementiaMaster(int unitId) returns HeroDefinition
     createDementiaMaster(UNIT_DEMENTIA_MASTER)
 
 
+function createConjurer(int unitId) returns HeroDefinition
+    return createBasicTroll(unitId)
+        ..setNameEnhance("Conjurer")
+        ..setAttackDamage(10)
+        ..setAttackSpeed(1.77)
+        ..setModelFile(Units.heroShadowHunter1)
+        ..setIcons(Icons.bTNShadowHunter)
+        ..setUnitSoundSet(Soundsets.witchDoctor)
+        ..setSpeedBase(270)
+        ..setButtonPositionX(3)
+        ..setButtonPositionY(1)
+        ..setScalingValue(1)
+        ..setSightRadiusDay(1100)
+        ..setSightRadiusNight(650)
+        ..setTooltipExtended(TOOLTIP_CONJURER)
+        ..setProperNames(NAME_CONJURER)
+        ..setProperNamesUsed(4)
+        ..setHotkey("R")
+        ..setAbilitiesEnhance(NORMAL_SPELLS_CONJURER, HERO_SPELLS_CONJURER)
+
+
+@compiletime function createConjurer()
+    createConjurer(UNIT_CONJURER)
+
 function createPriest(int unitId) returns HeroDefinition
     return createBasicTroll(unitId)
         ..setNameEnhance("Priest")
