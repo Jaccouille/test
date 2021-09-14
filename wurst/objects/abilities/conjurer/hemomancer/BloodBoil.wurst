@@ -1,0 +1,116 @@
+package BloodBoil
+
+import ChannelAbilityPreset
+import LocalObjectIDs
+import Lodash
+import ToolTipsUtils
+import BuffObjEditing
+import ClosureForGroups
+import ClosureEvents
+import ClosureTimers
+import DummyCaster
+import Orders
+import Recoil
+import LocalAssets
+
+constant BUFF_ID = compiletime(BUFF_ID_GEN.next())
+constant BUFF_ORIGINAL_ID = 'Buhf' // Unholy Frenzy
+constant ABIL_CURSE_ID = compiletime(ABIL_ID_GEN.next())
+constant ABIL_UNHOLY_FRENZY_ID = compiletime(ABIL_ID_GEN.next())
+
+
+constant AOE = 350.
+constant CAST_RANGE = 400.
+constant COOLDOWN = 60.
+constant MANACOST = 0
+constant DURATION = 6.
+constant RECOIL_DAMAGE = 0.15
+
+constant AS_BUFF = 0.15
+constant MISS_CHANCE = 0.25
+
+constant DEBUFF_DURATION = 6.
+
+constant TOTAL_DAMAGE = 50.
+constant TOOLTIP_NORM = "Blood Boil"
+constant TOOLTIP_EXTENDED = ("Boil the blood of enemy trolls in target area, dealing {0} damage over {1} seconds, "+
+                            "trolls with boiling blood gain {2} attack speed but have {3} chance to miss.")
+                            .format(TOTAL_DAMAGE.toToolTipRed(), DURATION.toToolTipLightBlue(), AS_BUFF.toToolTipOrange(), MISS_CHANCE.toToolTipPurple())
+                            + makeToolTipDurationAndRecoil(DURATION, COOLDOWN, RECOIL_DAMAGE)
+
+function createBuff()
+    new BuffDefinition(BUFF_ID, BUFF_ORIGINAL_ID)
+        ..setIcon(LocalIcons.bTNBloodBoil)
+        ..setTooltipNormal(1, "Boiling Blood")
+        ..setTooltipNormalExtended(1, "This unit is under the effect of blood boil¸ gain attack speed but loose accuracy")
+
+class DummyCurse extends AbilityDefinitionCursecreep
+    construct(int newAbilityId)
+        super(newAbilityId)
+        this.setName("Blood Boil Curse")
+        this.setDurationHero(1, DEBUFF_DURATION)
+        this.setDurationNormal(1, DEBUFF_DURATION)
+        this.setChancetoMiss(1, MISS_CHANCE)
+        this.setCastRange(1, 99999)
+        this.setBuffs(1, toRawCode(BUFF_ID))
+
+class DummyUnholyFrenzy extends AbilityDefinitionUnholyFrenzycreep
+    construct(int newAbilityId)
+        super(newAbilityId)
+        this.setCastRange(1, 99999)
+        this.setDamageperSecond(1, 0)
+        this.setName("Blood Boil AS boost")
+        this.setBuffs(1, toRawCode(BUFF_ID))
+        this.setAttackSpeedBonus(1, AS_BUFF)
+        this.setDurationHero(1, DEBUFF_DURATION)
+        this.setDurationNormal(1, DEBUFF_DURATION)
+
+class BloodBoil extends AbilityDefinitionRainofFire
+    construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
+        super(newAbilityId)
+        this.setButtonPositionNormalX(buttonPos.a)
+        this.setButtonPositionNormalY(buttonPos.b)
+        this.setIconNormal(LocalIcons.bTNBloodBoil)
+        this.setDamage(1, 0)
+        this.setDamagePerSecond(1, 0)
+        this.setCastRange(1, CAST_RANGE)
+        this.setNumberofShards(1, 0)
+        this.setNumberofWaves(1, 0)
+        this.setAreaofEffect(1, AOE)
+        this.setCastingTime(1, 0)
+        this.setBuffs(1, "")
+        this.setCastingTime(1, 0.5)
+        this.setCooldown(1, COOLDOWN)
+        this.setDurationHero(1, 0)
+        this.setDurationNormal(1, 0)
+        this.setEffects(1, "")
+        this.setManaCost(1, MANACOST)
+        this.setHotkeyNormal(hotkey)
+        this.setName(TOOLTIP_NORM)
+        this.setTooltipNormalExtended(1, TOOLTIP_EXTENDED)
+        this.setTooltipNormal(1, makeToolTipNorm(hotkey, TOOLTIP_NORM))
+
+@compiletime function createBloodBoil()
+    new BloodBoil(ABILITY_BLOOD_BOIL, "W", new Pair(1, 0))
+    new DummyCurse(ABIL_CURSE_ID)
+    new DummyUnholyFrenzy(ABIL_UNHOLY_FRENZY_ID)
+    createBuff()
+
+init
+    EventListener.onPointCast(ABILITY_BLOOD_BOIL) (unit caster, vec2 target) ->
+        spellRecoil(getPercentageMaxHp(caster.getMaxHP(), RECOIL_DAMAGE), caster)
+        let bloodFx = addEffect(LocalAbilities.bloodBoil, target)
+        doAfter(DURATION) () ->
+            bloodFx.destr()
+
+        doPeriodicallyTimed(1, DURATION) (CallbackCounted cb) ->
+            forUnitsInRange(target, AOE) (unit u) ->
+                if u.isAlive() and u.getOwner().isEnemyOf(caster.getOwner()) and not u.isType(UNIT_TYPE_STRUCTURE)
+                and not u.isType(UNIT_TYPE_FLYING) and not u.isInvulnerable()
+                    UnitDamageTarget(caster, u, TOTAL_DAMAGE / DURATION, false, false, ATTACK_TYPE_NORMAL, DAMAGE_TYPE_MAGIC, null)
+                    if not u.hasAbility(BUFF_ID)
+                        new DummyCaster()
+                            ..owner(caster.getOwner())
+                            ..origin(caster.getPos() + vec2(100,0))
+                            ..castTarget(ABIL_UNHOLY_FRENZY_ID, 1, Orders.unholyfrenzy, u)
+                            ..castTarget(ABIL_CURSE_ID, 1, Orders.curse, u)

@@ -58,7 +58,7 @@ public constant BASIC_TROLL_SPELLS = commaList(ABILITY_PANIC,ABILITY_SLEEP_OUTSI
 // Unsub Hero Spells
 public constant HERO_SPELLS_HUNTER       = commaList(ABILITY_TRACK,            ABILITY_WARRIOR,        ABILITY_TRACKER)
 public constant HERO_SPELLS_MAGE         = commaList(ABILITY_MAGE_SPELLBOOK,   ABILITY_ELEMENTALIST,   ABILITY_HYPNOTIST,    ABILITY_DEMENTIA_MASTER)
-public constant HERO_SPELLS_CONJURER     = commaList(ABILITY_CONJURER_SPELLBOOK , ABILITY_ELEMENTALIST)
+public constant HERO_SPELLS_CONJURER     = commaList(ABILITY_CONJURER_SPELLBOOK , ABILITY_HEMOMANCER)
 public constant HERO_SPELLS_PRIEST       = commaList(ABILITY_PRIEST_SPELLBOOK, ABILITY_BOOSTER,        ABILITY_MASTER_HEALER,ABILITY_SAGE)
 // The first ability is just a placeholder that is stripped during creation of the class menu.
 // TODO: Fix this hack by properly listing out abilities and class selection separately.
@@ -81,6 +81,7 @@ public constant HERO_SPELLS_WARRIOR        = commaList(ABILITY_GIANT_SWING,     
 public constant HERO_SPELLS_TRACKER        = commaList(ABILITY_TRACKER_SPELLBOOK,          ABILITY_JUGGERNAUT)
 public constant HERO_SPELLS_ELEMENTALIST   = commaList(ABILITY_ELEMENTALIST_NEW_SPELLBOOK, ABILITY_DEMENTIA_MASTER)
 public constant HERO_SPELLS_HYPNOTIST      = commaList(ABILITY_HYPNOTIST_SPELLBOOK,        ABILITY_DEMENTIA_MASTER)
+public constant HERO_SPELLS_HEMOMANCER     = commaList(ABILITY_HEMOMANCER_SPELLBOOK       )
 public constant HERO_SPELLS_BOOSTER        = commaList(ABILITY_BOOSTER_SPELLBOOK,          ABILITY_SAGE)
 public constant HERO_SPELLS_MASTER_HEALER  = commaList(ABILITY_MASTER_HEALER_SPELLBOOK,    ABILITY_SAGE)
 public constant HERO_SPELLS_ESCAPE_ARTIST  = commaList(ABILITY_ESCAPE_ARTIST_SPELLBOOK,    ABILITY_ASSASSIN)
@@ -96,6 +97,7 @@ public constant NORMAL_SPELLS_WARRIOR        = commaList(ABILITY_WARRIOR_SPELLBO
 public constant NORMAL_SPELLS_TRACKER        = commaList(ABILITY_HUNTER_WEB)
 public constant NORMAL_SPELLS_ELEMENTALIST   = commaList(ABILITY_SUB_MAGE_INHERITED_SPELLBOOK)
 public constant NORMAL_SPELLS_HYPNOTIST      = commaList(ABILITY_SUB_MAGE_INHERITED_SPELLBOOK)
+public constant NORMAL_SPELLS_HEMOMANCER     = commaList(ABILITY_PHASE_SHIFT)
 public constant NORMAL_SPELLS_BOOSTER        = commaList(ABILITY_SUB_PRIEST_SPELLBOOK)
 public constant NORMAL_SPELLS_MASTER_HEALER  = commaList(ABILITY_SUB_PRIEST_SPELLBOOK)
 public constant NORMAL_SPELLS_DRUID          = commaList(ABILITY_PET_SPELLS)
@@ -210,6 +212,10 @@ public constant  TOOLTIP_HYPNOTIST       = "" +
     "The Hypnotist is adept at controlling enemies thoughts and emotions. He can easily zap enemies "+
     "energy by means of depression and got some crowd controll spells. "+
     SUBCLASS_WARNING+DIFFICULTY_HARD
+
+public constant  TOOLTIP_HEMOMANCER         = "" +
+    "Need to write tooltip"+
+    SUBCLASS_WARNING+DIFFICULTY_MEDIUM
 
 public constant  TOOLTIP_BOOSTER         = "" +
     "The Booster is adept at buffing up allies with magic spells. "+

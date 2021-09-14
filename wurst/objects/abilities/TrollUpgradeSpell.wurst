@@ -113,6 +113,15 @@ function AbilityDefinition.setRequiredTrollLevel(int level, boolean requiresSub)
         ..presetHotkey("E")
         ..setBaseOrderID(1, "manashieldoff")
 
+@compiletime function createUpgradeAbilityHemomancer() returns ChannelAbilityPreset
+    return createUpgradeAbility(ABILITY_HEMOMANCER)
+        ..setUpgradeTarget("Hemomancer")
+        ..presetTooltipNormalExtended(lvl -> TOOLTIP_HEMOMANCER)
+        ..setIconNormal(LocalIcons.bTNHemomancer)
+        ..setRequiredTrollLevel(6, false)
+        ..presetHotkey("Q")
+        ..setBaseOrderID(1, "manaflareon")
+
 @compiletime function createUpgradeAbilityBooster() returns ChannelAbilityPreset
     return createUpgradeAbility(ABILITY_BOOSTER)
         ..setUpgradeTarget("Booster")

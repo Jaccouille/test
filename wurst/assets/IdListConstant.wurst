@@ -34,7 +34,8 @@ public constant PRIEST_CLASS_LIST = asList(
 )
 
 public constant CONJURER_CLASS_LIST = asList(
-    UNIT_CONJURER
+    UNIT_CONJURER,
+    UNIT_HEMOMANCER
 )
 
 public constant BEASTMASTER_CLASS_LIST = asList(
@@ -84,6 +85,7 @@ public constant SUB_TROLL_UNIT_LIST = asList(
     UNIT_TRACKER,
     UNIT_ELEMENTALIST,
     UNIT_HYPNOTIST,
+    UNIT_HEMOMANCER,
     UNIT_BOOSTER,
     UNIT_MASTER_HEALER,
     UNIT_SHAPESHIFTER_WOLF,

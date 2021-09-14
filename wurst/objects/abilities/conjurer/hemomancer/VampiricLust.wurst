@@ -1,0 +1,79 @@
+package VampiricLust
+
+import ChannelAbilityPreset
+import LocalObjectIDs
+
+import Lodash
+import Assets
+import ToolTipsUtils
+import BuffObjEditing
+import HealingSystem
+import ClosureTimers
+import ClosureEvents
+import Recoil
+
+constant BUFF_ID = compiletime(BUFF_ID_GEN.next())
+constant BUFF_ORIGINAL_ID = 'Bcri' // cripple
+constant CAST_RANGE = 600.
+constant COOLDOWN = 30.
+constant MANACOST = 0
+constant DURATION = 5.
+
+constant RECOIL_DAMAGE = 0.15
+constant LIFESTEAL_AMOUNT = 50.
+
+constant TOOLTIP_NORM = "Vampiric Lust"
+constant TOOLTIP_EXTENDED = "The Hemomancer curse an enemy with lust for blood, units who attack it will heal for {0} of their damage."
+                            .format((LIFESTEAL_AMOUNT / 100).toToolTipRed()) + makeToolTipDurationAndRecoil(DURATION, COOLDOWN, RECOIL_DAMAGE)
+
+function createBuff()
+    new BuffDefinition(BUFF_ID, BUFF_ORIGINAL_ID)
+        ..setIcon(Icons.bTNMaskOfDeath)
+        ..setArtSpecial(1,"")
+        ..setTooltipNormal(1, TOOLTIP_NORM)
+        ..setTooltipNormalExtended(1, "")
+        ..setArtTarget(1, Abilities.vampPotionCaster)
+
+class VampiricLust extends AbilityDefinitionCripplecreep
+    construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
+        super(newAbilityId)
+        this.setHotkeyNormal(hotkey)
+        this.setName(TOOLTIP_NORM)
+        this.presetTooltipNormal(lvl -> makeToolTipNorm(hotkey, TOOLTIP_NORM))
+        this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED)
+        this.setButtonPositionNormalX(buttonPos.a)
+        this.setButtonPositionNormalY(buttonPos.b)
+        this.setIconNormal(Icons.bTNMaskOfDeath)
+        this.setIconResearch(Icons.bTNMaskOfDeath)
+        this.setManaCost(1, MANACOST)
+        this.setCooldown(1, COOLDOWN)
+        this.setDurationHero(1, DURATION)
+        this.setDurationNormal(1, DURATION)
+        this.setBuffs(1, toRawCode(BUFF_ID))
+        this.setMovementSpeedReduction(1, 0)
+        this.setAttackSpeedReduction(1, 0)
+        this.setDamageReduction(1, 0)
+
+
+@compiletime function creationVampiricLust()
+    new VampiricLust(ABILITY_VAMPIRIC_LUST, "R", new Pair(3, 0))
+    createBuff()
+
+
+init
+    EventListener.add(EVENT_UNIT_DAMAGED) () ->
+        if GetTriggerUnit().hasAbility(BUFF_ID)
+            let attacker = GetEventDamageSource()
+            let damageAmount = GetEventDamage()
+
+            let hpRegained = damageAmount * LIFESTEAL_AMOUNT / 100
+            // Debug
+            print(damageAmount.toString() + " damage " + hpRegained.toString() + " Healed")
+
+            // For some reason I don't know, when dealing the killing blow, getEventDamage() return a big value like 50 000,
+            // so I set a random value as threshold, doubt you'll ever lifesteal 75 hp at this moment
+            if hpRegained > 0 and hpRegained < 75
+                new HealingInstance(attacker, hpRegained, HealingType.ABILITY)
+                let fx = attacker.addEffect(Abilities.healTarget, "origin")
+                doAfter(1.5) ->
+                    fx.destr()

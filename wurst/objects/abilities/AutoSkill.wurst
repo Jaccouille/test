@@ -42,6 +42,7 @@ let skillMap = new HashMap<int, int>()
 
     // Conjurer
     ..put(UNIT_CONJURER,             ABILITY_CONJURER_SPELLBOOK)
+    ..put(UNIT_HEMOMANCER,           ABILITY_HEMOMANCER_SPELLBOOK)
 
     // Beastmaster
     ..put(UNIT_SHAPESHIFTER_WOLF,    ABILITY_SHAPESHIFTER_FORM)
