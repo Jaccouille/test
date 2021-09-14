@@ -1,0 +1,26 @@
+package Recoil
+
+import Assets
+import ClosureTimers
+import ToolTipsUtils
+import ColorUtils
+
+public function spellRecoil(real damage, unit caster)
+    let recoilFx = caster.addEffect(Objects.orcBloodWitchDoctor, "origin")
+    caster.subHP(damage)
+    doAfter(1) () ->
+        recoilFx.destr()
+
+public function getPercentageMaxHp(real maxHp, real recoilDamagePercentage) returns real
+    return (maxHp * recoilDamagePercentage)
+
+function real.formatForRecoilToolTip() returns string
+    if this < 1 and this > 0
+        return (R2I(this * 100).toString() + "%").color(COLOR_RED) + " of its max health point as recoil damage.|r".color(GOLD_COLOR)
+    else
+        return this.toInt().toString().color(COLOR_RED) + " recoil damage.|r".color(GOLD_COLOR)
+
+public function makeToolTipDurationAndRecoil(real DURATION, real COOLDOWN, real RECOIL_DAMAGE) returns string
+    let toolTip = " Lasts {0} seconds, has {1} seconds cooldown. {2}".format(DURATION.toToolTipLightBlue(), COOLDOWN.toToolTipLightBlue(),
+                  ("Caster take ".color(GOLD_COLOR) + RECOIL_DAMAGE.formatForRecoilToolTip()))
+    return toolTip

@@ -58,7 +58,7 @@ public constant BASIC_TROLL_SPELLS = commaList(ABILITY_PANIC,ABILITY_SLEEP_OUTSI
 // Unsub Hero Spells
 public constant HERO_SPELLS_HUNTER       = commaList(ABILITY_TRACK,            ABILITY_WARRIOR,        ABILITY_TRACKER)
 public constant HERO_SPELLS_MAGE         = commaList(ABILITY_MAGE_SPELLBOOK,   ABILITY_ELEMENTALIST,   ABILITY_HYPNOTIST,    ABILITY_DEMENTIA_MASTER)
-public constant HERO_SPELLS_CONJURER     = commaList(ABILITY_CONJURER_SPELLBOOK , ABILITY_ELEMENTALIST   , ABILITY_HEMOMANCER)
+public constant HERO_SPELLS_CONJURER     = commaList(ABILITY_CONJURER_SPELLBOOK , ABILITY_ELEMENTALIST)
 public constant HERO_SPELLS_PRIEST       = commaList(ABILITY_PRIEST_SPELLBOOK, ABILITY_BOOSTER,        ABILITY_MASTER_HEALER,ABILITY_SAGE)
 // The first ability is just a placeholder that is stripped during creation of the class menu.
 // TODO: Fix this hack by properly listing out abilities and class selection separately.

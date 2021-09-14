@@ -1,0 +1,20 @@
+package Conjurer
+
+import LocalObjectIDs
+import Troll
+
+
+public class Conjurer extends Troll
+    private static let unitTypeId = UNIT_CONJURER
+
+    static function initialize()
+        register(unitTypeId, troll -> new Conjurer(troll))
+
+    construct(unit whichUnit)
+        super(whichUnit)
+
+    override function postCreate()
+        super.postCreate()
+
+init
+    Conjurer.initialize()

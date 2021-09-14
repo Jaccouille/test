@@ -33,6 +33,10 @@ public constant PRIEST_CLASS_LIST = asList(
     UNIT_SAGE
 )
 
+public constant CONJURER_CLASS_LIST = asList(
+    UNIT_CONJURER
+)
+
 public constant BEASTMASTER_CLASS_LIST = asList(
     UNIT_BEASTMASTER,
     UNIT_SHAPESHIFTER_WOLF,
@@ -68,6 +72,7 @@ public constant UNSUB_TROLL_UNIT_LIST = asList(
     UNIT_HUNTER,
     UNIT_MAGE,
     UNIT_PRIEST,
+    UNIT_CONJURER,
     UNIT_BEASTMASTER,
     UNIT_THIEF,
     UNIT_SCOUT,
@@ -105,6 +110,7 @@ public constant TROLL_UNIT_LIST = new LinkedList<int>()
     ..addAll(HUNTER_CLASS_LIST)
     ..addAll(MAGE_CLASS_LIST)
     ..addAll(PRIEST_CLASS_LIST)
+    ..addAll(CONJURER_CLASS_LIST)
     ..addAll(BEASTMASTER_CLASS_LIST)
     ..addAll(THIEF_CLASS_LIST)
     ..addAll(SCOUT_CLASS_LIST)

@@ -1,0 +1,64 @@
+package InnerFireConjurer
+
+import ChannelAbilityPreset
+import LocalObjectIDs
+
+import Lodash
+import Assets
+import ToolTipsUtils
+import BuffObjEditing
+
+constant BUFF_ID = compiletime(BUFF_ID_GEN.next())
+constant BUFF_ORIGINAL_ID = 'Binf'
+
+constant CAST_RANGE = 650.
+constant COOLDOWN = 20.
+constant MANACOST = 0
+constant DURATION = 15.
+
+constant DAMAGE_INCREASE = 0.20
+constant DEFENSE_INCREASE = 3.
+
+constant TOOLTIP_NORM = "Inner Fire"
+constant TOOLTIP_EXTENDED = "Increase damage of the target unit by {0} and armor by {1}.".format(DAMAGE_INCREASE.toToolTipRed(), DEFENSE_INCREASE.toToolTipOrange())+
+                             makeToolTipDuration(DURATION, COOLDOWN)
+constant TARGET_ALLOWED = "air,ground,friend,neutral,self"
+
+function createBuff()
+    new BuffDefinition(BUFF_ID, BUFF_ORIGINAL_ID)
+        ..setIcon(Icons.bTNInnerFire)
+        ..setArtTarget(1, Abilities.innerFireTarget)
+        ..setTooltipNormal(1, TOOLTIP_NORM)
+        ..setTooltipNormalExtended(1, "This unit has Inner Fire. Its armor and attack damage are increased.")
+
+class InnerFireConjurer extends AbilityDefinitionInnerFire
+    construct(int newAbilityId, string hotkey, Pair<int, int> buttonPos)
+        super(newAbilityId)
+        this.setCheckDependencies(false)
+        this.setRequirements("")
+        this.setRequirementsLevels("")
+        this.setHeroAbility(false)
+        this.setLevels(1)
+        this.setRequiredLevel(1)
+        this.setLevelSkipRequirement(1)
+        this.setHotkeyNormal(hotkey)
+        this.setName(TOOLTIP_NORM)
+        this.presetTooltipNormal(lvl -> makeToolTipNorm(hotkey, TOOLTIP_NORM))
+        this.presetTooltipNormalExtended(lvl -> TOOLTIP_EXTENDED)
+        this.setButtonPositionNormalX(buttonPos.a)
+        this.setButtonPositionNormalY(buttonPos.b)
+        this.presetManaCost(lvl -> MANACOST)
+        this.presetCooldown(lvl -> COOLDOWN)
+        this.setIconResearch(Icons.bTNInnerFire)
+        this.presetDurationHero(lvl -> DURATION)
+        this.presetDurationNormal(lvl -> DURATION * 2)
+        this.presetTargetsAllowed(lvl -> TARGET_ALLOWED)
+        this.presetDamageIncrease(lvl -> DAMAGE_INCREASE)
+        this.presetDefenseIncrease(lvl -> DEFENSE_INCREASE.toInt())
+        this.presetAutocastRange(lvl -> CAST_RANGE)
+        this.presetBuffs(lvl -> toRawCode(BUFF_ID))
+
+
+@compiletime function createInnerFireConjurer()
+    new InnerFireConjurer(ABILITY_INNER_FIRE_CONJ, "Q", new Pair(0, 0))
+    createBuff()

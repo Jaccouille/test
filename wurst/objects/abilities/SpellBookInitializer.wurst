@@ -17,6 +17,7 @@ let TT_MAGE_SPELLBOOK            = "The Mage Spells, contains various offensive 
 let TT_ELEMENTALIST_SPELLBOOK    = "The Elementalist Masteries, contains various damage dealing spells."
 let TT_HYPNOTIST_SPELLBOOK       = "The Hypnotist Voodoo magic, contains various crowd control and energy zapping spells."
 let TT_DEMENTIA_MASTER_SPELLBOOK = "The Dementia Master Black Magic, contains odd damage dealing spells."
+let TT_CONJURER_SPELLBOOK    = "The Conjurer Spells, contains first testament of ITT."
 let TT_PRIEST_SPELLBOOK          = "The Priest Spells, contains various defensive spells."
 let TT_BOOSTER_SPELLBOOK         = "The Booster Spells, contains various buffing spells."
 let TT_MASTER_HEALER_SPELLBOOK   = "The Master Healer Healing Prowess, contains various healing spells."
@@ -124,6 +125,16 @@ let TT_OMNIGATHERER_INHERITED = "Contains all spells from the gatherer class."
         ..setRequiredLevel(0)
         ..setLevelSkipRequirement(0)
         ..setNameEnhance("E", "Dementia Spells")
+
+@compiletime function createHeroSpellBookConjurer()
+    createHeroSpellBook(ABILITY_CONJURER_SPELLBOOK, 3)
+        ..setTooltipNormalExtended(1, TT_CONJURER_SPELLBOOK)
+        ..setAbilitiesPerLevel(CONJURER_ABILITY_HASH)
+        ..presetButtonPosNormal(2, 1)
+        ..setIconNormal(Icons.bTNNecromancerAdept)
+        ..setRequiredLevel(2)
+        ..setLevelSkipRequirement(1)
+        ..setNameEnhance("R", "Conjurer Spells")
 
 @compiletime function createHeroSpellBookDefensiveSpells()
     createHeroSpellBook(ABILITY_PRIEST_SPELLBOOK, 3)

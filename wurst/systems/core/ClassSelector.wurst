@@ -106,6 +106,7 @@ public class ClassSelector
             ..addUnitToStock(UNIT_HUNTER, 1, 1)
             ..addUnitToStock(UNIT_BEASTMASTER, 1, 1)
             ..addUnitToStock(UNIT_MAGE, 1, 1)
+            ..addUnitToStock(UNIT_CONJURER, 1, 1)
             ..addUnitToStock(UNIT_PRIEST, 1, 1)
             ..addUnitToStock(UNIT_THIEF, 1, 1)
             ..addUnitToStock(UNIT_SCOUT, 1, 1)
@@ -124,6 +125,7 @@ public class ClassSelector
             pool
             ..add(UNIT_HUNTER)
             ..add(UNIT_MAGE)
+            ..add(UNIT_CONJURER)
             ..add(UNIT_BEASTMASTER)
             ..add(UNIT_PRIEST)
             ..add(UNIT_THIEF)

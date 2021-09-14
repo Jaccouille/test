@@ -10,6 +10,7 @@ import LocalObjectIDs
 import Transformation
 import UnitExtensions
 import LegacyHotkeys
+import ObjectIDManager
 
 let legacySkillMap = new HashMap<int, int>()
     ..put(ABILITY_MAGE_SPELLBOOK, ABILITY_MAGE_LEGACY_SPELLBOOK)
@@ -38,6 +39,9 @@ let skillMap = new HashMap<int, int>()
     ..put(UNIT_MASTER_HEALER,        ABILITY_MASTER_HEALER_SPELLBOOK)
     ..put(UNIT_MASTER_HEALER_1,      ABILITY_MASTER_HEALER_SPELLBOOK)
     ..put(UNIT_SAGE,                 ABILITY_SAGE_SPELLBOOK)
+
+    // Conjurer
+    ..put(UNIT_CONJURER,             ABILITY_CONJURER_SPELLBOOK)
 
     // Beastmaster
     ..put(UNIT_SHAPESHIFTER_WOLF,    ABILITY_SHAPESHIFTER_FORM)
